@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SpriteKit
 
+/// ゲーム画面上に配置されるオブジェクト
 class Object {
     private let object_: SKSpriteNode
     private var speed_: CGFloat
@@ -58,6 +59,13 @@ class Object {
         node.addChild(object_)
     }
 
+    ///  目的地が対象座標へ直線移動するためのアニメーションを返す
+    ///  移動時のテクスチャ変更も含めて行う
+    ///  TODO: テクスチャ画像も引数として渡せるように変更する
+    ///
+    ///  - parameter destination: 目標地点
+    ///
+    ///  - returns: 目標地点へ移動するアニメーション
     func getActionTo(destination: CGPoint) -> Array<SKAction> {
         var actions: Array<SKAction> = []
         let position = position_
@@ -94,6 +102,11 @@ class Object {
         return actions
     }
 
+    ///  連続したアクションを実行する
+    ///  アクション実行中は，他のイベントの発生は無視する
+    ///
+    ///  - parameter actions:  実行するアクション
+    ///  - parameter callback: 実行終了時に呼ばれるコールバック関数ß
     func runAction(actions: Array<SKAction>, callback: () -> Void) {
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)

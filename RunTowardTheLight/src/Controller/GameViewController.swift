@@ -10,10 +10,17 @@ import UIKit
 import SpriteKit
 import AVFoundation
 
+/// ゲーム画面の view controller
 class GameViewController: UIViewController, GameSceneDelegate {
     var viewInitiated: Bool = false
+    
+    /// プレイヤー移動用のイベント
     var movePlayer_: EventListener<CGPoint>!
+    
+    /*  ユーザの操作によって呼び出される処理を保持するイベント */
+    /// タッチ時のイベント
     var touchEvent = EventDispatcher<CGPoint>()
+    /// ボタン押下時のイベント
     var actionEvent = EventDispatcher<AnyObject?>()
 
     override func loadView() {
@@ -32,9 +39,11 @@ class GameViewController: UIViewController, GameSceneDelegate {
         super.viewWillLayoutSubviews()
 
         if (!viewInitiated) {
+            // 1. delegate を設定した game scene を生成
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
+            // 2. game scene を親とした skview 生成
             let skView = self.view as! SKView
             skView.presentScene(scene)
 
@@ -42,12 +51,17 @@ class GameViewController: UIViewController, GameSceneDelegate {
         }
     }
 
+    ///  ディスプレイがタッチされた際に呼ばれる
+    ///  タッチ位置をタッチイベントに渡す
+    ///
+    ///  - parameter touch: タッチの情報
     func displayTouched(touch: UITouch?) {
         let skView = self.view as! SKView
         let location = touch?.locationInNode(skView.scene!)
         touchEvent.trigger(self, args: location)
     }
 
+    ///  画面上のアクションボタン押下時に呼ばれる
     func actionButtonTouched() {
         actionEvent.trigger(self, args: nil)
     }

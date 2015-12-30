@@ -178,6 +178,9 @@ class TileSheet {
         })
     }
 
+    ///  シーンにタイルシートを子ノードとして持たせる
+    ///
+    ///  - parameter scene: タイルシートを追加するシーン
     func addTilesheetTo(scene: SKScene) {
         scene.addChild(sheet_)
         for line in frame_ {
@@ -185,16 +188,32 @@ class TileSheet {
         }
     }
 
+    ///  オブジェクトの向きを取得する
+    ///
+    ///  - parameter objectName: オブジェクト名
+    ///
+    ///  - returns: オブジェクトの向き
     func getPlayerDirection(objectName: String) -> TileSheet.DIRECTION {
         let object: Object = objectArray_[objectName]!
         return object.getDirection()
     }
 
+    ///  オブジェクトの速さを取得する
+    ///
+    ///  - parameter objectName: オブジェクト名
+    ///
+    ///  - returns: オブジェクトの速さ
     func getPlayerSpeed(objectName: String) -> CGFloat {
         let object: Object = objectArray_[objectName]!
         return object.getMovingSpeed()
     }
 
+    ///  スクロールすべきか否かを検知し，すべきであればスクロール用のアクションを返す
+    ///  キャラクターの移動ごとに呼び出される必要がある
+    ///
+    ///  - parameter position: キャラクターの現在位置
+    ///
+    ///  - returns: スクロールのためのアクション
     func detectScroll(position: TileCoordinate) -> SKAction? {
         // 到達していたらスクロールするタイル
         // 原点沿いのタイル
