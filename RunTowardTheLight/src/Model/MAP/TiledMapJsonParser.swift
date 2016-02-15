@@ -14,175 +14,253 @@ enum ParseError: ErrorType {
     case JsonFileNotFound
     case IllegalJsonFormat
     case SwiftyJsonError([NSError?])
+    case otherError(String)
 }
 
+/// タイルセットの情報を保持する構造体
+/// 1画像ファイル内のタイル群 = 1タイルセット に対応する
+struct TileSetInfo {
+    /// 画像ファイル名
+    var imageName: String
+    /// セット内のタイル数
+    var count: Int
+    /// 一番若いタイルID
+    var firstTileID: Int
+    /// タイルセット(画像ファイル)の横幅
+    var imageWidth: Int
+    /// タイルセット(画像ファイル)の縦幅
+    var imageHeight: Int
+    /// タイルセット内の各タイルの横幅
+    var tileWidth: Int
+    /// タイルセット内の各タイルの縦幅
+    var tileHeight: Int
+}
+
+
+/// タイルの配置や種類の情報を記述したJSONファイルのパーサ
 class TiledMapJsonParser {
-    // タイル画像の大きさは決まってる
-    // INT でいいのか？
+    private var json : JSON = nil
+    
+    /// タイルサイズ
     private let TILE_SIZE = Int(Tile.TILE_SIZE)
-    private var layerTileCols: Int? = nil
-    private var layerTileRows: Int? = nil
-
-    struct TileData {
-        var tileID: Int?
-        var hasCollision: Bool?
-        var objectID: Int?
-    }
-
-    private var tileData: [[TileData?]] = [[]]
-
-    struct TileMap {
-        var imageName: String
-        var count: Int
-        var firstGid: Int
-        var mapWidth: Int
-        var mapHeight: Int
-        var tileWidth: Int
-        var tileHeight: Int
-    }
-
-    private var tileMaps: Dictionary<Int, TileMap> = [:]
-    private var tileProperties: Dictionary<Int, Dictionary<String, String?>> = [:]
-
-    init(fileName: String) throws {
-        var json: JSON = nil
-        if let path: String? =
-        NSBundle.mainBundle().pathForResource(fileName, ofType: "json"),
-        fileHandle: NSFileHandle? = NSFileHandle(forReadingAtPath: path!),
-        data: NSData = fileHandle!.readDataToEndOfFile() {
-            json = JSON(data: data)
-            if json.type != Type.Dictionary {
-                throw ParseError.IllegalJsonFormat
-            }
+    
+    
+    ///  コンストラクタ
+    ///
+    ///  - parameter fileName: パース対象のjsonファイル名
+    init?(fileName: String) {
+        if let path: String? = NSBundle.mainBundle().pathForResource(fileName, ofType: "json"),
+            fileHandle: NSFileHandle? = NSFileHandle(forReadingAtPath: path!),
+            data: NSData = fileHandle!.readDataToEndOfFile() {
+                self.json = JSON(data: data)
+                if self.json.type != Type.Dictionary {
+                    // JSON フォーマットが正しくない
+                    return nil
+                }
         } else {
-            throw ParseError.JsonFileNotFound
+            // JSON ファイルへのパスがまちがっている
+            return nil
         }
-
-        // 各タイルマップの読み込み
+    }
+    
+    
+    ///  タイルセットの各情報を取得する
+    ///
+    ///  - throws: 失敗時
+    ///
+    ///  - returns: タイルセットの情報．画像ファイル名やセット内のタイル数等．詳しくは TileSetInfo を参照
+    func getTileSetsInfo() throws -> Dictionary<TileSetID, TileSetInfo> {
+        var tileSetsInfo: Dictionary<TileSetID, TileSetInfo> = [:]
         if let tileSets = json["tilesets"].array {
-            var mapID = 1
+            var tileSetID = 1
             for tileSet in tileSets {
-                let first_gid = tileSet["firstgid"].int!
-                let tileCount = tileSet["tilecount"].int!
-                // タイルマップを得る
-                tileMaps[mapID] = TileMap(
-                imageName: tileSet["image"].string!,
-                count: tileCount,
-                firstGid: first_gid,
-                mapWidth: tileSet["imagewidth"].int!,
-                mapHeight: tileSet["imageheight"].int!,
-                tileWidth: tileSet["tilewidth"].int!,
-                tileHeight: tileSet["tileheight"].int!
+                tileSetsInfo[tileSetID] = TileSetInfo(
+                    imageName:   tileSet["image"].string!,
+                    count:       tileSet["tilecount"].int!,
+                    firstTileID: tileSet["firstgid"].int!,
+                    imageWidth:  tileSet["imagewidth"].int!,
+                    imageHeight: tileSet["imageheight"].int!,
+                    tileWidth:   tileSet["tilewidth"].int!,
+                    tileHeight:  tileSet["tileheight"].int!
                 )
-
-                for id in first_gid ... first_gid + tileCount - 1 {
-                    // TODO: validate
-                    tileProperties[id] = ["mapID": mapID.description]
-                }
-
-                for (cor, properties) in tileSet["tileproperties"] {
-                    for (property, value) in properties {
-                        tileProperties[first_gid + Int(cor)!]![property] = value.string
-                        // イベントはここで別の配列に格納する？
-                    }
-                }
-                mapID++
+                tileSetID++
             }
+            return tileSetsInfo
         } else {
             throw ParseError.SwiftyJsonError([json["tilesets"].error])
         }
-
-        if let rows = json["height"].int,
-        cols = json["width"].int {
-            layerTileCols = cols
-            layerTileRows = rows
-        } else {
-            ParseError.SwiftyJsonError([json["height"].error, json["width"].error])
+    }
+    
+    
+    ///  レイヤから得られる各タイルの情報を取得する
+    ///
+    ///  - parameter layerTileCols: レイヤーのタイル列数
+    ///  - parameter layerTileRows: レイヤーのタイル行数
+    ///
+    ///  - throws: レイヤーが存在しない場合
+    ///
+    ///  - returns: タイル座標をキーとしたタイル情報のディクショナリ
+    func getTileInfoArray(
+        layerTileCols: Int,
+        layerTileRows: Int
+    ) throws -> Dictionary<TileCoordinate, TileInfo>
+    {
+        var tileInformations: Dictionary<TileCoordinate, TileInfo> = [:]
+        
+        if (layerTileCols < 1 || layerTileRows < 1) {
+            throw ParseError.otherError("Layer size is invalid.")
         }
-
-        // TODO: レイヤを順番ではなく名前で読み込み
-        if let gids = json["layers"][0]["data"].array,
-        collisions = json["layers"][1]["data"].array,
-        obj_ids = json["layers"][2]["data"].array {
-            // Initialize
-            tileData = [[TileData?]](count: layerTileRows!,
-                                     repeatedValue: [TileData?](
-                                     count: layerTileCols!,
-                                     repeatedValue: nil
-                                     ))
-            for (var y = 0; y < layerTileCols; y++) {
-                for (var x = 0; x < layerTileRows; x++) {
-                    let index = (layerTileCols! - 1 - y) * layerTileRows! + x
-
-                    tileData[x][y] = TileData(
-                    tileID: gids[index].int!,
-                    // 0: 何も置かれていない
-                    hasCollision: collisions[index].int! != 0 ? true : false,
-                    objectID: obj_ids[index].int!
+        
+        if let
+            tileIDLayer    = json["layers"][0]["data"].array,
+            collisionLayer = json["layers"][1]["data"].array,
+            objectIDLayer  = json["layers"][2]["data"].array
+        {
+            for (var y = 1; y <= layerTileCols; y++) {
+                for (var x = 1; x <= layerTileRows; x++) {
+                    let index = (layerTileCols - y) * layerTileRows + x - 1
+                    
+                    tileInformations[TileCoordinate(x: x, y: y)] = TileInfo(
+                        tileID: tileIDLayer[index].int!,
+                        hasCollision: collisionLayer[index].int! != 0 ? true : false,
+                        objectID: objectIDLayer[index].int!
                     )
                 }
             }
+            
+            return tileInformations
         } else {
             throw ParseError.SwiftyJsonError(
-            [
+                [
                     json["layers"][0]["data"].error,
                     json["layers"][1]["data"].error,
                     json["layers"][2]["data"].error
-            ])
+                ])
         }
     }
-
-    // タイルデータを返す
-    func getTileData() -> [[TileData?]] {
-        return tileData
-    }
-
-    func getTileProperties() -> Dictionary<Int, Dictionary<String, String?>> {
-        return tileProperties
-    }
-
-    func getLayerSize() -> [Int] {
-        // TODO: nil チェック
-        return [layerTileCols!, layerTileRows!]
-    }
-
-    // 画像を読み込み画像データを返す
-    // id は左上から順番(おそらく)
-    func cropTileFromMap(mapID: Int, gid: Int) -> UIImage {
-        let map = tileMaps[mapID]
-        let file_name = map?.imageName
-        let tileWidth = (map?.tileWidth)!
-        let tileHeight = (map?.tileHeight)!
-        let mapRows = (map?.mapWidth)! / tileWidth
-        let firstGid = map?.firstGid
-        var cropPosition: Int
-        // TODO: map の中に gid が含まれていない場合の validation
-        if firstGid >= gid {
-            cropPosition = firstGid! - gid
+    
+    
+    ///  各タイルのプロパティを取得する
+    ///
+    ///  - throws: 失敗時
+    ///
+    ///  - returns: プロパティのディクショナリ
+    func getTileProperties() throws -> Dictionary<TileID, TileProperty> {
+        var properties: Dictionary<TileID, TileProperty> = [:]
+        
+        if let tileSets = json["tilesets"].array {
+            var tileSetID = 1
+            for tileSet in tileSets {
+                let firstTileID = tileSet["firstgid"].int!
+                let nTileInSet  = tileSet["tilecount"].int!
+                
+                // tileSet 内の全 tile について loop
+                for tileID in firstTileID ... firstTileID + nTileInSet -  1 {
+                    properties[tileID] = [
+                        "tileSetID": tileSetID.description,
+                        "tileSetName": tileSet["name"].string!
+                    ]
+                }
+                
+                // その他のプロパティを保持
+                for (cor, tileproperties) in tileSet["tileproperties"] {
+                    for (property, value) in tileproperties {
+                        let tileID = firstTileID + Int(cor)!
+                        if !(properties[tileID] == nil) {
+                            properties[tileID]![property] = value.string
+                        } else {
+                            throw ParseError.otherError("Invalid tile id in tile properties.")
+                        }
+                    }
+                }
+                tileSetID++
+            }
+            return properties
         } else {
-            cropPosition = gid - 1
+            throw ParseError.SwiftyJsonError([json["tilesets"].error])
         }
-
+    }
+    
+    
+    ///  レイヤーのサイズを取得する
+    ///
+    ///  - throws: レイヤー情報が読み込めなかった場合
+    ///
+    ///  - returns: [ 行数, 列数 ]
+    func getLayerSize() throws -> (cols: Int, rows: Int) {
+        do {
+            let layerTileCols: Int
+            let layerTileRows: Int
+            
+            if let
+                rows = json["height"].int,
+                cols = json["width"].int {
+                    layerTileCols = cols
+                    layerTileRows = rows
+            } else {
+                throw ParseError.SwiftyJsonError([json["height"].error, json["width"].error])
+            }
+            
+            return (layerTileCols, layerTileRows)
+        } catch {
+            throw error
+        }
+    }
+    
+    
+    ///  タイルの画像を，タイルセット(1画像ファイル)から切り出し，返す
+    ///
+    ///  - parameter tileSetID: 対象タイルが含まれるタイルセットID
+    ///  - parameter tileID:    対象タイルのタイルID
+    ///
+    ///  - throws:
+    ///
+    ///  - returns: タイル画像
+    func cropTileImage(
+        tileSetID: Int,
+        tileID: Int,
+        tileSetInformations: Dictionary<TileSetID, TileSetInfo>
+    ) throws -> UIImage {
+        if (tileSetInformations[tileSetID] == nil) {
+            throw ParseError.otherError("存在しないタイルセットIDです")
+        }
+        let tileSetInfo = tileSetInformations[tileSetID]!
+        let file_name   = tileSetInfo.imageName
+        let tileWidth   = tileSetInfo.tileWidth
+        let tileHeight  = tileSetInfo.tileHeight
+        let tileSetRows = tileSetInfo.imageWidth / tileWidth
+        let firstTileID = tileSetInfo.firstTileID
+        var iTargetTileInSet: Int
+        
+        // ID は左上から順番
+        // TODO: tileSet の中に tileID が含まれていない場合の validation
+        if firstTileID >= tileID {
+            iTargetTileInSet = firstTileID - tileID
+        } else {
+            iTargetTileInSet = tileID - 1
+        }
+        
+        // 対象タイルの，タイルセット内における位置(行数，列数)を調べる
         let targetCol: Int
         let targetRow: Int
-        if cropPosition == 0 {
+        if iTargetTileInSet == 0 {
             targetCol = 1
             targetRow = 1
         } else {
-            targetRow = Int(cropPosition % mapRows) + 1
-            targetCol = Int(cropPosition / mapRows) + 1
+            targetRow = Int(iTargetTileInSet % tileSetRows) + 1
+            targetCol = Int(iTargetTileInSet / tileSetRows) + 1
         }
-
+        
+        // 画像の切り抜き
         // TODO: nil の場合の validation
-        let image = UIImage(named: file_name!)
+        let image = UIImage(named: file_name)
         let cropCGImageRef = CGImageCreateWithImageInRect(
-        image!.CGImage,
-        CGRectMake(CGFloat(tileWidth) * CGFloat(targetRow - 1),
-                   CGFloat(tileHeight) * CGFloat(targetCol - 1),
-                   CGFloat(tileWidth),
-                   CGFloat(tileHeight)))
-        let cropImage = UIImage(CGImage: cropCGImageRef!)
-
-        return cropImage
+            image!.CGImage,
+            CGRectMake(CGFloat(tileWidth) * CGFloat(targetRow - 1),
+                CGFloat(tileHeight) * CGFloat(targetCol - 1),
+                CGFloat(tileWidth),
+                CGFloat(tileHeight)))
+        
+        return UIImage(CGImage: cropCGImageRef!)
     }
 }

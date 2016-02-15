@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 // 登録されたリスナーにイベントを通知する
-
 class EventDispatcher<EventArgType> {
     typealias SelfType = EventDispatcher<EventArgType>
     typealias ListenerType = EventListener<EventArgType>
@@ -20,8 +19,7 @@ class EventDispatcher<EventArgType> {
     private var uniqueId: IdType = 0
     // id発行に使う
 
-    init() {
-    }
+    init() {}
 
     func add(listener: ListenerType) -> Bool {
         if listener.id != nil {

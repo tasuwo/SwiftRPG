@@ -10,13 +10,29 @@ import Foundation
 import UIKit
 import SpriteKit
 
+/// マップ上に敷かれる各タイルに対応した SKSpriteNode のラッパークラス
 class Tile {
-    static var TILE_SIZE: CGFloat = 32.0
+    /// ノード
     private let tile_: SKSpriteNode
-    private var coordinate_: TileCoordinate!
+    
+    /// サイズ
+    static var TILE_SIZE: CGFloat = 32.0
+    
+    /// 座標
+    private var coordinate_: TileCoordinate
+    
+    /// 当たり判定
     private var hasCollision_: Bool
+    
+    /// イベント
     private var event_: EventDispatcher<AnyObject?>?
 
+    ///  コンストラクタ
+    ///
+    ///  - parameter coordinate: タイルの座標
+    ///  - parameter event:      タイルに配置するイベント
+    ///
+    ///  - returns: なし
     init(coordinate: TileCoordinate, event: EventDispatcher<AnyObject?>?) {
         let x = coordinate.getX()
         let y = coordinate.getY()
@@ -32,44 +48,46 @@ class Tile {
 
         event_ = event
     }
-
-    class func setTileSize(size: CGFloat) {
-        Tile.TILE_SIZE = size;
+    
+    func getCoordinate() -> TileCoordinate {
+        return self.coordinate_
     }
-
+    
     func getEvent() -> EventDispatcher<AnyObject?>? {
         return event_
+    }
+    
+    func canPass() -> Bool {
+        return !hasCollision_
     }
 
     func setEvent(event: EventDispatcher<AnyObject?>) {
         event_ = event
     }
+    
+    ///  タイルに当たり判定を付加する
+    func setCollision() {
+        hasCollision_ = true
+    }
 
+    ///  タイルにテクスチャ画像を付加する
+    ///
+    ///  - parameter imageName: 付加するテクスチャ画像名
     func setImageWithName(imageName: String) {
         tile_.texture = SKTexture(imageNamed: imageName)
     }
 
+    ///  タイルにテクスチャ画像を付加する
+    ///
+    ///  - parameter image: 孵化するテクスチャ画像
     func setImageWithUIImage(image: UIImage) {
         tile_.texture = SKTexture(image: image)
     }
 
-    func setColor(color: UIColor) {
-        tile_.color = color
-    }
-
-    func isOn(coordinate: TileCoordinate) -> Bool {
-        return (coordinate_.isEqual(coordinate))
-    }
-
-    func canPass() -> Bool {
-        return !hasCollision_
-    }
-
+    ///  タイルのノードに子ノードを追加する
+    ///
+    ///  - parameter node: 追加する子ノード
     func addTo(node: SKSpriteNode) {
         node.addChild(tile_)
-    }
-
-    func setCollision() {
-        hasCollision_ = true
     }
 }

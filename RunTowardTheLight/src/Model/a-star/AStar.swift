@@ -11,18 +11,31 @@ import UIKit
 import SpriteKit
 
 class AStar {
+    /// 基準ノードのインデックス
     var iBaseNode_: Int!
+    
+    /// 探索対象のタイルシート
     let tileSheet_: TileSheet!
+    
+    /// 出発地点のタイル座標
     var departure_: TileCoordinate!
+    
+    /// 目的地点のタイル座標
     var destination_: TileCoordinate!
+    
+    /// 生成したノードを格納しておくリスト
     var nodeList_: [Node] = []
 
-
+    
     init(sheet: TileSheet) {
         tileSheet_ = sheet
     }
 
 
+    ///  A*アルゴリズムの初期化
+    ///
+    ///  - parameter departure:   出発するタイル座標
+    ///  - parameter destination: 目的地のタイル座標
     func initialize(departure: TileCoordinate, destination: TileCoordinate) {
         departure_ = TileCoordinate(x: departure.getX(), y: departure.getY())
         destination_ = TileCoordinate(x: destination.getX(), y: destination.getY())
@@ -30,6 +43,9 @@ class AStar {
     }
 
 
+    ///  A*アルゴリズム開始
+    ///
+    ///  - returns: 失敗の場合はnil，成功の場合は経路を表したタイルの配列が返る
     func main() -> [TileCoordinate]? {
         /*** 終了判定 ***/
         // initialize されていない
@@ -49,7 +65,6 @@ class AStar {
         } else {
             iBaseNode_ = chooseBaseNodeIndex()
         }
-
         // 基準ノードが存在しない場合は，移動失敗
         if iBaseNode_ == nil {
             return nil
@@ -72,7 +87,10 @@ class AStar {
     }
 
 
-    func chooseBaseNodeIndex() -> Int? {
+    ///  基準ノードのインデックスを選ぶ
+    ///
+    ///  - returns: 基準ノードのインデックス
+    private func chooseBaseNodeIndex() -> Int? {
         var min = -1
         var iMinNode: Int? = nil
 
@@ -95,8 +113,12 @@ class AStar {
     }
 
 
-    // 基準ノードの周りの Open 可能なノードを探す
-    func searchCanOpenNodeIndexes(iBaseNode: Int) -> [Int] {
+    ///  基準ノードの周りの Open 可能なノードを探す
+    ///
+    ///  - parameter iBaseNode: 基準ノードのインデックス
+    ///
+    ///  - returns: open 可能なノードのインデックス
+    private func searchCanOpenNodeIndexes(iBaseNode: Int) -> [Int] {
         var checkCoordinates: [TileCoordinate] = []
         var indexes: [Int] = []
         let baseX = nodeList_[iBaseNode_].getCoordinates().getX()
@@ -133,6 +155,9 @@ class AStar {
     }
 
 
+    ///  探索結果を取得する
+    ///
+    ///  - returns: 移動経路を表すタイル座標の配列
     private func getAStarResult() -> [TileCoordinate] {
         var result: [TileCoordinate] = []
         var node: Node
@@ -150,6 +175,11 @@ class AStar {
     }
 
 
+    ///  タイルの通行判定
+    ///
+    ///  - parameter coordinate: タイルの座標
+    ///
+    ///  - returns: 通行可能なら true, そうでなければ false
     private func canPass(coordinate: TileCoordinate) -> Bool {
         // タイルが通行可能でない
         if (tileSheet_.canPassTile(coordinate) == nil) {

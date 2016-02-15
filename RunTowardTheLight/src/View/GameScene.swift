@@ -24,19 +24,24 @@ class GameScene: SKScene {
     var textBox_: Dialog!
     var actionButton_: UIButton!
 
-    ///  view 移動時
-    ///
-    ///  - parameter view: <#view description#>
+    
     override func didMoveToView(view: SKView) {
-        sheet = TileSheet(jsonFileName: "sample_map02",
-                          frameWidth: self.frame.width,
-                          frameHeight: self.frame.height)
-        sheet.addTilesheetTo(self)
-        sheet.placementObjectOnTileWithName("tasuwo",
-                                            image_name: "plr_down.png",
-                                            coordinate: TileCoordinate(x: 10, y: 10))
+        if
+            let parser = TiledMapJsonParser(fileName: "sample_map02"),
+            let sheet = TileSheet(parser: parser,
+                                  frameWidth: self.frame.width,
+                                  frameHeight: self.frame.height)
+        {
+            self.sheet = sheet
+            self.sheet.addTilesheetTo(self)
+            self.sheet.placementObjectOnTileWithName(
+                "tasuwo",
+                image_name: "plr_down.png",
+                coordinate: TileCoordinate(x: 10, y: 10))
+        } else {
+            print("初期化失敗")
+        }
 
-        // 「Start」を表示。
         actionButton_ = UIButtonAnimated(frame: CGRectMake(0, 0, 100, 40))
         actionButton_.backgroundColor = UIColor.blackColor();
         actionButton_.setTitle("TALK", forState: UIControlState.Normal)
@@ -54,6 +59,7 @@ class GameScene: SKScene {
         textBox_.addTo(self)
     }
 
+    
     ///  タッチ時の処理
     ///
     ///  - parameter touches: タッチ情報
@@ -63,6 +69,7 @@ class GameScene: SKScene {
         gameSceneDelegate?.displayTouched(touches.first)
     }
 
+    
     ///  アクションボタン押下時の処理
     ///  コントローラに処理を委譲する
     ///
@@ -71,6 +78,7 @@ class GameScene: SKScene {
         gameSceneDelegate?.actionButtonTouched()
     }
 
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }

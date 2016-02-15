@@ -10,29 +10,43 @@ import Foundation
 import UIKit
 import SpriteKit
 
+/// A*アルゴリズムのためのノード
 class Node {
 
     enum STATE {
         case None, Open, Closed
     }
 
+    /// ステータス
     private var state_: STATE!
-    //!< ステータス
+    
+    /// XY座標
     private var coordinates_: TileCoordinate!
-    //!< XY座標
-    private var parentNode_: Node?
-    //!< 親ノード
+    
+    /// 親ノード
+    private var parentNode_: Node!
+    
+    /// 推定コスト
     private var heuristicCost_: Int!
-    //!< 推定コスト
+    
+    /// 移動コスト
     private var moveCost_: Int!
-    //!< 移動コスト
 
+    
+    ///  コンストラクタ
+    ///
+    ///  - parameter coordinates: タイル座標
     init(coordinates: TileCoordinate) {
         state_ = STATE.None
         coordinates_ = TileCoordinate(x: coordinates.getX(),
                                       y: coordinates.getY())
     }
 
+    
+    ///  ノードを開く
+    ///
+    ///  - parameter parentNode:  親ノード
+    ///  - parameter destination: 目的地のタイル座標
     func open(parentNode: Node?, destination: TileCoordinate) {
         // ノードをOpen状態にする
         self.state_ = STATE.Open
@@ -53,10 +67,18 @@ class Node {
         parentNode_ = parentNode
     }
 
+    
+    ///  ノードを閉じる
     func close() {
         self.state_ = STATE.Closed
     }
 
+    
+    ///  ノードの現在位置を確認する
+    ///
+    ///  - parameter coordinates: 確認する座標
+    ///
+    ///  - returns: 指定した座標にノードが存在しなければ false, 存在すれば true
     func isPositioned(coordinates: TileCoordinate) -> Bool {
         if coordinates_.isEqual(coordinates) {
             return true

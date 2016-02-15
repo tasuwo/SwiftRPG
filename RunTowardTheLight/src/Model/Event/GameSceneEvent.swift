@@ -32,14 +32,14 @@ class GameSceneEvent: NSObject {
 
                     // キャラとかぶらないように
                     let playerPosition = sheet.getObjectPosition("tasuwo")
-                    var position: Dialog.DIALOG_POSITION!
+                    var position: Dialog.POSITION!
                     if playerPosition.y <= scene.frame.height / 2 {
-                        position = Dialog.DIALOG_POSITION.top
+                        position = Dialog.POSITION.top
                     } else {
-                        position = Dialog.DIALOG_POSITION.bottom
+                        position = Dialog.POSITION.bottom
                     }
                     // -- for debug
-                    position = Dialog.DIALOG_POSITION.bottom
+                    position = Dialog.POSITION.bottom
                     // --
                     scene.textBox_.show(position)
                     scene.textBox_.drawText(params!.string!, talkSide: Dialog.TALK_SIDE.right)
@@ -66,12 +66,10 @@ class GameSceneEvent: NSObject {
                     let path = a_star.main()
 
                     if (path != nil) {
-                        // get action per step
                         var actions: Array<SKAction> = []
                         for step in path! {
                             actions += sheet.getActionTo("tasuwo", to: step)
                         }
-                        // animation
                         sheet.moveObject("tasuwo", actions: actions, callback: {})
                     }
                 }

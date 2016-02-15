@@ -22,7 +22,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
     var touchEvent = EventDispatcher<CGPoint>()
     /// ボタン押下時のイベント
     var actionEvent = EventDispatcher<AnyObject?>()
-
+    
     override func loadView() {
         self.view = SKView()
     }

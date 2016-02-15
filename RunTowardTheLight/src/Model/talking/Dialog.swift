@@ -44,7 +44,7 @@ class Dialog {
     let ICON_MARGIN: CGFloat = 10.0
 
 
-    enum DIALOG_POSITION {
+    enum POSITION {
         case top, bottom, middle
     }
 
@@ -90,19 +90,16 @@ class Dialog {
 
         // ページ送りボタンの設置
         nextButton_ = SKSpriteNode(
-        color: UIColor.whiteColor(),
-        size: CGSize(width: BUTTON_SIZE, height: BUTTON_SIZE)
-        )
+            color: UIColor.whiteColor(),
+            size: CGSize(width: BUTTON_SIZE, height: BUTTON_SIZE))
         nextButton_.position = CGPointMake(
-        PADDING_WIDTH + textRegionWidth_,
-        PADDING_HEIGHT
-        )
+            PADDING_WIDTH + textRegionWidth_,
+            PADDING_HEIGHT)
         let fadeout = SKAction.fadeAlphaTo(0.0, duration: 0.0)
         let fadein = SKAction.fadeAlphaTo(1.0, duration: 0.0)
         let delay = SKAction.waitForDuration(NSTimeInterval(0.5))
         buttonLoop_ = SKAction.repeatActionForever(
-        SKAction.sequence([fadein, delay, fadeout, delay])
-        )
+            SKAction.sequence([fadein, delay, fadeout, delay]))
         nextButton_.alpha = 0.0
         textBox_.addChild(nextButton_)
 
@@ -111,19 +108,18 @@ class Dialog {
         characterIcon_.texture = SKTexture(imageNamed: "player.png")
         characterIcon_.anchorPoint = CGPointMake(0.0, 0.0)
         characterIcon_.size = CGSizeMake(
-        CHAR_ICON_SIZE - ICON_MARGIN * 2,
-        boxHeight_ - ICON_MARGIN * 2
-        )
+            CHAR_ICON_SIZE - ICON_MARGIN * 2,
+            boxHeight_ - ICON_MARGIN * 2)
         characterIcon_.zPosition = 20
         characterIcon_.hidden = true
         characterIcon_.color = UIColor.whiteColor()
     }
 
-    func setPosition(position: DIALOG_POSITION) {
+    func setPosition(position: POSITION) {
         textBox_.position = self.getPosition(position)
     }
 
-    private func getPosition(position: DIALOG_POSITION) -> CGPoint {
+    private func getPosition(position: POSITION) -> CGPoint {
         switch position {
             case .top:
                 return CGPointMake(frameWidth_ / 2 - boxWidth_ / 2,
@@ -185,7 +181,7 @@ class Dialog {
         characterIcon_.hidden = true
     }
 
-    func show(position: DIALOG_POSITION? = nil) {
+    func show(position: POSITION? = nil) {
         self.setPosition(position!)
         textBox_.hidden = false
         characterIcon_.hidden = false

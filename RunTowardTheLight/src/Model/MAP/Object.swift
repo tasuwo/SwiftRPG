@@ -10,12 +10,19 @@ import Foundation
 import UIKit
 import SpriteKit
 
-/// ゲーム画面上に配置されるオブジェクト
+/// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
 class Object {
+    /// ノード
     private let object_: SKSpriteNode
+    
+    /// スピード
     private var speed_: CGFloat
+    
+    /// 画面上の描画位置
     private var position_: CGPoint
-    private var direction_: TileSheet.DIRECTION
+    
+    /// 向き
+    private var direction_: DIRECTION
 
     init(name: String, position: CGPoint) {
         object_ = SKSpriteNode()
@@ -26,7 +33,7 @@ class Object {
 
         speed_ = 0.2
 
-        direction_ = TileSheet.DIRECTION.DOWN
+        direction_ = DIRECTION.DOWN
     }
 
     convenience init(name: String, imageName: String, position: CGPoint) {
@@ -42,22 +49,29 @@ class Object {
         object_.size = CGSize(width: (object_.texture?.size().width)!,
                               height: (object_.texture?.size().height)!)
     }
+    
+    // getter
 
     func getMovingSpeed() -> CGFloat {
         return speed_
     }
 
-    func getDirection() -> TileSheet.DIRECTION {
+    func getDirection() -> DIRECTION {
         return direction_
     }
 
     func getPosition() -> CGPoint {
         return object_.position
     }
+    
 
+    ///  オブジェクトのノードに子ノードを追加する
+    ///
+    ///  - parameter node: 追加する子ノード
     func addTo(node: SKSpriteNode) {
         node.addChild(object_)
     }
+    
 
     ///  目的地が対象座標へ直線移動するためのアニメーションを返す
     ///  移動時のテクスチャ変更も含めて行う
@@ -79,16 +93,16 @@ class Object {
         // TODO: プレイヤー画像以外にも対応
         // 画像をjsonとかで渡せるといいなぁ
         if (diff.x > 0 && diff.y == 0) {
-            direction_ = TileSheet.DIRECTION.RIGHT
+            direction_ = DIRECTION.RIGHT
             nextTexture = SKTexture(imageNamed: "plr_right.png")
         } else if (diff.x < 0 && diff.y == 0) {
-            direction_ = TileSheet.DIRECTION.LEFT
+            direction_ = DIRECTION.LEFT
             nextTexture = SKTexture(imageNamed: "plr_left.png")
         } else if (diff.x == 0 && diff.y > 0) {
-            direction_ = TileSheet.DIRECTION.UP
+            direction_ = DIRECTION.UP
             nextTexture = SKTexture(imageNamed: "plr_up.png")
         } else if (diff.x == 0 && diff.y < 0) {
-            direction_ = TileSheet.DIRECTION.DOWN
+            direction_ = DIRECTION.DOWN
             nextTexture = SKTexture(imageNamed: "plr_down.png")
         }
 
@@ -102,6 +116,7 @@ class Object {
         return actions
     }
 
+    
     ///  連続したアクションを実行する
     ///  アクション実行中は，他のイベントの発生は無視する
     ///
