@@ -53,6 +53,7 @@ public class Tile: MapObject {
         self.tile_.position = CGPointMake(CGFloat(x - 1) * Tile.TILE_SIZE,
                                           CGFloat(y - 1) * Tile.TILE_SIZE)
         self.tile_.anchorPoint = CGPointMake(0.0, 0.0)
+        self.tile_.zPosition = zPositionTable.TILE
         self.coordinate_ = TileCoordinate(x: x, y: y)
         self.hasCollision = false
         self.property_ = property

@@ -44,12 +44,13 @@ public class Object: MapObject {
     internal var hasCollision: Bool
 
     
-    init(name: String, position: CGPoint, images: IMAGE_SET?) {
+    init(name: String, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
         object_ = SKSpriteNode()
         object_.name = name
         self.name_ = name
         object_.anchorPoint = CGPointMake(0.5, 0.0)
         object_.position = position
+        object_.zPosition = zPosition != nil ? zPosition! : zPositionTable.COMMON_OBJECT
         speed_ = 0.2
         direction_ = DIRECTION.DOWN
         self.hasCollision = false
@@ -58,16 +59,16 @@ public class Object: MapObject {
     }
 
     
-    convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?) {
-        self.init(name: name, position: position, images: images)
+    convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
+        self.init(name: name, position: position, images: images, zPosition: zPosition)
         object_.texture = SKTexture(imageNamed: imageName)
         object_.size = CGSize(width: (object_.texture?.size().width)!,
                               height: (object_.texture?.size().height)!)
     }
 
     
-    convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?) {
-        self.init(name: name, position: position, images: images)
+    convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
+        self.init(name: name, position: position, images: images, zPosition: zPosition)
         object_.texture = SKTexture(image: imageData)
         object_.size = CGSize(width: (object_.texture?.size().width)!,
                               height: (object_.texture?.size().height)!)

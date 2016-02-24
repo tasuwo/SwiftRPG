@@ -77,7 +77,8 @@ public class Map {
                     name: objectNameTable.PLAYER_NAME,
                     imageName: objectNameTable.PLAYER_IMAGE_DOWN,
                     position: TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 10, y: 10)),
-                    images: objectNameTable.PLAYER_IMAGE_SET)
+                    images: objectNameTable.PLAYER_IMAGE_SET,
+                    zPosition: zPositionTable.PLAYER)
                 self.sheet!.addObjectToSheet(player)
                 
                 for (coordinate, tile) in tiles {

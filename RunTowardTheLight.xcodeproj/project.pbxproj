@@ -12,6 +12,7 @@
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
 		31F45FD92992618C417309D0 /* Pods_RunTowardTheLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
 		A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */; };
 		A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE51C7AF0C9007C5BC2 /* Map.swift */; };
 		A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */; };
@@ -75,6 +76,7 @@
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
 		38EE3DCDD0A8B6A98373E003 /* Pods-RunTowardTheLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.release.xcconfig"; sourceTree = "<group>"; };
 		398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0112D8F1C7DB10700E225CC /* zPositionTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = zPositionTable.swift; sourceTree = "<group>"; };
 		A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileSet.swift; sourceTree = "<group>"; };
 		A02DDEE51C7AF0C9007C5BC2 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = objectNameTable.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */,
+				A0112D8F1C7DB10700E225CC /* zPositionTable.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
+				A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
 				2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */,

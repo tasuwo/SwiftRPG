@@ -201,11 +201,11 @@ public class TileSheet {
             let horizonalLine   = SKShapeNode(points: &horizonalPoints, count: horizonalPoints.count)
             horizonalLine.lineWidth = drawingRangeHeight * 2
             horizonalLine.strokeColor = UIColor.blackColor()
-            horizonalLine.zPosition = 10
+            horizonalLine.zPosition = zPositionTable.FLAME
             let verticalLine = SKShapeNode(points: &verticalPoints, count: verticalPoints.count)
             verticalLine.lineWidth = drawingRangeWidth * 2
             verticalLine.strokeColor = UIColor.blackColor()
-            verticalLine.zPosition = 10
+            verticalLine.zPosition = zPositionTable.FLAME
             
             // 上下左右のフレーム枠の生成
             let underLine = horizonalLine.copy() as! SKShapeNode

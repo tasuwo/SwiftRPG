@@ -85,7 +85,7 @@ class Dialog {
         textBox_.fillColor = SKColor.blackColor()
         textBox_.strokeColor = SKColor.whiteColor()
         textBox_.lineWidth = 2.0
-        textBox_.zPosition = 100
+        textBox_.zPosition = zPositionTable.DIALOG
         textBox_.position = CGPointMake(frame_width / 2 - boxWidth_ / 2,
                                         frame_height / 2 - boxHeight_ / 2)
 
@@ -112,7 +112,7 @@ class Dialog {
         characterIcon_.size = CGSizeMake(
             CHAR_ICON_SIZE - ICON_MARGIN * 2,
             boxHeight_ - ICON_MARGIN * 2)
-        characterIcon_.zPosition = 110
+        characterIcon_.zPosition = zPositionTable.DIALOG_ICON
         characterIcon_.color = UIColor.whiteColor()
         characterIcon_.position.y = PADDING_HEIGHT // FONT_SIZE + ICON_MARGIN
         textBox_.addChild(characterIcon_)
