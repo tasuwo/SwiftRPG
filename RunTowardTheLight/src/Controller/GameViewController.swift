@@ -12,29 +12,33 @@ import AVFoundation
 
 /// ゲーム画面の view controller
 class GameViewController: UIViewController, GameSceneDelegate {
+    /// ビューの初期化フラグ
     var viewInitiated: Bool = false
     
     /// プレイヤー移動用のイベント
-    var movePlayer_: EventListener<CGPoint>!
+    var movePlayer_: EventListener<Any>!
     
-    /*  ユーザの操作によって呼び出される処理を保持するイベント */
     /// タッチ時のイベント
-    var touchEvent = EventDispatcher<CGPoint>()
+    var touchEvent = EventDispatcher<Any>()
+    
     /// ボタン押下時のイベント
-    var actionEvent = EventDispatcher<AnyObject?>()
+    var actionEvent = EventDispatcher<Any>()
+    
     
     override func loadView() {
         self.view = SKView()
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.multipleTouchEnabled = false
 
-        movePlayer_ = GameSceneEvent.touchEvents["common_moving"]!(nil)
+        movePlayer_ = GameSceneEvent.events[GameSceneEvent.PLAYER_MOVE]!(nil)
         touchEvent.add(movePlayer_)
     }
 
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
@@ -51,6 +55,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         }
     }
 
+    
     ///  ディスプレイがタッチされた際に呼ばれる
     ///  タッチ位置をタッチイベントに渡す
     ///
@@ -61,11 +66,13 @@ class GameViewController: UIViewController, GameSceneDelegate {
         touchEvent.trigger(self, args: location)
     }
 
+    
     ///  画面上のアクションボタン押下時に呼ばれる
     func actionButtonTouched() {
         actionEvent.trigger(self, args: nil)
     }
 
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return UIInterfaceOrientationMask.AllButUpsideDown
@@ -74,6 +81,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         }
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.

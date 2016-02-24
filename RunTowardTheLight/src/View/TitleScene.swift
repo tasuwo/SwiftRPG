@@ -18,18 +18,15 @@ protocol TitleSceneDelegate: class {
 class TitleScene: SKScene {
     var titleSceneDelegate: TitleSceneDelegate?
 
-    /**
-     * シーンが表示された時の処理
-     */
     override func didMoveToView(view: SKView) {
-        // show background image
+        // 背景の描画
         let myImage: UIImage = UIImage(named: "title.png")!
         let myImageView: UIImageView = UIImageView()
         myImageView.image = myImage
         myImageView.frame = CGRectMake(0, 0, self.size.width, self.size.height)
         self.view!.addSubview(myImageView)
 
-        // add START button
+        // スタートボタンの描画
         let image = UIImage(named: "start.png")
         let newGameButton = myButton()
         newGameButton.frame = CGRectMake(0, 0, 180, 60)

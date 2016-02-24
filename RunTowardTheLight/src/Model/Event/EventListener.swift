@@ -13,9 +13,17 @@ class EventListener<EventArgType> {
     typealias EventMethod = (sender:AnyObject!, args:EventArgType!) -> ()
     typealias IdType = UInt64
 
+    /// イベントメソッド
     let invoke: EventMethod!
+    
+    /// イベントID
     internal var id: IdType?
 
+    ///  コンストラクタ
+    ///
+    ///  - parameter callback: イベントを実行するコールバック関数
+    ///
+    ///  - returns:
     init(callback: EventMethod!) {
         self.invoke = callback
         self.id = nil

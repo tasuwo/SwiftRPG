@@ -20,28 +20,18 @@ class GameScene: SKScene {
     var gameSceneDelegate: GameSceneDelegate?
     
     /* ゲーム画面の各構成要素 */
-    var sheet: TileSheet!
+    var map: Map!
     var textBox_: Dialog!
     var actionButton_: UIButton!
 
-    
     override func didMoveToView(view: SKView) {
-        if
-            let parser = TiledMapJsonParser(fileName: "sample_map02"),
-            let sheet = TileSheet(parser: parser,
-                                  frameWidth: self.frame.width,
-                                  frameHeight: self.frame.height)
-        {
-            self.sheet = sheet
-            self.sheet.addTilesheetTo(self)
-            self.sheet.placementObjectOnTileWithName(
-                "tasuwo",
-                image_name: "plr_down.png",
-                coordinate: TileCoordinate(x: 10, y: 10))
-        } else {
-            print("初期化失敗")
+        // マップ生成
+        if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
+            self.map = map
+            self.map.addSheetTo(self)
         }
 
+        // アクションボタン生成
         actionButton_ = UIButtonAnimated(frame: CGRectMake(0, 0, 100, 40))
         actionButton_.backgroundColor = UIColor.blackColor();
         actionButton_.setTitle("TALK", forState: UIControlState.Normal)
@@ -52,10 +42,10 @@ class GameScene: SKScene {
         actionButton_.hidden = true
         self.view!.addSubview(actionButton_);
 
-        textBox_ = Dialog(frame_width: self.frame.width,
-                          frame_height: self.frame.height)
+        // テキストボックス生成
+        textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
         textBox_.hide()
-        textBox_.setPosition(Dialog.DIALOG_POSITION.top)
+        textBox_.setPosition(Dialog.POSITION.top)
         textBox_.addTo(self)
     }
 

@@ -10,8 +10,6 @@ import Foundation
 import SpriteKit
 import UIKit
 
-// TODO: Dialog のテーマとかいくつか設定できるといいなー
-
 class Dialog {
     let FONT_SIZE: CGFloat = 14.0
     let FONT_WIDTH_MARGIN: CGFloat = 1.0

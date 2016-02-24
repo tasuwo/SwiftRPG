@@ -14,8 +14,8 @@ class AStar {
     /// 基準ノードのインデックス
     var iBaseNode_: Int!
     
-    /// 探索対象のタイルシート
-    let tileSheet_: TileSheet!
+    /// 探索対象のマップ
+    let map_: Map
     
     /// 出発地点のタイル座標
     var departure_: TileCoordinate!
@@ -26,9 +26,8 @@ class AStar {
     /// 生成したノードを格納しておくリスト
     var nodeList_: [Node] = []
 
-    
-    init(sheet: TileSheet) {
-        tileSheet_ = sheet
+    init(map: Map) {
+        map_ = map
     }
 
 
@@ -37,8 +36,8 @@ class AStar {
     ///  - parameter departure:   出発するタイル座標
     ///  - parameter destination: 目的地のタイル座標
     func initialize(departure: TileCoordinate, destination: TileCoordinate) {
-        departure_ = TileCoordinate(x: departure.getX(), y: departure.getY())
-        destination_ = TileCoordinate(x: destination.getX(), y: destination.getY())
+        departure_ = departure
+        destination_ = destination
         nodeList_ = []
     }
 
@@ -50,10 +49,12 @@ class AStar {
         /*** 終了判定 ***/
         // initialize されていない
         if departure_ == nil || destination_ == nil {
+            print("A* is not initialized")
             return nil
         }
         // 目標のタイルが到達不可能，もしくは通行不可能
         if !canPass(destination_) {
+            print("Target tile cannnot pass or reach")
             return nil
         }
 
@@ -67,6 +68,7 @@ class AStar {
         }
         // 基準ノードが存在しない場合は，移動失敗
         if iBaseNode_ == nil {
+            print("There are no base node")
             return nil
         }
 
@@ -181,14 +183,6 @@ class AStar {
     ///
     ///  - returns: 通行可能なら true, そうでなければ false
     private func canPass(coordinate: TileCoordinate) -> Bool {
-        // タイルが通行可能でない
-        if (tileSheet_.canPassTile(coordinate) == nil) {
-            return false
-        }
-        if !tileSheet_.canPassTile(coordinate)! {
-            return false
-        }
-
-        return true
+        return self.map_.canPass(coordinate)
     }
 }

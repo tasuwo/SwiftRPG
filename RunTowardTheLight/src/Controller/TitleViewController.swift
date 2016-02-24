@@ -10,16 +10,20 @@ import UIKit
 import SpriteKit
 
 class TitleViewController: UIViewController, TitleSceneDelegate {
+    /// シーンの初期化フラグ
     var isInitializedScene: Bool = false
 
+    
     override func loadView() {
         self.view = SKView()
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
@@ -34,11 +38,14 @@ class TitleViewController: UIViewController, TitleSceneDelegate {
         }
     }
 
+    
+    ///  スタートボタンが押された
     func newGameTouched() {
         let gameViewController: UIViewController = GameViewController()
         self.presentViewController(gameViewController, animated: false, completion: nil)
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

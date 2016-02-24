@@ -12,6 +12,9 @@
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
 		31F45FD92992618C417309D0 /* Pods_RunTowardTheLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */; };
+		A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE51C7AF0C9007C5BC2 /* Map.swift */; };
+		A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */; };
 		A02F0CA81C284CB500997B86 /* sample_map.json in Resources */ = {isa = PBXBuildFile; fileRef = A02F0CA61C284CB500997B86 /* sample_map.json */; };
 		A02F0CA91C284CB500997B86 /* sample_map02.json in Resources */ = {isa = PBXBuildFile; fileRef = A02F0CA71C284CB500997B86 /* sample_map02.json */; };
 		A02F0CB51C284D0F00997B86 /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = A02F0CAA1C284D0F00997B86 /* black.png */; };
@@ -29,12 +32,12 @@
 		A05BEFAB1BB538CF00A17C13 /* plr_up.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA71BB538CF00A17C13 /* plr_up.png */; };
 		A05BEFAC1BB538CF00A17C13 /* plr_right.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA81BB538CF00A17C13 /* plr_right.png */; };
 		A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA91BB538CF00A17C13 /* plr_left.png */; };
+		A06593D21C721A1000148D2B /* MapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06593D11C721A1000148D2B /* MapObject.swift */; };
 		A08258DE1BB91C600083FDFD /* GameSceneEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */; };
-		A087DC551C706064003BBDB1 /* TileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A087DC541C706064003BBDB1 /* TileInfo.swift */; };
 		A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B3C8491B991DA500DEDDE0 /* EventListener.swift */; };
 		A0B4207A1BCBDAC700FBACF7 /* TiledMapJsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */; };
 		A0E1CE441BCBA03A004149E4 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E1CE431BCBA03A004149E4 /* player.png */; };
-		B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C518581BF2EDF721F1D5E0 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C518581BF2EDF721F1D5E0 /* Pods.framework */; };
 		D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72319F11B5699F200D13BAA /* TitleViewController.swift */; };
 		D7747D0F1B6E2EF600793445 /* main.png in Resources */ = {isa = PBXBuildFile; fileRef = D7747D0E1B6E2EF600793445 /* main.png */; };
 		D7747D111B6E2EFE00793445 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = D7747D101B6E2EFE00793445 /* title.png */; };
@@ -72,6 +75,9 @@
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
 		38EE3DCDD0A8B6A98373E003 /* Pods-RunTowardTheLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.release.xcconfig"; sourceTree = "<group>"; };
 		398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileSet.swift; sourceTree = "<group>"; };
+		A02DDEE51C7AF0C9007C5BC2 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = objectNameTable.swift; sourceTree = "<group>"; };
 		A02F0CA61C284CB500997B86 /* sample_map.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_map.json; sourceTree = "<group>"; };
 		A02F0CA71C284CB500997B86 /* sample_map02.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_map02.json; sourceTree = "<group>"; };
 		A02F0CAA1C284D0F00997B86 /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
@@ -89,8 +95,8 @@
 		A05BEFA71BB538CF00A17C13 /* plr_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_up.png; sourceTree = "<group>"; };
 		A05BEFA81BB538CF00A17C13 /* plr_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_right.png; sourceTree = "<group>"; };
 		A05BEFA91BB538CF00A17C13 /* plr_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left.png; sourceTree = "<group>"; };
+		A06593D11C721A1000148D2B /* MapObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapObject.swift; sourceTree = "<group>"; };
 		A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneEvent.swift; sourceTree = "<group>"; };
-		A087DC541C706064003BBDB1 /* TileInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileInfo.swift; sourceTree = "<group>"; };
 		A0B3C8491B991DA500DEDDE0 /* EventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListener.swift; sourceTree = "<group>"; };
 		A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiledMapJsonParser.swift; sourceTree = "<group>"; };
 		A0E1CE431BCBA03A004149E4 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
@@ -143,9 +149,9 @@
 		2C2E64C61B78DCD300B25B6E /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				A09AFC291C71EAB30084B47C /* Util */,
-				A087DC571C714F14003BBDB1 /* Tile */,
-				D7D8A5AA1B70652600147A45 /* Object.swift */,
+				A02DDEE51C7AF0C9007C5BC2 /* Map.swift */,
+				A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */,
+				A06593D51C72F06200148D2B /* TileSheet */,
 			);
 			name = Map;
 			path = MAP;
@@ -170,6 +176,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A02DDEE71C7BD01E007C5BC2 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				A02DDEE81C7BD050007C5BC2 /* objectNameTable.swift */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		A05BEFA51BB538C300A17C13 /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,23 +196,33 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
+		A06593D51C72F06200148D2B /* TileSheet */ = {
+			isa = PBXGroup;
+			children = (
+				D7D980001B6F05C3000704B0 /* TileSheet.swift */,
+				A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */,
+				2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */,
+				A06593D61C72F07600148D2B /* MapObject */,
+			);
+			name = TileSheet;
+			sourceTree = "<group>";
+		};
+		A06593D61C72F07600148D2B /* MapObject */ = {
+			isa = PBXGroup;
+			children = (
+				A06593D11C721A1000148D2B /* MapObject.swift */,
+				D7D97FFE1B6F05B1000704B0 /* Tile.swift */,
+				D7D8A5AA1B70652600147A45 /* Object.swift */,
+			);
+			name = MapObject;
+			sourceTree = "<group>";
+		};
 		A087DC561C7149D3003BBDB1 /* Util */ = {
 			isa = PBXGroup;
 			children = (
 				A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */,
 			);
 			name = Util;
-			sourceTree = "<group>";
-		};
-		A087DC571C714F14003BBDB1 /* Tile */ = {
-			isa = PBXGroup;
-			children = (
-				D7D97FFE1B6F05B1000704B0 /* Tile.swift */,
-				2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */,
-				D7D980001B6F05C3000704B0 /* TileSheet.swift */,
-				A087DC541C706064003BBDB1 /* TileInfo.swift */,
-			);
-			name = Tile;
 			sourceTree = "<group>";
 		};
 		A096E5641B9D65C100CED511 /* Dialog */ = {
@@ -208,14 +232,6 @@
 			);
 			name = Dialog;
 			path = talking;
-			sourceTree = "<group>";
-		};
-		A09AFC291C71EAB30084B47C /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */,
-			);
-			name = Util;
 			sourceTree = "<group>";
 		};
 		A0B3C8481B991B7F00DEDDE0 /* Event */ = {
@@ -242,6 +258,7 @@
 		D7BFE53E1B5218F000AB0D3A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A02DDEE71C7BD01E007C5BC2 /* Setting */,
 				A0B3C8481B991B7F00DEDDE0 /* Event */,
 				2C2E64C61B78DCD300B25B6E /* Map */,
 				2C2E64C71B78DCDF00B25B6E /* A-star */,
@@ -557,14 +574,17 @@
 				D7A7CE161B761B1500E0557C /* Node.swift in Sources */,
 				D7C157A41B3E9CD400C13909 /* GameScene.swift in Sources */,
 				D7C157A61B3E9CD400C13909 /* GameViewController.swift in Sources */,
+				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
 				2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */,
 				A08258DE1BB91C600083FDFD /* GameSceneEvent.swift in Sources */,
+				A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */,
+				A06593D21C721A1000148D2B /* MapObject.swift in Sources */,
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
-				A087DC551C706064003BBDB1 /* TileInfo.swift in Sources */,
+				A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */,
