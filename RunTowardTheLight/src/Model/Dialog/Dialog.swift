@@ -41,7 +41,8 @@ class Dialog {
     let CHAR_ICON_SIZE: CGFloat = 150.0
     let ICON_MARGIN: CGFloat = 10.0
 
-
+    private let CHAR_LABEL_NAME = "text"
+    
     enum POSITION {
         case top, bottom, middle
     }
@@ -50,6 +51,7 @@ class Dialog {
         case left, right, middle
     }
 
+    
     init(frame_width: CGFloat, frame_height: CGFloat) {
         frameWidth_ = frame_width
         frameHeight_ = frame_height
@@ -99,6 +101,7 @@ class Dialog {
         buttonLoop_ = SKAction.repeatActionForever(
             SKAction.sequence([fadein, delay, fadeout, delay]))
         nextButton_.alpha = 0.0
+        nextButton_.position.y = PADDING_HEIGHT
         textBox_.addChild(nextButton_)
 
         // キャラクター画像表示
@@ -109,83 +112,95 @@ class Dialog {
             CHAR_ICON_SIZE - ICON_MARGIN * 2,
             boxHeight_ - ICON_MARGIN * 2)
         characterIcon_.zPosition = 20
-        characterIcon_.hidden = true
         characterIcon_.color = UIColor.whiteColor()
+        characterIcon_.position.y = PADDING_HEIGHT // FONT_SIZE + ICON_MARGIN
+        textBox_.addChild(characterIcon_)
     }
 
-    func setPosition(position: POSITION) {
-        textBox_.position = self.getPosition(position)
-    }
-
-    private func getPosition(position: POSITION) -> CGPoint {
-        switch position {
-            case .top:
-                return CGPointMake(frameWidth_ / 2 - boxWidth_ / 2,
-                                   frameHeight_ - boxHeight_ - 30)
-            case .middle:
-                return CGPointMake(frameWidth_ / 2 - boxWidth_ / 2,
-                                   frameHeight_ / 2 - boxHeight_ / 2)
-            case .bottom:
-                return CGPointMake(frameWidth_ / 2 - boxWidth_ / 2,
-                                   30)
+    
+    ///  ダイアログを描画する上下位置を設定する
+    ///
+    ///  - parameter position: 描画する場所
+    func setUpDownPosition(upDownPosition: POSITION) {
+        switch upDownPosition {
+        case .top:    textBox_.position.y = frameHeight_ - boxHeight_ - 30
+        case .middle: textBox_.position.y = frameHeight_ / 2 - boxHeight_ / 2
+        case .bottom: textBox_.position.y = 30
         }
     }
-
-    // TODO: キャラクター画像と先送りアイコンのセットを切り出す
-    // テキストの anchor point が左上ではなくて真上なので FONT_SIZE/2 を足す
-    private func getTalkRegionPosition(position: TALK_SIDE) -> CGPoint {
-        switch position {
-            case .right:
-                textRegionWidth_ = frameWidth_ - PADDING_WIDTH * 2 - CHAR_ICON_SIZE
-                rowNum_ = ceil(textRegionWidth_ / charRegionWidth_)
-                textRegionWidth_ = rowNum_ * charRegionWidth_
-                nextButton_.position = CGPointMake(frameWidth_ - PADDING_WIDTH * 3 / 2,
-                                                   PADDING_HEIGHT)
-                characterIcon_.position = CGPointMake(ICON_MARGIN,
-                                                      PADDING_HEIGHT + FONT_SIZE + ICON_MARGIN)
-                characterIcon_.hidden = false
-                return CGPointMake(FONT_SIZE / 2 + frameWidth_ - PADDING_WIDTH - textRegionWidth_,
-                                   boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
-            case .left:
-                textRegionWidth_ = frameWidth_ - PADDING_WIDTH - CHAR_ICON_SIZE
-                rowNum_ = ceil(textRegionWidth_ / charRegionWidth_)
-                textRegionWidth_ = rowNum_ * charRegionWidth_
-                nextButton_.position = CGPointMake(frameWidth_ - CHAR_ICON_SIZE - PADDING_WIDTH * 3 / 2,
-                                                   PADDING_HEIGHT)
-                characterIcon_.position = CGPointMake(textRegionWidth_ + PADDING_WIDTH + ICON_MARGIN,
-                                                      PADDING_HEIGHT + FONT_SIZE + ICON_MARGIN)
-                characterIcon_.hidden = false
-                return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH,
-                                   boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
-            case .middle:
-                textRegionWidth_ = frameWidth_ - PADDING_WIDTH * 2
-                rowNum_ = ceil(textRegionWidth_ / charRegionWidth_)
-                textRegionWidth_ = rowNum_ * charRegionWidth_
-                nextButton_.position = CGPointMake(frameWidth_ - PADDING_WIDTH * 3 / 2,
-                                                   PADDING_HEIGHT)
-                characterIcon_.hidden = true
-                return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH,
-                                   boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
+    
+    
+    ///  キャラクターを描画する左右位置を設定する
+    ///  テキストの anchor point が左上ではなくて真上なので FONT_SIZE/2 を足す
+    ///
+    ///  - parameter sidePosition: キャラクターの描画位置
+    func setSidePosition(sidePosition: TALK_SIDE) {
+        self.textBox_.position.x = frameWidth_ / 2 - boxWidth_ / 2
+        
+        switch sidePosition {
+        case .right:
+            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH * 2 - CHAR_ICON_SIZE) / charRegionWidth_)
+            textRegionWidth_ = rowNum_ * charRegionWidth_
+            nextButton_.position.x    = frameWidth_ - PADDING_WIDTH * 3 / 2
+            characterIcon_.position.x = ICON_MARGIN
+        case .left:
+            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH - CHAR_ICON_SIZE) / charRegionWidth_)
+            textRegionWidth_ = rowNum_ * charRegionWidth_
+            nextButton_.position.x    = frameWidth_ - CHAR_ICON_SIZE - PADDING_WIDTH * 3 / 2
+            characterIcon_.position.x = textRegionWidth_ + PADDING_WIDTH + ICON_MARGIN
+        case .middle:
+            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH * 2) / charRegionWidth_)
+            textRegionWidth_ = rowNum_ * charRegionWidth_
+            nextButton_.position.x    = frameWidth_ - PADDING_WIDTH * 3 / 2
+            characterIcon_.position.x = textRegionWidth_ + PADDING_WIDTH + ICON_MARGIN
         }
     }
-
+    
+    
+    ///  テキスト領域の anchor point を取得する
+    ///
+    ///  - parameter sidePosition: テキスト領域の位置
+    ///
+    ///  - returns: anchor point
+    private func getAnchorPositionOfTextRegion(sidePosition: TALK_SIDE) -> CGPoint {
+        switch sidePosition {
+        case .right:
+            return CGPointMake(FONT_SIZE / 2 + frameWidth_ - PADDING_WIDTH - textRegionWidth_, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
+        case .left:
+            return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
+        case .middle:
+            return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
+        }
+    }
+    
+    
+    ///  シーンにテキストボックスを追加する
+    ///
+    ///  - parameter scene: テキストボックスを追加するシーン
     func addTo(scene: SKScene) {
         scene.addChild(textBox_)
-        scene.addChild(characterIcon_)
     }
 
+    
+    ///  テキストボックスを非表示にする
     func hide() {
         textBox_.hidden = true
-        characterIcon_.hidden = true
     }
 
+    
+    ///  テキストボックスを表示する
+    ///
+    ///  - parameter position: 表示位置
     func show(position: POSITION? = nil) {
-        self.setPosition(position!)
+        self.setUpDownPosition(position!)
         textBox_.hidden = false
-        characterIcon_.hidden = false
     }
 
-    // 通常の表示
+    
+    ///  テキストを描画する
+    ///
+    ///  - parameter text:     描画するテキスト
+    ///  - parameter talkSide: テキスト描画位置
     func drawText(text: String, talkSide: TALK_SIDE) {
         var iDrawingFont: CGFloat = 0     // 描画位置を決める
         var nDrawingFont: CGFloat = 0     // 描画している文字が何番目か決める
@@ -199,7 +214,8 @@ class Dialog {
         for character in text.characters {
             // テキスト描画領域内のanchorpoint
             // 左上から描画する
-            let anchor = getTalkRegionPosition(talkSide)
+            self.setSidePosition(talkSide)
+            let anchor = self.getAnchorPositionOfTextRegion(talkSide)
 
             // 改行文字の判定
             if character == "嬲" {
@@ -214,7 +230,7 @@ class Dialog {
             if iDrawingFont / rowNum_ + 1 > colNum_ {
                 // 行数が超えていたら次ページ
                 // TODO: 一行ずつ文字送りするなど，もっと良いやり方がありそう
-                textBox_.enumerateChildNodesWithName("text", usingBlock: {
+                textBox_.enumerateChildNodesWithName(CHAR_LABEL_NAME, usingBlock: {
                     node, sotp in
 
                     let delay = SKAction.waitForDuration(
@@ -232,7 +248,7 @@ class Dialog {
 
             let char = SKLabelNode(text: String(character))
             char.fontSize = FONT_SIZE
-            char.name = "text"
+            char.name = CHAR_LABEL_NAME
             char.position = CGPointMake(anchor.x + nChar * charRegionWidth_,
                                         anchor.y - nLine * charRegionHeight_)
             char.alpha = 0.0
@@ -252,12 +268,11 @@ class Dialog {
         nextButton_.runAction(SKAction.sequence([delay, buttonLoop_]))
     }
 
+    
+    ///  描画したテキストを削除する
     func clearText() {
         var allNode: [SKNode] = []
-        textBox_.enumerateChildNodesWithName("text",
-                                             usingBlock: {
-                                                 node, sotp in allNode.append(node)
-                                             })
+        textBox_.enumerateChildNodesWithName(CHAR_LABEL_NAME, usingBlock: { node, sotp in allNode.append(node) })
         textBox_.removeChildrenInArray(allNode)
     }
 }

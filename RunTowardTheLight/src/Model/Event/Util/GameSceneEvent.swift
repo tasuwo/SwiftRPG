@@ -59,7 +59,7 @@ class GameSceneEvent: NSObject {
                     scene.textBox_.show(DialogPosition)
                     
                     // テキスト描画
-                    scene.textBox_.drawText(body, talkSide: Dialog.TALK_SIDE.right)
+                    scene.textBox_.drawText(body, talkSide: Dialog.TALK_SIDE.left)
                     
                     controller.touchEvent.remove(controller.movePlayer_)
                     controller.touchEvent.add(GameSceneEvent.events[END_OF_TALK]!(nil))
