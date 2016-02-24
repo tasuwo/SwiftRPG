@@ -29,6 +29,7 @@ class GameSceneEvent: NSObject {
                 let skView     = controller.view as! SKView
                 let scene      = skView.scene as! GameScene
                 let map        = scene.map
+                let sheet      = map.getSheet()
                 
                 // params の validation
                 let character: String
@@ -47,7 +48,9 @@ class GameSceneEvent: NSObject {
                 
                 if let playerTuple = map.getObjectByName(objectNameTable.PLAYER_NAME) {
                     let player = playerTuple.object
-                    let playerPosition = player.getRealTimePosition()
+                    let playerPosition = TileCoordinate.getSheetCoordinateFromScreenCoordinate(
+                        sheet!.getSheetPosition(),
+                        screenCoordinate: player.getRealTimePosition())
                     
                     // キャラクターとかぶらないように，テキストボックスの位置を調整
                     var DialogPosition: Dialog.POSITION

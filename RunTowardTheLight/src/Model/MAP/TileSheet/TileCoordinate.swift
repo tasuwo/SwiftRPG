@@ -112,6 +112,14 @@ class TileCoordinate: Hashable {
     }
     
     
+    class func getSheetCoordinateFromScreenCoordinate(
+        sheetPosition: CGPoint,
+        screenCoordinate: CGPoint
+    ) -> CGPoint {
+        return CGPointMake(screenCoordinate.x + sheetPosition.x, screenCoordinate.y + sheetPosition.y)
+    }
+    
+    
     ///  タイル座標をシート座標に変換する
     ///  シート座標は，該当タイルの中心の値を返す
     ///
