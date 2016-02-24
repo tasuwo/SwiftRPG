@@ -11,14 +11,14 @@ import SpriteKit
 import UIKit
 
 class Dialog {
-    let FONT_SIZE: CGFloat = 14.0
-    let FONT_WIDTH_MARGIN: CGFloat = 1.0
+    let FONT_SIZE: CGFloat          = 14.0
+    let FONT_WIDTH_MARGIN: CGFloat  = 1.0
     let FONT_HEIGHT_MARGIN: CGFloat = 5.0
-    let PADDING_WIDTH: CGFloat = 20.0
-    let PADDING_HEIGHT: CGFloat = 14.0
-    let MARGIN: CGFloat = 30.0
-    let VIEW_TEXT_TIME: CGFloat = 0.1
-    let BUTTON_SIZE: CGFloat = 10.0
+    let PADDING_WIDTH: CGFloat      = 20.0
+    let PADDING_HEIGHT: CGFloat     = 14.0
+    let MARGIN: CGFloat             = 30.0
+    let VIEW_TEXT_TIME: CGFloat     = 0.1
+    let BUTTON_SIZE: CGFloat        = 10.0
 
     let textBox_: SKShapeNode!
     var boxWidth_: CGFloat!
@@ -56,8 +56,8 @@ class Dialog {
         frameWidth_ = frame_width
         frameHeight_ = frame_height
 
-        boxWidth_ = frameWidth_
-        boxHeight_ = 180.0
+        boxWidth_ = frameWidth_ - 10
+        boxHeight_ = 150.0
 
         // 文字1文字の描画幅
         charRegionWidth_ = FONT_SIZE + FONT_WIDTH_MARGIN
@@ -85,6 +85,7 @@ class Dialog {
         textBox_.fillColor = SKColor.blackColor()
         textBox_.strokeColor = SKColor.whiteColor()
         textBox_.lineWidth = 2.0
+        textBox_.zPosition = 100
         textBox_.position = CGPointMake(frame_width / 2 - boxWidth_ / 2,
                                         frame_height / 2 - boxHeight_ / 2)
 
@@ -111,7 +112,7 @@ class Dialog {
         characterIcon_.size = CGSizeMake(
             CHAR_ICON_SIZE - ICON_MARGIN * 2,
             boxHeight_ - ICON_MARGIN * 2)
-        characterIcon_.zPosition = 20
+        characterIcon_.zPosition = 110
         characterIcon_.color = UIColor.whiteColor()
         characterIcon_.position.y = PADDING_HEIGHT // FONT_SIZE + ICON_MARGIN
         textBox_.addChild(characterIcon_)
@@ -121,11 +122,11 @@ class Dialog {
     ///  ダイアログを描画する上下位置を設定する
     ///
     ///  - parameter position: 描画する場所
-    func setUpDownPosition(upDownPosition: POSITION) {
+    func setPositionY(upDownPosition: POSITION) {
         switch upDownPosition {
-        case .top:    textBox_.position.y = frameHeight_ - boxHeight_ - 30
+        case .top:    textBox_.position.y = frameHeight_ - boxHeight_ - 3
         case .middle: textBox_.position.y = frameHeight_ / 2 - boxHeight_ / 2
-        case .bottom: textBox_.position.y = 30
+        case .bottom: textBox_.position.y = 3
         }
     }
     
@@ -134,25 +135,27 @@ class Dialog {
     ///  テキストの anchor point が左上ではなくて真上なので FONT_SIZE/2 を足す
     ///
     ///  - parameter sidePosition: キャラクターの描画位置
-    func setSidePosition(sidePosition: TALK_SIDE) {
+    func setPositionX(sidePosition: TALK_SIDE) {
         self.textBox_.position.x = frameWidth_ / 2 - boxWidth_ / 2
         
         switch sidePosition {
-        case .right:
-            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH * 2 - CHAR_ICON_SIZE) / charRegionWidth_)
-            textRegionWidth_ = rowNum_ * charRegionWidth_
+        case .left:
+            rowNum_                   = ceil((frameWidth_ - PADDING_WIDTH * 2 - CHAR_ICON_SIZE) / charRegionWidth_)
+            textRegionWidth_          = rowNum_ * charRegionWidth_
             nextButton_.position.x    = frameWidth_ - PADDING_WIDTH * 3 / 2
             characterIcon_.position.x = ICON_MARGIN
-        case .left:
-            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH - CHAR_ICON_SIZE) / charRegionWidth_)
-            textRegionWidth_ = rowNum_ * charRegionWidth_
+            characterIcon_.hidden     = false
+        case .right:
+            rowNum_                   = ceil((frameWidth_ - PADDING_WIDTH - CHAR_ICON_SIZE) / charRegionWidth_)
+            textRegionWidth_          = rowNum_ * charRegionWidth_
             nextButton_.position.x    = frameWidth_ - CHAR_ICON_SIZE - PADDING_WIDTH * 3 / 2
-            characterIcon_.position.x = textRegionWidth_ + PADDING_WIDTH + ICON_MARGIN
+            characterIcon_.position.x = textRegionWidth_ + ICON_MARGIN // + PADDING_WIDTH 
+            characterIcon_.hidden     = false
         case .middle:
-            rowNum_ = ceil((frameWidth_ - PADDING_WIDTH * 2) / charRegionWidth_)
-            textRegionWidth_ = rowNum_ * charRegionWidth_
+            rowNum_                   = ceil((frameWidth_ - PADDING_WIDTH * 2) / charRegionWidth_)
+            textRegionWidth_          = rowNum_ * charRegionWidth_
             nextButton_.position.x    = frameWidth_ - PADDING_WIDTH * 3 / 2
-            characterIcon_.position.x = textRegionWidth_ + PADDING_WIDTH + ICON_MARGIN
+            characterIcon_.hidden     = true
         }
     }
     
@@ -164,9 +167,9 @@ class Dialog {
     ///  - returns: anchor point
     private func getAnchorPositionOfTextRegion(sidePosition: TALK_SIDE) -> CGPoint {
         switch sidePosition {
-        case .right:
-            return CGPointMake(FONT_SIZE / 2 + frameWidth_ - PADDING_WIDTH - textRegionWidth_, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
         case .left:
+            return CGPointMake(FONT_SIZE / 2 + frameWidth_ - PADDING_WIDTH - textRegionWidth_, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
+        case .right:
             return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
         case .middle:
             return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight_ - FONT_SIZE - PADDING_HEIGHT)
@@ -192,7 +195,7 @@ class Dialog {
     ///
     ///  - parameter position: 表示位置
     func show(position: POSITION? = nil) {
-        self.setUpDownPosition(position!)
+        self.setPositionY(position!)
         textBox_.hidden = false
     }
 
@@ -214,7 +217,7 @@ class Dialog {
         for character in text.characters {
             // テキスト描画領域内のanchorpoint
             // 左上から描画する
-            self.setSidePosition(talkSide)
+            self.setPositionX(talkSide)
             let anchor = self.getAnchorPositionOfTextRegion(talkSide)
 
             // 改行文字の判定

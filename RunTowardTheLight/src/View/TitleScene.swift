@@ -20,11 +20,13 @@ class TitleScene: SKScene {
 
     override func didMoveToView(view: SKView) {
         // 背景の描画
+        /*
         let myImage: UIImage = UIImage(named: "title.png")!
         let myImageView: UIImageView = UIImageView()
         myImageView.image = myImage
         myImageView.frame = CGRectMake(0, 0, self.size.width, self.size.height)
         self.view!.addSubview(myImageView)
+        */
 
         // スタートボタンの描画
         let image = UIImage(named: "start.png")
@@ -33,8 +35,8 @@ class TitleScene: SKScene {
         newGameButton.addTarget(self, action: "onClickNewGame:", forControlEvents: .TouchUpInside)
         newGameButton.setTitle("New Game")
         newGameButton.setImage(image, forState: .Normal)
-        newGameButton.layer.position = CGPoint(x: CGRectGetMidX(self.frame),
-                                               y: CGRectGetMidY(self.frame) + 250)
+        newGameButton.layer.position = CGPoint(x: CGRectGetMidX(self.frame)/2,
+                                               y: CGRectGetMidY(self.frame)/2)
         self.view!.addSubview(newGameButton)
 
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true

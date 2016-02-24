@@ -47,7 +47,7 @@ class GameSceneEvent: NSObject {
                 
                 if let playerTuple = map.getObjectByName(objectNameTable.PLAYER_NAME) {
                     let player = playerTuple.object
-                    let playerPosition = player.getPosition()
+                    let playerPosition = player.getRealTimePosition()
                     
                     // キャラクターとかぶらないように，テキストボックスの位置を調整
                     var DialogPosition: Dialog.POSITION

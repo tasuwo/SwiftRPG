@@ -45,7 +45,7 @@ class GameScene: SKScene {
         // テキストボックス生成
         textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
         textBox_.hide()
-        textBox_.setUpDownPosition(Dialog.POSITION.top)
+        textBox_.setPositionY(Dialog.POSITION.top)
         textBox_.addTo(self)
     }
 
