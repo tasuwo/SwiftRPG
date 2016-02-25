@@ -11,10 +11,9 @@ import UIKit
 import SpriteKit
 
 class zPositionTable {
-    static let TILE: CGFloat = 0.0
-    static let PLAYER: CGFloat = 20.0
-    static let COMMON_OBJECT: CGFloat = 20.0
-    static let FLAME: CGFloat = 30.0
-    static let DIALOG: CGFloat = 40.0
-    static let DIALOG_ICON: CGFloat = 50.0
+    static let TILE: CGFloat                 = 0.0
+    static let BASE_OBJECT_POSITION: CGFloat = 2.0
+    static let FLAME: CGFloat                = 1001.0
+    static let DIALOG: CGFloat               = 1002.0
+    static let DIALOG_ICON: CGFloat          = 1003.0
 }

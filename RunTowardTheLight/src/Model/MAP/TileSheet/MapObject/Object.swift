@@ -44,13 +44,12 @@ public class Object: MapObject {
     internal var hasCollision: Bool
 
     
-    init(name: String, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
+    init(name: String, position: CGPoint, images: IMAGE_SET?) {
         object_ = SKSpriteNode()
         object_.name = name
         self.name_ = name
         object_.anchorPoint = CGPointMake(0.5, 0.0)
         object_.position = position
-        object_.zPosition = zPosition != nil ? zPosition! : zPositionTable.COMMON_OBJECT
         speed_ = 0.2
         direction_ = DIRECTION.DOWN
         self.hasCollision = false
@@ -59,16 +58,16 @@ public class Object: MapObject {
     }
 
     
-    convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
-        self.init(name: name, position: position, images: images, zPosition: zPosition)
+    convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?) {
+        self.init(name: name, position: position, images: images)
         object_.texture = SKTexture(imageNamed: imageName)
         object_.size = CGSize(width: (object_.texture?.size().width)!,
                               height: (object_.texture?.size().height)!)
     }
 
     
-    convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?, zPosition: CGFloat? = nil) {
-        self.init(name: name, position: position, images: images, zPosition: zPosition)
+    convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?) {
+        self.init(name: name, position: position, images: images)
         object_.texture = SKTexture(image: imageData)
         object_.size = CGSize(width: (object_.texture?.size().width)!,
                               height: (object_.texture?.size().height)!)
@@ -162,8 +161,8 @@ public class Object: MapObject {
         properties: Dictionary<TileID, TileProperty>,
         tileSets: Dictionary<TileSetID, TileSet>,
         objectPlacement: Dictionary<TileCoordinate, Int>
-    ) throws -> Dictionary<TileCoordinate, Object> {
-        var objects: Dictionary<TileCoordinate, Object> = [:]
+    ) throws -> Dictionary<TileCoordinate, [Object]> {
+        var objects: Dictionary<TileCoordinate, [Object]> = [:]
         
         // オブジェクトの配置
         for (coordinate, _) in tiles {
@@ -172,7 +171,7 @@ public class Object: MapObject {
                 objectID = id
             } else {
                 // TODO : 真面目にエラーハンドリングする
-                print("おぶじぇくとID取得失敗")
+                print("オブジェクトのID取得失敗")
                 throw E.error
             }
             
@@ -185,12 +184,12 @@ public class Object: MapObject {
                     let tileSet = tileSets[tileSetID!]
                     let obj_image = try tileSet?.cropTileImage(objectID)
                     let name = property!["tileSetName"]! + "_" + NSUUID().UUIDString
-                    objects[coordinate] = Object(
+                    objects[coordinate] = [Object(
                         name: name, /* 一意の名前をつける */
                         imageData: obj_image!,
                         position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
                         images: nil
-                    )
+                    )]
                 } catch {
                     print("object生成失敗")
                     throw E.error
@@ -257,6 +256,10 @@ public class Object: MapObject {
     
     func getRealTimePosition() -> CGPoint {
         return self.object_.position
+    }
+    
+    func setZPosition(position: CGFloat) {
+        self.object_.zPosition = position
     }
 }
 

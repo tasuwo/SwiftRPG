@@ -59,7 +59,7 @@ public class TileSheet {
         frameWidth: CGFloat,
         frameHeight: CGFloat,
         tiles: Dictionary<TileCoordinate, Tile>,
-        objects: Dictionary<TileCoordinate, Object>
+        objects: Dictionary<TileCoordinate, [Object]>
     ) {
         var hasError:Bool = false
         var errMessageStack:[String] = []
@@ -106,8 +106,10 @@ public class TileSheet {
         }
         
         // オブジェクトの追加
-        for object in objects.values {
-            object.addTo(self.sheet_)
+        for objectsOnTile in objects.values {
+            for object in objectsOnTile {
+                object.addTo(self.sheet_)
+            }
         }
         
         if hasError {
