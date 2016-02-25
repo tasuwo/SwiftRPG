@@ -6,6 +6,7 @@ use_frameworks!
 #pod 'SwiftyJSON'
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 pod 'RealmSwift'
+pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift2'
 #pod 'ReactKit'
 #pod "PromiseKit", "~> 3.0"
 #pod "PromiseKit", :git => 'https://github.com/mxcl/PromiseKit.git', :branch => 'swift-2.0-beta5'

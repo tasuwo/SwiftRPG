@@ -4,18 +4,26 @@ PODS:
   - Realm/Headers (0.98.1)
   - RealmSwift (0.98.1):
     - Realm (= 0.98.1)
+  - Spring (1.0.3)
   - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
   - RealmSwift
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift2`)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
 
 EXTERNAL SOURCES:
+  Spring:
+    :branch: swift2
+    :git: https://github.com/MengTo/Spring.git
   SwiftyJSON:
     :branch: xcode7
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
+  Spring:
+    :commit: 18d5c7b74489de8044e34767f856d1e574f0820e
+    :git: https://github.com/MengTo/Spring.git
   SwiftyJSON:
     :commit: 6eb4cda062fa09c4658e4184f92d822058f226e3
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
@@ -23,6 +31,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Realm: ca4a4122e939e228e10694fc49011386cb2ecb07
   RealmSwift: 7d3c7033427816a2c3417ba0d004d694987e503a
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
 
 COCOAPODS: 0.39.0
