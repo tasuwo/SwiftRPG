@@ -227,7 +227,7 @@ public class Map {
         
         for objectsOnTile in objects_.values {
             for object in objectsOnTile {
-                objects.append((object, object.getPosition().y))
+                objects.append((object, object.getRealTimePosition().y))
             }
         }
         
