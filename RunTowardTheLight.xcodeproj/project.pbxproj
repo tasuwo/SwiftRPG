@@ -34,6 +34,7 @@
 		A05BEFAC1BB538CF00A17C13 /* plr_right.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA81BB538CF00A17C13 /* plr_right.png */; };
 		A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA91BB538CF00A17C13 /* plr_left.png */; };
 		A06593D21C721A1000148D2B /* MapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06593D11C721A1000148D2B /* MapObject.swift */; };
+		A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A06D85A81C7EA58A003F19BB /* TitleScene.xib */; };
 		A08258DE1BB91C600083FDFD /* GameSceneEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */; };
 		A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B3C8491B991DA500DEDDE0 /* EventListener.swift */; };
 		A0B4207A1BCBDAC700FBACF7 /* TiledMapJsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */; };
@@ -98,6 +99,7 @@
 		A05BEFA81BB538CF00A17C13 /* plr_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_right.png; sourceTree = "<group>"; };
 		A05BEFA91BB538CF00A17C13 /* plr_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left.png; sourceTree = "<group>"; };
 		A06593D11C721A1000148D2B /* MapObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapObject.swift; sourceTree = "<group>"; };
+		A06D85A81C7EA58A003F19BB /* TitleScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleScene.xib; sourceTree = "<group>"; };
 		A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneEvent.swift; sourceTree = "<group>"; };
 		A0B3C8491B991DA500DEDDE0 /* EventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListener.swift; sourceTree = "<group>"; };
 		A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiledMapJsonParser.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			children = (
 				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
+				A06D85A81C7EA58A003F19BB /* TitleScene.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				D7BFE5451B521A8600AB0D3A /* tasuwo.png in Resources */,
 				A02F0CBD1C284D0F00997B86 /* kanamono_wall_03.png in Resources */,
 				A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */,
+				A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */,
 				A02F0CA91C284CB500997B86 /* sample_map02.json in Resources */,
 				D7747D131B6E37BF00793445 /* start.png in Resources */,
 				A02F0CBA1C284D0F00997B86 /* kanamono_tile.png in Resources */,
