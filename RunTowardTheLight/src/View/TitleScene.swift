@@ -35,8 +35,8 @@ class TitleScene: SKScene {
         newGameButton.addTarget(self, action: "onClickNewGame:", forControlEvents: .TouchUpInside)
         newGameButton.setTitle("New Game")
         newGameButton.setImage(image, forState: .Normal)
-        newGameButton.layer.position = CGPoint(x: CGRectGetMidX(self.frame)/2,
-                                               y: CGRectGetMidY(self.frame)/2)
+        newGameButton.layer.position = CGPoint(x: CGRectGetMidX(self.frame),
+                                               y: CGRectGetMidY(self.frame)*(3/2))
         self.view!.addSubview(newGameButton)
 
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
