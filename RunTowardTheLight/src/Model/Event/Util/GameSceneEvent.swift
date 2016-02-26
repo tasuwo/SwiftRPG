@@ -32,13 +32,22 @@ class GameSceneEvent: NSObject {
                 let sheet      = map.getSheet()
                 
                 // params の validation
-                let character: String
-                let body: String
+                let talker: String
+                let talkBody: String
+                let talkSide: Dialog.TALK_SIDE
                 if  let json      = params,
-                    let _character = json["character"].string,
-                    let _body      = json["body"].string {
-                    character = _character
-                    body = _body
+                    let _character = json["talker"].string,
+                    let _body      = json["talk_body"].string,
+                    let _talk_side = json["talk_side"].string,
+                    let _talker    = TALKER_IMAGE[_character]
+                {
+                    talker = _talker
+                    talkBody = _body
+                    switch _talk_side {
+                    case "L": talkSide = Dialog.TALK_SIDE.left
+                    case "R": talkSide = Dialog.TALK_SIDE.right
+                    default: print("Invalid json param for talking"); return
+                    }
                 } else {
                     print("Invalid json param for talking")
                     return
@@ -62,7 +71,7 @@ class GameSceneEvent: NSObject {
                     scene.textBox_.show(DialogPosition)
                     
                     // テキスト描画
-                    scene.textBox_.drawText(body, talkSide: Dialog.TALK_SIDE.left)
+                    scene.textBox_.drawText(talker, body: talkBody, side: talkSide)
                     
                     controller.touchEvent.remove(controller.movePlayer_)
                     controller.touchEvent.add(GameSceneEvent.events[END_OF_TALK]!(nil))
@@ -99,8 +108,9 @@ class GameSceneEvent: NSObject {
                 // TODO : params によって挙動を分ける
                 let talkInfo = JSON(
                     [
-                        "character" : "player",
-                        "body" : "・・・・・・。"
+                        "talker" : "player",
+                        "talk_body" : "・・・・・・。",
+                        "talk_side" : "L"
                     ]
                 )
                 controller.actionEvent.add(GameSceneEvent.events[TALK]!(talkInfo))

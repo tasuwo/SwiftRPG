@@ -107,7 +107,6 @@ class Dialog {
 
         // キャラクター画像表示
         characterIcon_ = SKSpriteNode()
-        characterIcon_.texture = SKTexture(imageNamed: "player.png")
         characterIcon_.anchorPoint = CGPointMake(0.0, 0.0)
         characterIcon_.size = CGSizeMake(
             CHAR_ICON_SIZE - ICON_MARGIN * 2,
@@ -204,21 +203,23 @@ class Dialog {
     ///
     ///  - parameter text:     描画するテキスト
     ///  - parameter talkSide: テキスト描画位置
-    func drawText(text: String, talkSide: TALK_SIDE) {
+    func drawText(talkerImageName: String, body: String, side: TALK_SIDE) {
         var iDrawingFont: CGFloat = 0     // 描画位置を決める
         var nDrawingFont: CGFloat = 0     // 描画している文字が何番目か決める
 
+        // キャラクター画像表示
+        characterIcon_.texture = SKTexture(imageNamed: talkerImageName)
         // 先送りボタン非表示
         nextButton_.removeAllActions()
         nextButton_.alpha = 0.0
         // 既に表示されている文字クリア
         clearText()
 
-        for character in text.characters {
+        for character in body.characters {
             // テキスト描画領域内のanchorpoint
             // 左上から描画する
-            self.setPositionX(talkSide)
-            let anchor = self.getAnchorPositionOfTextRegion(talkSide)
+            self.setPositionX(side)
+            let anchor = self.getAnchorPositionOfTextRegion(side)
 
             // 改行文字の判定
             if character == "嬲" {
