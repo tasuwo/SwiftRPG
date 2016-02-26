@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TitleScene" customModule="RunTowardTheLight" customModuleProvider="target">
             <connections>
-                <outlet property="startBtn" destination="K7V-9H-RGp" id="S6t-lB-Cak"/>
+                <outlet property="startBtn" destination="hcf-1K-Vqa" id="N0e-gq-VlS"/>
                 <outlet property="titleScene" destination="iN0-l3-epB" id="z47-97-uLA"/>
             </connections>
         </placeholder>
@@ -16,30 +16,42 @@
             <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K7V-9H-RGp">
-                    <rect key="frame" x="310" y="253" width="47" height="30"/>
-                    <state key="normal" title="START"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-1K-Vqa" customClass="SpringButton" customModule="Spring">
+                    <rect key="frame" x="229" y="271" width="209" height="69"/>
+                    <state key="normal" image="start.png"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="animation" value="flash"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="repeatCount">
+                            <real key="value" value="9999"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="duration">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="force">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="startBtnPressed:" destination="-1" eventType="touchUpInside" id="nKl-uM-Q2a"/>
+                        <action selector="startBtnPressed:" destination="-1" eventType="touchUpInside" id="D47-bN-NjY"/>
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="K7V-9H-RGp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="253" id="1S9-sb-9c2"/>
-                <constraint firstAttribute="bottom" secondItem="K7V-9H-RGp" secondAttribute="bottom" constant="92" id="L72-Uy-Ace"/>
-                <constraint firstItem="K7V-9H-RGp" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="fg9-JC-kQW"/>
-                <constraint firstItem="K7V-9H-RGp" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="k6Z-ya-Wi8"/>
+                <constraint firstAttribute="bottom" secondItem="hcf-1K-Vqa" secondAttribute="bottom" constant="35" id="335-F1-7sL"/>
+                <constraint firstAttribute="trailing" secondItem="hcf-1K-Vqa" secondAttribute="trailing" constant="229" id="7j8-ip-xMF"/>
+                <constraint firstItem="hcf-1K-Vqa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="229" id="8ay-uc-WKh"/>
+                <constraint firstItem="hcf-1K-Vqa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jjb-5A-ZZW"/>
+                <constraint firstItem="hcf-1K-Vqa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="271" id="oFD-nr-cVq"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="fg9-JC-kQW"/>
-                </mask>
-            </variation>
         </view>
     </objects>
+    <resources>
+        <image name="start.png" width="300" height="100"/>
+    </resources>
 </document>
