@@ -13,7 +13,12 @@ class TitleViewController: UIViewController, TitleSceneDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let a = TalkBodyParser(talkFileName: "talk_01.txt") {
+            print("Y")
+            a.parse()
+        } else {
+            print("N")
+        }
         let view = TitleScene(frame: self.view.frame)
         view.titleSceneDelegate = self
         

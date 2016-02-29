@@ -43,6 +43,8 @@ class Dialog {
 
     private let CHAR_LABEL_NAME = "text"
     
+    static let NEWLINE_CHAR: Character = "嬲"
+    
     enum POSITION {
         case top, bottom, middle
     }
@@ -222,7 +224,7 @@ class Dialog {
             let anchor = self.getAnchorPositionOfTextRegion(side)
 
             // 改行文字の判定
-            if character == "嬲" {
+            if character == Dialog.NEWLINE_CHAR {
                 iDrawingFont = ceil(iDrawingFont / rowNum_) * rowNum_
                 continue
             }
