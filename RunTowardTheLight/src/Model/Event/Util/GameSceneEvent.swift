@@ -160,8 +160,15 @@ class GameSceneEvent: NSObject {
                     }
                     
                     // オブジェクトを動かす
-                    player.runAction(actions, callback: {
-                        for event in events { event.trigger(controller, args: nil) }})
+                    // TODO : イベントの種類をここで渡す
+                    player.runAction(
+                        actions,
+                        callback:
+                        {
+                            for event in events {
+                                event.trigger(controller, args: nil)
+                        }
+                    })
                     
                     // TODO : 位置情報をリアルタイムに更新する
                     /*let maxTime = CGFloat(actions.count) * player.getMovingSpeed()
