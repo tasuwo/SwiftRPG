@@ -12,12 +12,6 @@ import SwiftyJSON
 class TalkBodyParser {
     private var body: String!
     
-    
-    ///  <#Description#>
-    ///
-    ///  - parameter talkFileName: <#talkFileName description#>
-    ///
-    ///  - returns: <#return value description#>
     init?(talkFileName: String) {
         if
             let path: String = NSBundle.mainBundle().pathForResource(talkFileName, ofType: nil),
@@ -25,54 +19,58 @@ class TalkBodyParser {
             let data: NSData = fileHandle.readDataToEndOfFile()
         {
             self.body = NSString(data:data, encoding:NSUTF8StringEncoding) as! String
-            
-            
         } else {
             self.body = nil
             return nil
         }
-        print(self.body)
     }
     
+    ///  パース状態
+    ///
+    ///  - CONFIG: プレイヤー情報読み込み
+    ///  - BODY:   会話内容読み込み
     private enum PARSING {
-        case BEGIN
         case CONFIG
         case BODY
     }
     
-    func parse() {
-        //var index: Int = 0
-        var state: PARSING = .BEGIN
-        var tmpBody: String = ""
-        var hasReadBodyFlg = false
+    func parse() -> JSON {
+        var index: Int = 0
+        var state: PARSING = .CONFIG
+        var didReadBody = false
+        var talksInfo = [[String: String]]()
+        var talkInfo = [String: String]()
+        var tmpTalkBody: String = ""
+        
         self.body.enumerateLines { (line, stop) -> () in
             if line == "!" {
+                talkInfo["talk_body"] = tmpTalkBody
+                talksInfo.append(talkInfo)
+                tmpTalkBody = ""
+                index += 1
                 state = .CONFIG
-                hasReadBodyFlg = false
+                didReadBody = false
                 return
             }
             
             switch state {
             case .CONFIG:
                 var config = line.characters.split(":").map{ String($0) }
-                print("player:" + config[0])
-                print("side:" + config[1])
+                talkInfo["talker"] = config[0]
+                talkInfo["talk_side"] = config[1]
                 state = .BODY
                 break
             case .BODY:
-                if hasReadBodyFlg {
-                    tmpBody.appendContentsOf(line)
-                    
+                if didReadBody {
+                    tmpTalkBody.appendContentsOf(line)
                     return
                 }
-                tmpBody.append(Dialog.NEWLINE_CHAR)
-                tmpBody.appendContentsOf(line)
-                print(tmpBody)
+                tmpTalkBody.append(Dialog.NEWLINE_CHAR)
+                tmpTalkBody.appendContentsOf(line)
                 break
-            default:
-                return
             }
         }
-        self.body.append(Dialog.NEWLINE_CHAR)
+
+        return JSON(talksInfo)
     }
 }
