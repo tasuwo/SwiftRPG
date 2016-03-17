@@ -76,7 +76,7 @@ class GameSceneEvent: NSObject {
                         return
                     }
                     
-                    scene.actionButton_.hidden = true
+                    scene.actionButton.hidden = true
                     
                     if let playerTuple = map.getObjectByName(objectNameTable.PLAYER_NAME) {
                         let player = playerTuple.object
@@ -130,7 +130,7 @@ class GameSceneEvent: NSObject {
                 let scene      = skView.scene as! GameScene
                 let map        = scene.map
                 
-                scene.actionButton_.hidden = false
+                scene.actionButton.hidden = false
                 
                 if let args_ = args as? [String] {
                     let actionKind = args_[0]
@@ -164,7 +164,7 @@ class GameSceneEvent: NSObject {
                 let sheet      = map.getSheet()!
                 let touchedPoint: CGPoint = args as! CGPoint
                 scene.textBox_.hide()
-                scene.actionButton_.hidden = true
+                scene.actionButton.hidden = true
                 
                 // フレーム上をタッチしていたら無視する
                 if sheet.isOnFrame(touchedPoint) { return }
