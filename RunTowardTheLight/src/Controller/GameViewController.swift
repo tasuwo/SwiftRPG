@@ -35,6 +35,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         self.view.multipleTouchEnabled = false
 
         movePlayer_ = GameSceneEvent.events[GameSceneEvent.PLAYER_MOVE]!(nil)
+        touchEvent.removeAll()
         touchEvent.add(movePlayer_)
     }
 

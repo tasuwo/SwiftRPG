@@ -116,7 +116,7 @@ class GameSceneEvent: NSObject {
                 let skView     = controller.view as! SKView
                 let scene      = skView.scene as! GameScene
                 scene.textBox_.hide()
-                controller.touchEvent.remove(GameSceneEvent.events[END_OF_TALK]!(nil))
+                controller.touchEvent.removeAll()
                 controller.touchEvent.add(GameSceneEvent.events[PLAYER_MOVE]!(nil))
             }
         },
@@ -138,6 +138,7 @@ class GameSceneEvent: NSObject {
                     switch actionKind as String {
                     case INVOKE_TALK :
                         if let parser = TalkBodyParser(talkFileName: args_[1]) {
+                            controller.actionEvent.removeAll()
                             controller.actionEvent.add(GameSceneEvent.events[TALK]!(parser.parse()))
                         } else {
                             print("Invarid talk file")
