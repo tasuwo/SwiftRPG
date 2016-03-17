@@ -161,13 +161,13 @@ public class Map {
     ///  - parameter coordinate: イベントを取得するタイル座標
     ///
     ///  - returns: 取得したイベント群
-    func getEventsOn(coordinate: TileCoordinate) -> [EventDispatcher<Any>] {
-        var events: [EventDispatcher<Any>] = []
+    func getEventsOn(coordinate: TileCoordinate) -> [(EventDispatcher<Any>, [String])] {
+        var events: [(EventDispatcher<Any>, [String])] = []
         
         if let mapObjects = self.placement[coordinate] {
             for mapObject in mapObjects {
                 if let event = mapObject.event {
-                    if event.hasListener() {
+                    if event.0.hasListener() {
                         events.append(event)
                     }
                     events.append(event)

@@ -14,13 +14,13 @@ protocol MapObject {
     var hasCollision: Bool { get }
     
     /// イベント
-    var event: EventDispatcher<Any>? { get }
+    var event: (EventDispatcher<Any>, [String])? { get }
     
     func canPass() -> Bool
     
     func setCollision()
     
-    func setEvent(event: EventDispatcher<Any>)
+    func setEvent(event: EventDispatcher<Any>, args: [String])
     
-    func getEvent() -> EventDispatcher<Any>?
+    func getEvent() -> (EventDispatcher<Any>, [String])?
 }

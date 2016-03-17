@@ -29,7 +29,7 @@ public class Tile: MapObject {
     private var coordinate_: TileCoordinate
     
     /// イベント
-    internal var event: EventDispatcher<Any>?
+    internal var event: (EventDispatcher<Any>, [String])?
     
     /// プロパティ
     private var property_: TileProperty
@@ -144,9 +144,14 @@ public class Tile: MapObject {
                 
                 // イベントを付加する
                 if let action = tile.getProperty("event") {
+                    // TODO : イベントの切り出しはまとめる
+                    let tmp = action.componentsSeparatedByString(",")
+                    let method = tmp[0]
+                    let args   = tmp.dropFirst()
+                    
                     let events = EventDispatcher<Any>()
-                    events.add(GameSceneEvent.events[action]!(nil))
-                    tile.event = events
+                    events.add(GameSceneEvent.events[method]!(nil))
+                    tile.event = (events, Array(args))
                 }
                 
                 tiles[coordinate] = tile
@@ -159,11 +164,11 @@ public class Tile: MapObject {
         }
     }
     
-    func setEvent(event: EventDispatcher<Any>) {
-        self.event = event
+    func setEvent(event: EventDispatcher<Any>, args: [String]) {
+        self.event = (event, args)
     }
     
-    func getEvent() -> EventDispatcher<Any>? {
+    func getEvent() -> (EventDispatcher<Any>, [String])? {
         return self.event
     }
     

@@ -47,6 +47,10 @@ public class EventDispatcher<EventArgType> {
         listener.id = nil
         return true
     }
+    
+    func removeAll() {
+        listeners.removeAll()
+    }
 
     ///  リスナーにイベントを通知する
     ///  TODO : Listener 同士のつなぎをどうするか

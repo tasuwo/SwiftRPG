@@ -19,6 +19,8 @@ class GameSceneEvent: NSObject {
     static let PLAYER_MOVE: eventID = "player_move"
     static let END_OF_TALK: eventID = "wait_for_touch"
     
+    static let INVOKE_TALK: String = "talk"
+    
     static var events: Dictionary<eventID, (JSON?) -> EventListener<Any>> =
     [
         TALK : {
@@ -31,50 +33,72 @@ class GameSceneEvent: NSObject {
                 let map        = scene.map
                 let sheet      = map.getSheet()
                 
-                // params の validation
-                let talker: String
-                let talkBody: String
-                let talkSide: Dialog.TALK_SIDE
-                if  let json      = params,
-                    let _character = json["talker"].string,
-                    let _body      = json["talk_body"].string,
-                    let _talk_side = json["talk_side"].string,
-                    let _talker    = TALKER_IMAGE[_character]
-                {
-                    talker = _talker
-                    talkBody = _body
-                    switch _talk_side {
-                    case "L": talkSide = Dialog.TALK_SIDE.left
-                    case "R": talkSide = Dialog.TALK_SIDE.right
-                    default: print("Invalid json param for talking"); return
-                    }
-                } else {
-                    print("Invalid json param for talking")
-                    return
-                }
-                
-                scene.actionButton_.hidden = true
-                
-                if let playerTuple = map.getObjectByName(objectNameTable.PLAYER_NAME) {
-                    let player = playerTuple.object
-                    let playerPosition = TileCoordinate.getSheetCoordinateFromScreenCoordinate(
-                        sheet!.getSheetPosition(),
-                        screenCoordinate: player.getRealTimePosition())
-                    
-                    // キャラクターとかぶらないように，テキストボックスの位置を調整
-                    var DialogPosition: Dialog.POSITION
-                    if playerPosition.y <= scene.frame.height / 2 {
-                        DialogPosition = Dialog.POSITION.top
+                if var json = params,
+                   var maxIndex = json.arrayObject?.count {
+                    var index_: Int
+                    if let index = json[maxIndex-1]["index"].string {
+                        index_ = Int(index)!
+                        json[maxIndex-1]["index"].string = String(index_+1)
                     } else {
-                        DialogPosition = Dialog.POSITION.bottom
+                        index_ = 0
+                        if var array: [[String: String]] = json.arrayObject as? [[String: String]] {
+                            array.append(["index": "1"])
+                            json = JSON(array)
+                        } else {
+                            print("Invalid json form")
+                        }
+                        maxIndex += 1
                     }
-                    scene.textBox_.show(DialogPosition)
                     
-                    // テキスト描画
-                    scene.textBox_.drawText(talker, body: talkBody, side: talkSide)
+                    // params の validation
+                    let talker: String
+                    let talkBody: String
+                    let talkSide: Dialog.TALK_SIDE
+                    if  let _character = json[index_]["talker"].string,
+                        let _body      = json[index_]["talk_body"].string,
+                        let _talk_side = json[index_]["talk_side"].string,
+                        let _talker    = TALKER_IMAGE[_character]
+                    {
+                        talker = _talker
+                        talkBody = _body
+                        switch _talk_side {
+                        case "L": talkSide = Dialog.TALK_SIDE.left
+                        case "R": talkSide = Dialog.TALK_SIDE.right
+                        default: print("Invalid json param for talking"); return
+                        }
+                    } else {
+                        print(json)
+                        print("Invalid json param for talking")
+                        return
+                    }
                     
-                    controller.touchEvent.remove(controller.movePlayer_)
-                    controller.touchEvent.add(GameSceneEvent.events[END_OF_TALK]!(nil))
+                    scene.actionButton_.hidden = true
+                    
+                    if let playerTuple = map.getObjectByName(objectNameTable.PLAYER_NAME) {
+                        let player = playerTuple.object
+                        let playerPosition = TileCoordinate.getSheetCoordinateFromScreenCoordinate(
+                            sheet!.getSheetPosition(),
+                            screenCoordinate: player.getRealTimePosition())
+                        
+                        // キャラクターとかぶらないように，テキストボックスの位置を調整
+                        var DialogPosition: Dialog.POSITION
+                        if playerPosition.y <= scene.frame.height / 2 {
+                            DialogPosition = Dialog.POSITION.top
+                        } else {
+                            DialogPosition = Dialog.POSITION.bottom
+                        }
+                        scene.textBox_.show(DialogPosition)
+                        scene.textBox_.drawText(talker, body: talkBody, side: talkSide)
+                        
+                        if maxIndex-2 == index_ {
+                            controller.touchEvent.removeAll()
+                            controller.touchEvent.add(GameSceneEvent.events[END_OF_TALK]!(nil))
+                            return
+                        } else {
+                            controller.touchEvent.removeAll()
+                            controller.touchEvent.add(GameSceneEvent.events[TALK]!(json))
+                        }
+                    }
                 }
             }
         },
@@ -90,7 +114,7 @@ class GameSceneEvent: NSObject {
                 scene.textBox_.hide()
                 
                 controller.touchEvent.remove(GameSceneEvent.events[END_OF_TALK]!(nil))
-                controller.touchEvent.add(controller.movePlayer_)
+                controller.touchEvent.add(GameSceneEvent.events[PLAYER_MOVE]!(nil))
             }
         },
         
@@ -105,15 +129,19 @@ class GameSceneEvent: NSObject {
                 
                 scene.actionButton_.hidden = false
                 
-                // TODO : params によって挙動を分ける
-                let talkInfo = JSON(
-                    [
-                        "talker" : "player",
-                        "talk_body" : "・・・・・・。",
-                        "talk_side" : "L"
-                    ]
-                )
-                controller.actionEvent.add(GameSceneEvent.events[TALK]!(talkInfo))
+                if let kind = args as? [String] {
+                    switch kind[0] as String {
+                    case INVOKE_TALK :
+                        if let parser = TalkBodyParser(talkFileName: kind[1]) {
+                            controller.actionEvent.add(GameSceneEvent.events[TALK]!(parser.parse()))
+                        } else {
+                            // TODO : エラーハンドリングする
+                        }
+                    default:
+                        // TODO : エラーハンドリングする
+                        break
+                    }
+                }
             }
         },
         
@@ -144,7 +172,7 @@ class GameSceneEvent: NSObject {
                 let aStar = AStar(map: map)
                 aStar.initialize(departure, destination: destination)
                 
-                var events: [EventDispatcher<Any>] = []
+                var events: [(EventDispatcher<Any>, [String])] = []
                 if let path = aStar.main() {
                     var actions: Array<SKAction> = []
                     for step: TileCoordinate in path {
@@ -166,7 +194,8 @@ class GameSceneEvent: NSObject {
                         callback:
                         {
                             for event in events {
-                                event.trigger(controller, args: nil)
+                                let args: [String] = event.1
+                                event.0.trigger(controller, args: event.1)
                         }
                     })
                     
