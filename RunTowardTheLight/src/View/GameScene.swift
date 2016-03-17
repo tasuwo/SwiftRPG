@@ -32,12 +32,15 @@ class GameScene: SKScene {
         }
 
         // アクションボタン生成
-        actionButton_ = UIButtonAnimated(frame: CGRectMake(0, 0, 100, 40))
+        actionButton_ = UIButtonAnimated(frame: CGRectMake(0, 0, 250, 80))
         actionButton_.backgroundColor = UIColor.blackColor();
         actionButton_.setTitle("TALK", forState: UIControlState.Normal)
         actionButton_.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        actionButton_.titleLabel?.adjustsFontSizeToFitWidth = true
         actionButton_.layer.cornerRadius = 10.0
-        actionButton_.layer.position = CGPoint(x: self.view!.frame.width / 2, y: 200)
+        actionButton_.layer.position = CGPoint(x: self.view!.frame.width / 2, y: self.view!.frame.height * 3/4)
+        actionButton_.layer.borderColor = UIColor.whiteColor().CGColor
+        actionButton_.layer.borderWidth = 2.0
         actionButton_.addTarget(self, action: "actionButtonTouched:", forControlEvents: .TouchUpInside)
         actionButton_.hidden = true
         self.view!.addSubview(actionButton_);
