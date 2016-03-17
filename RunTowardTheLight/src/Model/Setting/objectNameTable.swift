@@ -18,23 +18,23 @@ struct objectNameTable {
     static let PLAYER_IMAGE_SET   = IMAGE_SET(
         UP:
         [
-            ["plr_up.png", "plr_up_01.png", "plr_up.png"],
-            ["plr_up.png", "plr_up_02.png", "plr_up.png"]
+            ["plr_up_01.png", "plr_up.png"],
+            ["plr_up_02.png", "plr_up.png"]
         ],
         DOWN:
         [
-            ["plr_down.png", "plr_down_01.png", "plr_down.png"],
-            ["plr_down.png", "plr_down_02.png", "plr_down.png"]
+            ["plr_down_01.png", "plr_down.png"],
+            ["plr_down_02.png", "plr_down.png"]
         ],
         RIGHT:
         [
-            ["plr_right.png", "plr_right_01.png", "plr_right.png"],
-            ["plr_right.png", "plr_right_02.png", "plr_right.png"]
+            ["plr_right_01.png", "plr_right.png"],
+            ["plr_right_02.png", "plr_right.png"]
         ],
         LEFT:
         [
-            ["plr_left.png", "plr_left_01.png", "plr_left.png"],
-            ["plr_left.png", "plr_left_02.png", "plr_left.png"]
+            ["plr_left_01.png", "plr_left.png"],
+            ["plr_left_02.png", "plr_left.png"]
         ]
     )
 }

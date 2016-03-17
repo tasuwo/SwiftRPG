@@ -43,6 +43,8 @@ public class Object: MapObject {
     /// 当たり判定
     internal var hasCollision: Bool
     
+    /// 歩行のためのインデックス
+    /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
     private var stepIndex: Int = 0
 
     
@@ -135,7 +137,7 @@ public class Object: MapObject {
 
         let walkAction: SKAction = SKAction.animateWithTextures(
             nextTextures!,
-            timePerFrame: NSTimeInterval(speed_/3))
+            timePerFrame: NSTimeInterval(speed_/2))
         let moveAction: SKAction = SKAction.moveByX(diff.x,
             y: diff.y,
             duration: NSTimeInterval(speed_))
