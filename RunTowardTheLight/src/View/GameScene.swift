@@ -23,6 +23,9 @@ class GameScene: SKScene {
     
     @IBOutlet weak var actionButton: UIButton!
     
+    @IBOutlet weak var menuButton: UIButton!
+    
+    
     /* ゲーム画面の各構成要素 */
     var map: Map!
     var textBox_: Dialog!
@@ -45,13 +48,14 @@ class GameScene: SKScene {
             self.map.addSheetTo(self)
         }
         
-        // アクションボタン設定
         actionButton.setTitle("しゃべる", forState: UIControlState.Normal)
         actionButton.layer.borderColor = UIColor.whiteColor().CGColor
         actionButton.addTarget(self, action: "actionButtonTouched:", forControlEvents: .TouchUpInside)
         actionButton.hidden = true
+        
+        menuButton.layer.borderColor = UIColor.whiteColor().CGColor
+        menuButton.addTarget(self, action: "menuButtonTouched", forControlEvents: .TouchUpInside)
 
-        // テキストボックス生成
         textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
         textBox_.hide()
         textBox_.setPositionY(Dialog.POSITION.top)
@@ -75,6 +79,11 @@ class GameScene: SKScene {
     ///  - parameter sender: sender
     func actionButtonTouched(sender: UIButton) {
         gameSceneDelegate?.actionButtonTouched()
+    }
+    
+    
+    func menuButtonTouched() {
+        print("Touched menu")
     }
 
     
