@@ -41,6 +41,14 @@
 		A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D8398E1C8010E1005CC12D /* talkerImage.swift */; };
 		A0D839921C80176D005CC12D /* talk_01.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0D839911C80176D005CC12D /* talk_01.txt */; };
 		A0D839941C8017AD005CC12D /* TalkBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D839931C8017AD005CC12D /* TalkBodyParser.swift */; };
+		A0D85B6C1C9AE16B009B34AC /* plr_up_02.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B6A1C9AE16B009B34AC /* plr_up_02.png */; };
+		A0D85B6D1C9AE16B009B34AC /* plr_up_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B6B1C9AE16B009B34AC /* plr_up_01.png */; };
+		A0D85B701C9AE175009B34AC /* plr_right_02.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B6E1C9AE175009B34AC /* plr_right_02.png */; };
+		A0D85B711C9AE175009B34AC /* plr_right_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B6F1C9AE175009B34AC /* plr_right_01.png */; };
+		A0D85B741C9AE17E009B34AC /* plr_left_02.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B721C9AE17E009B34AC /* plr_left_02.png */; };
+		A0D85B751C9AE17E009B34AC /* plr_left_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B731C9AE17E009B34AC /* plr_left_01.png */; };
+		A0D85B781C9AE192009B34AC /* plr_down_02.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B761C9AE192009B34AC /* plr_down_02.png */; };
+		A0D85B791C9AE192009B34AC /* plr_down_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B771C9AE192009B34AC /* plr_down_01.png */; };
 		A0E1CE441BCBA03A004149E4 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E1CE431BCBA03A004149E4 /* player.png */; };
 		B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C518581BF2EDF721F1D5E0 /* Pods.framework */; };
 		D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72319F11B5699F200D13BAA /* TitleViewController.swift */; };
@@ -109,6 +117,14 @@
 		A0D8398E1C8010E1005CC12D /* talkerImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = talkerImage.swift; sourceTree = "<group>"; };
 		A0D839911C80176D005CC12D /* talk_01.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = talk_01.txt; sourceTree = "<group>"; };
 		A0D839931C8017AD005CC12D /* TalkBodyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkBodyParser.swift; sourceTree = "<group>"; };
+		A0D85B6A1C9AE16B009B34AC /* plr_up_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_up_02.png; sourceTree = "<group>"; };
+		A0D85B6B1C9AE16B009B34AC /* plr_up_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_up_01.png; sourceTree = "<group>"; };
+		A0D85B6E1C9AE175009B34AC /* plr_right_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_right_02.png; sourceTree = "<group>"; };
+		A0D85B6F1C9AE175009B34AC /* plr_right_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_right_01.png; sourceTree = "<group>"; };
+		A0D85B721C9AE17E009B34AC /* plr_left_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left_02.png; sourceTree = "<group>"; };
+		A0D85B731C9AE17E009B34AC /* plr_left_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left_01.png; sourceTree = "<group>"; };
+		A0D85B761C9AE192009B34AC /* plr_down_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_down_02.png; sourceTree = "<group>"; };
+		A0D85B771C9AE192009B34AC /* plr_down_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_down_01.png; sourceTree = "<group>"; };
 		A0E1CE431BCBA03A004149E4 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
 		A99BB921E5ACADBDB505E189 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
 		C2C518581BF2EDF721F1D5E0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,9 +215,17 @@
 			children = (
 				A0E1CE431BCBA03A004149E4 /* player.png */,
 				A05BEFA61BB538CF00A17C13 /* plr_down.png */,
+				A0D85B761C9AE192009B34AC /* plr_down_02.png */,
+				A0D85B771C9AE192009B34AC /* plr_down_01.png */,
 				A05BEFA91BB538CF00A17C13 /* plr_left.png */,
+				A0D85B721C9AE17E009B34AC /* plr_left_02.png */,
+				A0D85B731C9AE17E009B34AC /* plr_left_01.png */,
 				A05BEFA81BB538CF00A17C13 /* plr_right.png */,
+				A0D85B6E1C9AE175009B34AC /* plr_right_02.png */,
+				A0D85B6F1C9AE175009B34AC /* plr_right_01.png */,
 				A05BEFA71BB538CF00A17C13 /* plr_up.png */,
+				A0D85B6A1C9AE16B009B34AC /* plr_up_02.png */,
+				A0D85B6B1C9AE16B009B34AC /* plr_up_01.png */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -510,6 +534,7 @@
 				A02F0CBC1C284D0F00997B86 /* kanamono_wall_02.png in Resources */,
 				A05BEFAA1BB538CF00A17C13 /* plr_down.png in Resources */,
 				A05BEFAC1BB538CF00A17C13 /* plr_right.png in Resources */,
+				A0D85B701C9AE175009B34AC /* plr_right_02.png in Resources */,
 				A02F0CA81C284CB500997B86 /* sample_map.json in Resources */,
 				A02F0CB61C284D0F00997B86 /* collisions.png in Resources */,
 				D7C157A21B3E9CD400C13909 /* GameScene.sks in Resources */,
@@ -519,9 +544,16 @@
 				D7BFE5451B521A8600AB0D3A /* tasuwo.png in Resources */,
 				A02F0CBD1C284D0F00997B86 /* kanamono_wall_03.png in Resources */,
 				A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */,
+				A0D85B741C9AE17E009B34AC /* plr_left_02.png in Resources */,
+				A0D85B6D1C9AE16B009B34AC /* plr_up_01.png in Resources */,
 				A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */,
+				A0D85B6C1C9AE16B009B34AC /* plr_up_02.png in Resources */,
+				A0D85B711C9AE175009B34AC /* plr_right_01.png in Resources */,
 				A02F0CA91C284CB500997B86 /* sample_map02.json in Resources */,
 				D7747D131B6E37BF00793445 /* start.png in Resources */,
+				A0D85B751C9AE17E009B34AC /* plr_left_01.png in Resources */,
+				A0D85B791C9AE192009B34AC /* plr_down_01.png in Resources */,
+				A0D85B781C9AE192009B34AC /* plr_down_02.png in Resources */,
 				A0D839921C80176D005CC12D /* talk_01.txt in Resources */,
 				A02F0CBA1C284D0F00997B86 /* kanamono_tile.png in Resources */,
 				A05BEFAB1BB538CF00A17C13 /* plr_up.png in Resources */,

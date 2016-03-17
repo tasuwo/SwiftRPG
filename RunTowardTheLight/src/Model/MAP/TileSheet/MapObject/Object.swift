@@ -11,10 +11,10 @@ import UIKit
 import SpriteKit
 
 struct IMAGE_SET {
-    let UP: String
-    let DOWN: String
-    let RIGHT: String
-    let LEFT: String
+    let UP: [[String]]
+    let DOWN: [[String]]
+    let RIGHT: [[String]]
+    let LEFT: [[String]]
 }
 
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
@@ -42,6 +42,8 @@ public class Object: MapObject {
     
     /// 当たり判定
     internal var hasCollision: Bool
+    
+    private var stepIndex: Int = 0
 
     
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
@@ -95,33 +97,50 @@ public class Object: MapObject {
 
         let diff = CGPointMake(destination.x - position.x,
                                destination.y - position.y)
-        var nextTexture: SKTexture?
+        var nextTextures: [SKTexture]?
 
         if let images = self.images_ {
             if (diff.x > 0 && diff.y == 0) {
                 direction_ = DIRECTION.RIGHT
-                nextTexture = SKTexture(imageNamed: images.RIGHT)
+                nextTextures = []
+                for image in images.RIGHT[self.stepIndex] {
+                    nextTextures?.append(SKTexture(imageNamed: image))
+                    self.stepIndex = abs(self.stepIndex-1)
+                }
             } else if (diff.x < 0 && diff.y == 0) {
                 direction_ = DIRECTION.LEFT
-                nextTexture = SKTexture(imageNamed: images.LEFT)
+                nextTextures = []
+                for image in images.LEFT[self.stepIndex] {
+                    nextTextures?.append(SKTexture(imageNamed: image))
+                    self.stepIndex = abs(self.stepIndex-1)
+                }
             } else if (diff.x == 0 && diff.y > 0) {
                 direction_ = DIRECTION.UP
-                nextTexture = SKTexture(imageNamed: images.UP)
+                nextTextures = []
+                for image in images.UP[self.stepIndex] {
+                    nextTextures?.append(SKTexture(imageNamed: image))
+                    self.stepIndex = abs(self.stepIndex-1)
+                }
             } else if (diff.x == 0 && diff.y < 0) {
                 direction_ = DIRECTION.DOWN
-                nextTexture = SKTexture(imageNamed: images.DOWN)
+                nextTextures = []
+                for image in images.DOWN[self.stepIndex] {
+                    nextTextures?.append(SKTexture(imageNamed: image))
+                    self.stepIndex = abs(self.stepIndex-1)
+                }
             }
         } else {
-            nextTexture = self.object_.texture
+            nextTextures = [self.object_.texture!]
         }
 
-        if let texture = nextTexture {
-            actions.append(SKAction.animateWithTextures([texture],
-                           timePerFrame: NSTimeInterval(0.0)))
-        }
-        actions.append(SKAction.moveByX(diff.x,
-                                        y: diff.y,
-                                        duration: NSTimeInterval(speed_)))
+        let walkAction: SKAction = SKAction.animateWithTextures(
+            nextTextures!,
+            timePerFrame: NSTimeInterval(speed_/3))
+        let moveAction: SKAction = SKAction.moveByX(diff.x,
+            y: diff.y,
+            duration: NSTimeInterval(speed_))
+        actions = [SKAction.group([walkAction, moveAction])]
+
         position_ = CGPointMake(destination.x,
                                 destination.y)
         return actions
