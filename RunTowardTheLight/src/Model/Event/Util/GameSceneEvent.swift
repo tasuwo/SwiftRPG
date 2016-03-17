@@ -35,19 +35,23 @@ class GameSceneEvent: NSObject {
                 
                 if var json = params,
                    var maxIndex = json.arrayObject?.count {
+                    
                     var index_: Int
                     if let index = json[maxIndex-1]["index"].string {
                         index_ = Int(index)!
                         json[maxIndex-1]["index"].string = String(index_+1)
                     } else {
                         index_ = 0
+                        // index の初期化
                         if var array: [[String: String]] = json.arrayObject as? [[String: String]] {
                             array.append(["index": "1"])
                             json = JSON(array)
+                            // 要素を追加したので，1増やす
+                            maxIndex += 1
                         } else {
                             print("Invalid json form")
+                            return
                         }
-                        maxIndex += 1
                     }
                     
                     // params の validation
@@ -78,7 +82,8 @@ class GameSceneEvent: NSObject {
                         let player = playerTuple.object
                         let playerPosition = TileCoordinate.getSheetCoordinateFromScreenCoordinate(
                             sheet!.getSheetPosition(),
-                            screenCoordinate: player.getRealTimePosition())
+                            screenCoordinate: player.getRealTimePosition()
+                        )
                         
                         // キャラクターとかぶらないように，テキストボックスの位置を調整
                         var DialogPosition: Dialog.POSITION
@@ -110,9 +115,7 @@ class GameSceneEvent: NSObject {
                 let controller = sender as! GameViewController
                 let skView     = controller.view as! SKView
                 let scene      = skView.scene as! GameScene
-                let map        = scene.map
                 scene.textBox_.hide()
-                
                 controller.touchEvent.remove(GameSceneEvent.events[END_OF_TALK]!(nil))
                 controller.touchEvent.add(GameSceneEvent.events[PLAYER_MOVE]!(nil))
             }
@@ -129,18 +132,22 @@ class GameSceneEvent: NSObject {
                 
                 scene.actionButton_.hidden = false
                 
-                if let kind = args as? [String] {
-                    switch kind[0] as String {
+                if let args_ = args as? [String] {
+                    let actionKind = args_[0]
+                    
+                    switch actionKind as String {
                     case INVOKE_TALK :
-                        if let parser = TalkBodyParser(talkFileName: kind[1]) {
+                        if let parser = TalkBodyParser(talkFileName: args_[1]) {
                             controller.actionEvent.add(GameSceneEvent.events[TALK]!(parser.parse()))
                         } else {
-                            // TODO : エラーハンドリングする
+                            print("Invarid talk file")
                         }
                     default:
-                        // TODO : エラーハンドリングする
+                        print("Invalid kind of action")
                         break
                     }
+                } else {
+                    print("Invalid args of action")
                 }
             }
         },
@@ -165,10 +172,11 @@ class GameSceneEvent: NSObject {
                 let player: Object
                 let playerCoordinate: TileCoordinate
                 (playerCoordinate, player) = map.getObjectByName(objectNameTable.PLAYER_NAME)!
-                let departure =
-                    TileCoordinate.getTileCoordinateFromSheetCoordinate(player.getPosition())
-                let destination =
-                    TileCoordinate.getTileCoordinateFromScreenCoordinate(sheet.getSheetPosition(), screenCoordinate: args as! CGPoint)
+                let departure   = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.getPosition())
+                let destination = TileCoordinate.getTileCoordinateFromScreenCoordinate(
+                    sheet.getSheetPosition(),
+                    screenCoordinate: args as! CGPoint
+                )
                 let aStar = AStar(map: map)
                 aStar.initialize(departure, destination: destination)
                 
