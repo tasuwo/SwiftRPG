@@ -49,6 +49,7 @@
 		A0D85B751C9AE17E009B34AC /* plr_left_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B731C9AE17E009B34AC /* plr_left_01.png */; };
 		A0D85B781C9AE192009B34AC /* plr_down_02.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B761C9AE192009B34AC /* plr_down_02.png */; };
 		A0D85B791C9AE192009B34AC /* plr_down_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B771C9AE192009B34AC /* plr_down_01.png */; };
+		A0D85B7B1C9AF2CE009B34AC /* GameScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */; };
 		A0E1CE441BCBA03A004149E4 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E1CE431BCBA03A004149E4 /* player.png */; };
 		B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C518581BF2EDF721F1D5E0 /* Pods.framework */; };
 		D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72319F11B5699F200D13BAA /* TitleViewController.swift */; };
@@ -125,6 +126,7 @@
 		A0D85B731C9AE17E009B34AC /* plr_left_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left_01.png; sourceTree = "<group>"; };
 		A0D85B761C9AE192009B34AC /* plr_down_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_down_02.png; sourceTree = "<group>"; };
 		A0D85B771C9AE192009B34AC /* plr_down_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_down_01.png; sourceTree = "<group>"; };
+		A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameScene.xib; sourceTree = "<group>"; };
 		A0E1CE431BCBA03A004149E4 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
 		A99BB921E5ACADBDB505E189 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
 		C2C518581BF2EDF721F1D5E0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -325,6 +327,7 @@
 				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
 				A06D85A81C7EA58A003F19BB /* TitleScene.xib */,
+				A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -543,6 +546,7 @@
 				A02F0CB81C284D0F00997B86 /* kanamono_gake_02.png in Resources */,
 				D7BFE5451B521A8600AB0D3A /* tasuwo.png in Resources */,
 				A02F0CBD1C284D0F00997B86 /* kanamono_wall_03.png in Resources */,
+				A0D85B7B1C9AF2CE009B34AC /* GameScene.xib in Resources */,
 				A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */,
 				A0D85B741C9AE17E009B34AC /* plr_left_02.png in Resources */,
 				A0D85B6D1C9AE16B009B34AC /* plr_up_01.png in Resources */,

@@ -48,9 +48,8 @@ class GameViewController: UIViewController, GameSceneDelegate {
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
-            // 2. game scene を親とした skview 生成
-            let skView = self.view as! SKView
-            skView.presentScene(scene)
+            // 2. game scene を親とした skview 取得
+            self.view = scene.gameView
 
             self.viewInitiated = true
         }

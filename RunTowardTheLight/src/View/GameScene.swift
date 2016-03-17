@@ -19,10 +19,24 @@ protocol GameSceneDelegate: class {
 class GameScene: SKScene {
     var gameSceneDelegate: GameSceneDelegate?
     
+    @IBOutlet var gameView: SKView!
+    
+    @IBOutlet weak var actionButton: UIButton!
+    
     /* ゲーム画面の各構成要素 */
     var map: Map!
     var textBox_: Dialog!
     var actionButton_: UIButton!
+    
+    override init(size: CGSize) {
+        super.init(size: size)
+        NSBundle.mainBundle().loadNibNamed("GameScene", owner: self, options: nil)
+        gameView.presentScene(self)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func didMoveToView(view: SKView) {
         // マップ生成
@@ -30,7 +44,7 @@ class GameScene: SKScene {
             self.map = map
             self.map.addSheetTo(self)
         }
-
+        
         // アクションボタン生成
         actionButton_ = UIButtonAnimated(frame: CGRectMake(0, 0, 250, 80))
         actionButton_.backgroundColor = UIColor.blackColor();
