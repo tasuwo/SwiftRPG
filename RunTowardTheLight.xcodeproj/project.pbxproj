@@ -38,6 +38,9 @@
 		A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07DEBA11C9B7B6100B787BA /* MenuScene.xib */; };
 		A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBA31C9B7DF200B787BA /* MenuScene.swift */; };
 		A07DEBA61C9B7F7700B787BA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBA51C9B7F7700B787BA /* MenuViewController.swift */; };
+		A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */; };
+		A07DEBB01C9B9EBF00B787BA /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBAF1C9B9EBF00B787BA /* ItemCell.swift */; };
+		A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBB21C9BAA3600B787BA /* DialogLabel.swift */; };
 		A08258DE1BB91C600083FDFD /* GameSceneEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */; };
 		A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B3C8491B991DA500DEDDE0 /* EventListener.swift */; };
 		A0B4207A1BCBDAC700FBACF7 /* TiledMapJsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */; };
@@ -118,6 +121,9 @@
 		A07DEBA11C9B7B6100B787BA /* MenuScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuScene.xib; sourceTree = "<group>"; };
 		A07DEBA31C9B7DF200B787BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		A07DEBA51C9B7F7700B787BA /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
+		A07DEBAF1C9B9EBF00B787BA /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		A07DEBB21C9BAA3600B787BA /* DialogLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogLabel.swift; sourceTree = "<group>"; };
 		A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneEvent.swift; sourceTree = "<group>"; };
 		A0B3C8491B991DA500DEDDE0 /* EventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListener.swift; sourceTree = "<group>"; };
 		A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiledMapJsonParser.swift; sourceTree = "<group>"; };
@@ -259,6 +265,15 @@
 			path = MapObject;
 			sourceTree = "<group>";
 		};
+		A07DEBB11C9BAA2600B787BA /* common */ = {
+			isa = PBXGroup;
+			children = (
+				D7747D241B6E58F300793445 /* common.swift */,
+				A07DEBB21C9BAA3600B787BA /* DialogLabel.swift */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
 		A087DC561C7149D3003BBDB1 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,12 +323,12 @@
 		D7BFE53E1B5218F000AB0D3A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A07DEBB11C9BAA2600B787BA /* common */,
 				2C2E64C71B78DCDF00B25B6E /* A-star */,
 				A096E5641B9D65C100CED511 /* Dialog */,
 				A0B3C8481B991B7F00DEDDE0 /* Event */,
 				2C2E64C61B78DCD300B25B6E /* Map */,
 				A02DDEE71C7BD01E007C5BC2 /* Setting */,
-				D7747D241B6E58F300793445 /* common.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -337,6 +352,8 @@
 				A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */,
 				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
 				A07DEBA31C9B7DF200B787BA /* MenuScene.swift */,
+				A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */,
+				A07DEBAF1C9B9EBF00B787BA /* ItemCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -545,6 +562,7 @@
 				D7C157AB1B3E9CD400C13909 /* Images.xcassets in Resources */,
 				A02F0CBC1C284D0F00997B86 /* kanamono_wall_02.png in Resources */,
 				A05BEFAA1BB538CF00A17C13 /* plr_down.png in Resources */,
+				A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */,
 				A05BEFAC1BB538CF00A17C13 /* plr_right.png in Resources */,
 				A0D85B701C9AE175009B34AC /* plr_right_02.png in Resources */,
 				A02F0CA81C284CB500997B86 /* sample_map.json in Resources */,
@@ -640,6 +658,7 @@
 			files = (
 				D7747D251B6E58F300793445 /* common.swift in Sources */,
 				D7A7CE161B761B1500E0557C /* Node.swift in Sources */,
+				A07DEBB01C9B9EBF00B787BA /* ItemCell.swift in Sources */,
 				D7C157A41B3E9CD400C13909 /* GameScene.swift in Sources */,
 				D7C157A61B3E9CD400C13909 /* GameViewController.swift in Sources */,
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
@@ -657,6 +676,7 @@
 				A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */,
 				A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */,
 				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
+				A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */,
