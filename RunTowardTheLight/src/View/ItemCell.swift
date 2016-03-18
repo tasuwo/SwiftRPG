@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class ItemCell: UICollectionViewCell {
+    // TODO : ItemCell と cellView が別々にあるのは気持ち悪いので，なんとかする
     @IBOutlet var cellView: UICollectionViewCell!
     
     @IBOutlet weak var imageView: UIImageView!
@@ -17,7 +18,9 @@ class ItemCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         NSBundle.mainBundle().loadNibNamed("ItemCell", owner: self, options: nil)
-        addSubview(cellView)
+        imageView.backgroundColor = UIColor.blackColor()
+        imageView.alpha = 0.5
+        addSubview(imageView)
     }
 
     required init?(coder aDecoder: NSCoder) {
