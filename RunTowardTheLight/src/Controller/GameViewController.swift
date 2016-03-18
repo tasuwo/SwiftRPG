@@ -71,6 +71,12 @@ class GameViewController: UIViewController, GameSceneDelegate {
     func actionButtonTouched() {
         actionEvent.trigger(self, args: nil)
     }
+    
+    
+    func didPressMenuButton() {
+        let menuViewController: UIViewController = MenuViewController()
+        self.presentViewController(menuViewController, animated: false, completion: nil)
+    }
 
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {

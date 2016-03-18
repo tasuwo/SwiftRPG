@@ -13,6 +13,7 @@ import Foundation
 protocol GameSceneDelegate: class {
     func displayTouched(touch: UITouch?)
     func actionButtonTouched()
+    func didPressMenuButton()
 }
 
 /// ゲーム画面
@@ -25,6 +26,9 @@ class GameScene: SKScene {
     
     @IBOutlet weak var menuButton: UIButton!
     
+    @IBAction func didPressMenuButton(sender: AnyObject) {
+        self.gameSceneDelegate?.didPressMenuButton()
+    }
     
     /* ゲーム画面の各構成要素 */
     var map: Map!
@@ -54,7 +58,6 @@ class GameScene: SKScene {
         actionButton.hidden = true
         
         menuButton.layer.borderColor = UIColor.whiteColor().CGColor
-        menuButton.addTarget(self, action: "menuButtonTouched", forControlEvents: .TouchUpInside)
 
         textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
         textBox_.hide()
@@ -80,12 +83,6 @@ class GameScene: SKScene {
     func actionButtonTouched(sender: UIButton) {
         gameSceneDelegate?.actionButtonTouched()
     }
-    
-    
-    func menuButtonTouched() {
-        print("Touched menu")
-    }
-
     
     override func update(currentTime: CFTimeInterval) {
         map.updateObjectsZPosition()

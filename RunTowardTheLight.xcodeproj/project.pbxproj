@@ -35,6 +35,9 @@
 		A05BEFAD1BB538CF00A17C13 /* plr_left.png in Resources */ = {isa = PBXBuildFile; fileRef = A05BEFA91BB538CF00A17C13 /* plr_left.png */; };
 		A06593D21C721A1000148D2B /* MapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06593D11C721A1000148D2B /* MapObject.swift */; };
 		A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A06D85A81C7EA58A003F19BB /* TitleScene.xib */; };
+		A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07DEBA11C9B7B6100B787BA /* MenuScene.xib */; };
+		A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBA31C9B7DF200B787BA /* MenuScene.swift */; };
+		A07DEBA61C9B7F7700B787BA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBA51C9B7F7700B787BA /* MenuViewController.swift */; };
 		A08258DE1BB91C600083FDFD /* GameSceneEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */; };
 		A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B3C8491B991DA500DEDDE0 /* EventListener.swift */; };
 		A0B4207A1BCBDAC700FBACF7 /* TiledMapJsonParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */; };
@@ -112,6 +115,9 @@
 		A05BEFA91BB538CF00A17C13 /* plr_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_left.png; sourceTree = "<group>"; };
 		A06593D11C721A1000148D2B /* MapObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapObject.swift; sourceTree = "<group>"; };
 		A06D85A81C7EA58A003F19BB /* TitleScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleScene.xib; sourceTree = "<group>"; };
+		A07DEBA11C9B7B6100B787BA /* MenuScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuScene.xib; sourceTree = "<group>"; };
+		A07DEBA31C9B7DF200B787BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		A07DEBA51C9B7F7700B787BA /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A08258DD1BB91C600083FDFD /* GameSceneEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneEvent.swift; sourceTree = "<group>"; };
 		A0B3C8491B991DA500DEDDE0 /* EventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListener.swift; sourceTree = "<group>"; };
 		A0B420791BCBDAC700FBACF7 /* TiledMapJsonParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiledMapJsonParser.swift; sourceTree = "<group>"; };
@@ -317,6 +323,7 @@
 			children = (
 				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				D72319F11B5699F200D13BAA /* TitleViewController.swift */,
+				A07DEBA51C9B7F7700B787BA /* MenuViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -328,6 +335,8 @@
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
 				A06D85A81C7EA58A003F19BB /* TitleScene.xib */,
 				A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */,
+				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
+				A07DEBA31C9B7DF200B787BA /* MenuScene.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -541,6 +550,7 @@
 				A02F0CA81C284CB500997B86 /* sample_map.json in Resources */,
 				A02F0CB61C284D0F00997B86 /* collisions.png in Resources */,
 				D7C157A21B3E9CD400C13909 /* GameScene.sks in Resources */,
+				A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */,
 				A02F0CBE1C284D0F00997B86 /* kanamono_wall.png in Resources */,
 				A0E1CE441BCBA03A004149E4 /* player.png in Resources */,
 				A02F0CB81C284D0F00997B86 /* kanamono_gake_02.png in Resources */,
@@ -635,6 +645,7 @@
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
+				A07DEBA61C9B7F7700B787BA /* MenuViewController.swift in Sources */,
 				A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
@@ -645,6 +656,7 @@
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
 				A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */,
 				A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */,
+				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */,
