@@ -10,14 +10,30 @@ import Foundation
 import UIKit
 
 class MenuViewController: UIViewController, MenuSceneDelegate {
+    private var model: MenuSceneModel!
+    
+    override func loadView() {
+        self.view = MenuScene()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let view = MenuScene(frame: self.view.frame)
-        view.menuSceneDelegate = self
-        self.view.addSubview(view)
+       
+        let scene = self.view as! MenuScene
+        scene.menuSceneDelegate = self
+        
+        self.model = MenuSceneModel()
+        self.model.delegate = scene
+        scene.model = self.model
     }
+    
+    // MARK: MenuSceneDelegate
     
     func didPressBackButton() {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func didSelectedItem(indexPath: NSIndexPath) {
+        self.model.selectItem(indexPath)
     }
 }

@@ -12,48 +12,30 @@ import SwiftyJSON
 
 protocol MenuSceneDelegate {
     func didPressBackButton()
+    func didSelectedItem(indexPath: NSIndexPath)
 }
 
-class MenuScene: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
     var menuSceneDelegate: MenuSceneDelegate?
-    
-    var selectedContents: JSON? = nil
-    
-    var defaultMessage: String = "...。"
-    
-    var contents: JSON = [
-        [
-            "id" : 1,
-            "name" : "タイル1",
-            "description" : "テスト1用です",
-            "image_name" : "kanamono_gake_01.png",
-        ],
-        [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
-        ],
-    ]
+    var model: MenuSceneModel! {
+        didSet {
+            self.contentsView.dataSource = self.model
+            self.dialog.text = self.model!.defaultMessage
+        }
+    }
+    private static let SELECTED_ALPHA: CGFloat = 1.0
+    private static let DESELECTED_ALPHA: CGFloat = 0.5
     
     @IBOutlet var menuView: UIView!
-    
     @IBOutlet weak var imageView: UIImageView!
-    
     @IBOutlet weak var menuListView: UIView!
-    
     @IBOutlet weak var backButton: UIButton!
-    
     @IBOutlet weak var dialog: UILabel!
-    
     @IBOutlet weak var contentsView: UICollectionView!
-    
     @IBAction func showPreviousContents(sender: AnyObject) {
     }
-    
     @IBAction func showNextContents(sender: AnyObject) {
     }
-    
     @IBAction func didPressBackButton(sender: AnyObject) {
         self.menuSceneDelegate?.didPressBackButton()
     }
@@ -66,14 +48,11 @@ class MenuScene: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
         addSubview(menuView)
         
         contentsView.delegate = self
-        contentsView.dataSource = self
         contentsView.registerClass(ItemCell.self, forCellWithReuseIdentifier: "cell")
-        
-        dialog.text = defaultMessage
         
         // DEBUG:
         imageView.image = UIImage(named: "title.png")
-        
+
         dialog.layer.borderColor = UIColor.whiteColor().CGColor
     }
 
@@ -81,45 +60,30 @@ class MenuScene: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        // 選択状態の初期化
-        self.selectedContents = nil
-        for i in 0 ..< self.contentsView.numberOfSections() {
-            for j in 0 ..< self.contentsView.numberOfItemsInSection(i) {
-                if j != indexPath.row {
-                    let cell = self.contentsView.cellForItemAtIndexPath(NSIndexPath(forRow: j, inSection: i)) as! ItemCell
-                    cell.imageView.alpha = 0.5
-                }
-            }
+    // MARK: MenuSceneModelDelegate
+
+    func updateMenuScene() {
+        let selectedCell = self.contentsView.cellForItemAtIndexPath(self.model.selectedIndexPath!) as! ItemCell
+
+        // 選択されたセル以外の全てのセルを非選択にする
+        for cell in self.contentsView.visibleCells() as! [ItemCell] {
+            if cell == selectedCell { continue }
+            cell.imageView.alpha = MenuScene.DESELECTED_ALPHA
         }
-        
-        let selectedCell: ItemCell = self.contentsView.cellForItemAtIndexPath(indexPath) as! ItemCell
-        
-        // セルが選択済みであれば選択解除
-        if selectedCell.imageView.alpha == 1.0 {
-            selectedCell.imageView.alpha = 0.5
-            self.dialog.text = defaultMessage
-            return
+
+        // 選択されたセルとテキストボックスの描画更新
+        if selectedCell.imageView.alpha == MenuScene.SELECTED_ALPHA {
+            selectedCell.imageView.alpha = MenuScene.DESELECTED_ALPHA
+            self.dialog.text = self.model.defaultMessage
+        } else {
+            selectedCell.imageView.alpha = MenuScene.SELECTED_ALPHA
+            self.dialog.text = self.model.contents[self.model.selectedIndexPath!.row]["description"].string!
         }
-        
-        selectedCell.imageView.alpha = 1.0
-        self.dialog.text = self.contents[indexPath.row]["description"].string!
-        self.selectedContents = self.contents[indexPath.row]
-    }
-    
-    // MARK : UICollectionViewDelegate
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.contents.count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! ItemCell
-        cell.imageView.image = UIImage(named: contents[indexPath.row]["image_name"].string!)
-        return cell
+    // MARK: UICollectionViewDelegate
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        self.menuSceneDelegate?.didSelectedItem(indexPath)
     }
 }
