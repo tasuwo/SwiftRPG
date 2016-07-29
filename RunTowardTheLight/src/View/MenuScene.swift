@@ -84,8 +84,8 @@ class MenuScene: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         // 選択状態の初期化
         self.selectedContents = nil
-        for var i=0; i<self.contentsView.numberOfSections(); i++ {
-            for var j=0; j<self.contentsView.numberOfItemsInSection(i); j++ {
+        for i in 0 ..< self.contentsView.numberOfSections() {
+            for j in 0 ..< self.contentsView.numberOfItemsInSection(i) {
                 if j != indexPath.row {
                     let cell = self.contentsView.cellForItemAtIndexPath(NSIndexPath(forRow: j, inSection: i)) as! ItemCell
                     cell.imageView.alpha = 0.5

@@ -64,7 +64,7 @@ class TiledMapJsonParser {
                     tileWidth: tileSetJson["tilewidth"].int!,
                     tileHeight: tileSetJson["tileheight"].int!
                 )
-                tileSetID++
+                tileSetID += 1
             }
             return tileSets
         } else {
@@ -106,7 +106,7 @@ class TiledMapJsonParser {
                         }
                     }
                 }
-                tileSetID++
+                tileSetID += 1
             }
             return properties
         } else {
@@ -148,8 +148,8 @@ class TiledMapJsonParser {
         }
         
         if let layer = json["layers"][kind.rawValue]["data"].array {
-            for (var y = 1; y <= layerTileCols; y++) {
-                for (var x = 1; x <= layerTileRows; x++) {
+            for y in 1 ..< layerTileCols+1 {
+                for x in 1 ..< layerTileRows+1 {
                     let index = (layerTileCols - y) * layerTileRows + x - 1
                     info[TileCoordinate(x: x, y: y)] = layer[index].int!
                 }

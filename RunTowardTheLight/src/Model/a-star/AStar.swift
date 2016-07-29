@@ -97,7 +97,7 @@ class AStar {
         var iMinNode: Int? = nil
 
         // Open なノードを選ぶ
-        for var i = 0; i < nodeList_.count; i++ {
+        for i in 0 ..< nodeList_.count {
             if nodeList_[i].getState() == Node.STATE.Open {
                 // スコアが最小のものを選ぶ
                 if min == -1 {

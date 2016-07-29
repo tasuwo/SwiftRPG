@@ -54,7 +54,7 @@ class GameScene: SKScene {
         
         actionButton.setTitle("しゃべる", forState: UIControlState.Normal)
         actionButton.layer.borderColor = UIColor.whiteColor().CGColor
-        actionButton.addTarget(self, action: "actionButtonTouched:", forControlEvents: .TouchUpInside)
+        actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), forControlEvents: .TouchUpInside)
         actionButton.hidden = true
         
         menuButton.layer.borderColor = UIColor.whiteColor().CGColor

@@ -75,7 +75,7 @@ public class EventDispatcher<EventArgType> {
     ///  - returns: ユニークなID
     private func issueId() -> IdType {
         repeat {
-            uniqueId++
+            uniqueId += 1
             if listeners[uniqueId] == nil {
                 return uniqueId
             }
