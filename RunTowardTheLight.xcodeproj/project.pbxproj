@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		094461156FB6E15DBCAA8578 /* Pods_RunTowardTheLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */; };
 		2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C21B78DA2000B25B6E /* AStar.swift */; };
 		2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */; };
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
-		31F45FD92992618C417309D0 /* Pods_RunTowardTheLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
 		A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */; };
 		A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE51C7AF0C9007C5BC2 /* Map.swift */; };
@@ -57,7 +57,6 @@
 		A0D85B791C9AE192009B34AC /* plr_down_01.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B771C9AE192009B34AC /* plr_down_01.png */; };
 		A0D85B7B1C9AF2CE009B34AC /* GameScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */; };
 		A0E1CE441BCBA03A004149E4 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E1CE431BCBA03A004149E4 /* player.png */; };
-		B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C518581BF2EDF721F1D5E0 /* Pods.framework */; };
 		D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72319F11B5699F200D13BAA /* TitleViewController.swift */; };
 		D7747D0F1B6E2EF600793445 /* main.png in Resources */ = {isa = PBXBuildFile; fileRef = D7747D0E1B6E2EF600793445 /* main.png */; };
 		D7747D111B6E2EFE00793445 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = D7747D101B6E2EFE00793445 /* title.png */; };
@@ -75,6 +74,7 @@
 		D7D8A5AB1B70652600147A45 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D8A5AA1B70652600147A45 /* Object.swift */; };
 		D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D97FFE1B6F05B1000704B0 /* Tile.swift */; };
 		D7D980011B6F05C3000704B0 /* TileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D980001B6F05C3000704B0 /* TileSheet.swift */; };
+		E609D7E2A11EED43CD386F66 /* Pods_RunTowardTheLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6374CF11E5C9D33D3C537CB /* Pods_RunTowardTheLight.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,13 +88,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		060E2FC1342A2CCADE082D89 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		2C2E64C21B78DA2000B25B6E /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
 		2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
-		38EE3DCDD0A8B6A98373E003 /* Pods-RunTowardTheLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.release.xcconfig"; sourceTree = "<group>"; };
-		398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B9881F547528DC93B922240 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
+		99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLightTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D01E4F79EC0364D73943671 /* Pods-RunTowardTheLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.release.xcconfig"; sourceTree = "<group>"; };
 		A0112D8F1C7DB10700E225CC /* zPositionTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = zPositionTable.swift; sourceTree = "<group>"; };
 		A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileSet.swift; sourceTree = "<group>"; };
 		A02DDEE51C7AF0C9007C5BC2 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 		A0D85B771C9AE192009B34AC /* plr_down_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plr_down_01.png; sourceTree = "<group>"; };
 		A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameScene.xib; sourceTree = "<group>"; };
 		A0E1CE431BCBA03A004149E4 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
-		A99BB921E5ACADBDB505E189 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
+		B0D0AAA047C30B2BB97C0796 /* Pods-RunTowardTheLightTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLightTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLightTests/Pods-RunTowardTheLightTests.release.xcconfig"; sourceTree = "<group>"; };
 		C2C518581BF2EDF721F1D5E0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72319F11B5699F200D13BAA /* TitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
 		D7747D0E1B6E2EF600793445 /* main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main.png; sourceTree = "<group>"; };
@@ -163,7 +163,8 @@
 		D7D8A5AA1B70652600147A45 /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		D7D97FFE1B6F05B1000704B0 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		D7D980001B6F05C3000704B0 /* TileSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileSheet.swift; sourceTree = "<group>"; };
-		FA71FE00A6658134F7DA1D52 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E6374CF11E5C9D33D3C537CB /* Pods_RunTowardTheLight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE1D21CE4A157F78DA05009 /* Pods-RunTowardTheLightTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLightTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLightTests/Pods-RunTowardTheLightTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,8 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31F45FD92992618C417309D0 /* Pods_RunTowardTheLight.framework in Frameworks */,
-				B7E1E3F2F79AA070236C0C26 /* Pods.framework in Frameworks */,
+				E609D7E2A11EED43CD386F66 /* Pods_RunTowardTheLight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				094461156FB6E15DBCAA8578 /* Pods_RunTowardTheLightTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,8 +209,9 @@
 		981DBCD92BFFE134BED803A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				398F043C2391E07E7F8A26F2 /* Pods_RunTowardTheLight.framework */,
 				C2C518581BF2EDF721F1D5E0 /* Pods.framework */,
+				E6374CF11E5C9D33D3C537CB /* Pods_RunTowardTheLight.framework */,
+				99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -385,10 +387,10 @@
 			isa = PBXGroup;
 			children = (
 				981DBCD92BFFE134BED803A5 /* Frameworks */,
-				E43709AD1083B6F6019D4BA5 /* Pods */,
 				D7C1579B1B3E9CD400C13909 /* Products */,
 				D7C1579C1B3E9CD400C13909 /* RunTowardTheLight */,
 				D7C157B61B3E9CD400C13909 /* RunTowardTheLightTests */,
+				F632A6F4B4FE86F84AC43F66 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -457,13 +459,13 @@
 			path = map;
 			sourceTree = "<group>";
 		};
-		E43709AD1083B6F6019D4BA5 /* Pods */ = {
+		F632A6F4B4FE86F84AC43F66 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A99BB921E5ACADBDB505E189 /* Pods-RunTowardTheLight.debug.xcconfig */,
-				38EE3DCDD0A8B6A98373E003 /* Pods-RunTowardTheLight.release.xcconfig */,
-				FA71FE00A6658134F7DA1D52 /* Pods.debug.xcconfig */,
-				060E2FC1342A2CCADE082D89 /* Pods.release.xcconfig */,
+				5B9881F547528DC93B922240 /* Pods-RunTowardTheLight.debug.xcconfig */,
+				9D01E4F79EC0364D73943671 /* Pods-RunTowardTheLight.release.xcconfig */,
+				FBE1D21CE4A157F78DA05009 /* Pods-RunTowardTheLightTests.debug.xcconfig */,
+				B0D0AAA047C30B2BB97C0796 /* Pods-RunTowardTheLightTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -475,12 +477,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7C157BD1B3E9CD400C13909 /* Build configuration list for PBXNativeTarget "RunTowardTheLight" */;
 			buildPhases = (
-				8D08BBC7CEDB9A35CB88CE23 /* Check Pods Manifest.lock */,
+				BE3BA151E38F061EF04B62A3 /* [CP] Check Pods Manifest.lock */,
 				D7C157961B3E9CD400C13909 /* Sources */,
 				D7C157971B3E9CD400C13909 /* Frameworks */,
 				D7C157981B3E9CD400C13909 /* Resources */,
-				0BA6AC229842A999676F9855 /* Embed Pods Frameworks */,
-				6BF314DC602108B0AEAF31AF /* Copy Pods Resources */,
+				9FAB313E0D293BEB2C847F42 /* [CP] Embed Pods Frameworks */,
+				E280C59F61F4FD21AC55F6BB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -495,9 +497,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7C157C01B3E9CD400C13909 /* Build configuration list for PBXNativeTarget "RunTowardTheLightTests" */;
 			buildPhases = (
+				23D49C89B2E525A4B7550F0F /* [CP] Check Pods Manifest.lock */,
 				D7C157AF1B3E9CD400C13909 /* Sources */,
 				D7C157B01B3E9CD400C13909 /* Frameworks */,
 				D7C157B11B3E9CD400C13909 /* Resources */,
+				F8524AF9278F1050E3F7C642 /* [CP] Embed Pods Frameworks */,
+				2E4A7DBEFC61699D7FDBF5E6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -517,7 +522,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "兎澤佑";
 				TargetAttributes = {
 					D7C157991B3E9CD400C13909 = {
@@ -604,49 +609,94 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0BA6AC229842A999676F9855 /* Embed Pods Frameworks */ = {
+		23D49C89B2E525A4B7550F0F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6BF314DC602108B0AEAF31AF /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8D08BBC7CEDB9A35CB88CE23 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2E4A7DBEFC61699D7FDBF5E6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RunTowardTheLightTests/Pods-RunTowardTheLightTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9FAB313E0D293BEB2C847F42 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE3BA151E38F061EF04B62A3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E280C59F61F4FD21AC55F6BB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8524AF9278F1050E3F7C642 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RunTowardTheLightTests/Pods-RunTowardTheLightTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -727,6 +777,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -791,13 +842,14 @@
 		};
 		D7C157BE1B3E9CD400C13909 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA71FE00A6658134F7DA1D52 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 5B9881F547528DC93B922240 /* Pods-RunTowardTheLight.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "RunTowardTheLight/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "example.com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -806,13 +858,14 @@
 		};
 		D7C157BF1B3E9CD400C13909 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 060E2FC1342A2CCADE082D89 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 9D01E4F79EC0364D73943671 /* Pods-RunTowardTheLight.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "RunTowardTheLight/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "example.com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -821,7 +874,7 @@
 		};
 		D7C157C11B3E9CD400C13909 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA71FE00A6658134F7DA1D52 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = FBE1D21CE4A157F78DA05009 /* Pods-RunTowardTheLightTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -834,6 +887,7 @@
 				);
 				INFOPLIST_FILE = "RunTowardTheLightTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "example.com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RunTowardTheLight.app/RunTowardTheLight";
 			};
@@ -841,7 +895,7 @@
 		};
 		D7C157C21B3E9CD400C13909 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 060E2FC1342A2CCADE082D89 /* Pods.release.xcconfig */;
+			baseConfigurationReference = B0D0AAA047C30B2BB97C0796 /* Pods-RunTowardTheLightTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -850,6 +904,7 @@
 				);
 				INFOPLIST_FILE = "RunTowardTheLightTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "example.com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RunTowardTheLight.app/RunTowardTheLight";
 			};
