@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 class ItemCell: UICollectionViewCell {
-    // TODO : ItemCell と cellView が別々にあるのは気持ち悪いので，なんとかする
     @IBOutlet var cellView: UICollectionViewCell!
-    
     @IBOutlet weak var imageView: UIImageView!
     
     override init(frame: CGRect) {

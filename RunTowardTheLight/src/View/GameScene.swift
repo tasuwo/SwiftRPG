@@ -20,22 +20,19 @@ protocol GameSceneDelegate: class {
 /// ゲーム画面
 class GameScene: SKScene {
     var gameSceneDelegate: GameSceneDelegate?
-    
+
     @IBOutlet var gameView: SKView!
-    
     @IBOutlet weak var actionButton: UIButton!
-    
     @IBOutlet weak var menuButton: UIButton!
-    
     @IBAction func didPressMenuButton(sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
-    
+
     /* ゲーム画面の各構成要素 */
     var map: Map!
     var textBox_: Dialog!
     var actionButton_: UIButton!
-    
+
     override init(size: CGSize) {
         super.init(size: size)
         NSBundle.mainBundle().loadNibNamed("GameScene", owner: self, options: nil)
@@ -52,11 +49,11 @@ class GameScene: SKScene {
             self.map = map
             self.map.addSheetTo(self)
         }
-        
+
         actionButton.layer.borderColor = UIColor.whiteColor().CGColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), forControlEvents: .TouchUpInside)
         actionButton.hidden = true
-        
+
         menuButton.layer.borderColor = UIColor.whiteColor().CGColor
 
         textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
@@ -66,14 +63,13 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // コントローラに処理を委譲する
         self.gameSceneDelegate?.displayTouched(touches.first)
     }
 
     func actionButtonTouched(sender: UIButton) {
         self.gameSceneDelegate?.actionButtonTouched()
     }
-    
+
     override func update(currentTime: CFTimeInterval) {
         self.gameSceneDelegate?.sceneUpdated()
         map.updateObjectsZPosition()
