@@ -10,32 +10,6 @@ import UIKit
 import SpriteKit
 import Foundation
 
-class myButton: UIButton, NSCopying {
-
-    func setTitle(title: String?) {
-        setTitle(title, forState: UIControlState.Normal)
-        setTitle(title, forState: UIControlState.Highlighted)
-    }
-
-    func copyWithZone(zone: NSZone) -> AnyObject {
-        let newInstance = myButton()
-
-        newInstance.frame = self.frame
-        newInstance.backgroundColor = self.backgroundColor
-        newInstance.layer.masksToBounds = self.layer.masksToBounds
-        newInstance.layer.cornerRadius = self.layer.cornerRadius
-        // 文字色
-        newInstance.setTitleColor(
-        self.titleColorForState(UIControlState.Normal),
-        forState: UIControlState.Normal)
-        newInstance.setTitleColor(
-        self.titleColorForState(UIControlState.Highlighted),
-        forState: UIControlState.Highlighted)
-
-        return newInstance
-    }
-}
-
 class UIButtonAnimated: UIButton {
 
     override init(frame: CGRect) {
@@ -88,5 +62,4 @@ class UIButtonAnimated: UIButton {
                                    },
                                    completion: nil)
     }
-
 }

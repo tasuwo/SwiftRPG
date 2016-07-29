@@ -56,12 +56,30 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>components</string>
 			<key>path</key>
 			<string>components</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2C0564971D4B062300A2F527</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>myButton.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2C0564981D4B062300A2F527</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2C0564971D4B062300A2F527</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
 		</dict>
 		<key>2C2E64C21B78DA2000B25B6E</key>
 		<dict>
@@ -905,11 +923,10 @@ fi
 			<array>
 				<string>D7747D241B6E58F300793445</string>
 				<string>A07DEBB21C9BAA3600B787BA</string>
+				<string>2C0564971D4B062300A2F527</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>common</string>
 			<key>path</key>
 			<string>common</string>
 			<key>sourceTree</key>
@@ -1433,7 +1450,7 @@ fi
 			<key>lastKnownFileType</key>
 			<string>sourcecode.swift</string>
 			<key>path</key>
-			<string>common.swift</string>
+			<string>UIButtonAnimated.swift</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1707,6 +1724,7 @@ fi
 				<string>D7C157A61B3E9CD400C13909</string>
 				<string>A02DDEE91C7BD050007C5BC2</string>
 				<string>D7D97FFF1B6F05B1000704B0</string>
+				<string>2C0564981D4B062300A2F527</string>
 				<string>D7D8A5AB1B70652600147A45</string>
 				<string>A07DEBA61C9B7F7700B787BA</string>
 				<string>A0112D901C7DB10700E225CC</string>
