@@ -348,14 +348,14 @@
 		D7BFE5401B5218FE00AB0D3A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
 				A06D85A81C7EA58A003F19BB /* TitleScene.xib */,
+				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
 				A0D85B7A1C9AF2CE009B34AC /* GameScene.xib */,
-				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
 				A07DEBA31C9B7DF200B787BA /* MenuScene.swift */,
-				A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */,
+				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
 				A07DEBAF1C9B9EBF00B787BA /* ItemCell.swift */,
+				A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";

@@ -108,16 +108,15 @@ class MenuScene: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     // MARK : UICollectionViewDelegate
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    // MARK : UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.contents.count
     }
 
-    // MARK : UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! ItemCell
         cell.imageView.image = UIImage(named: contents[indexPath.row]["image_name"].string!)

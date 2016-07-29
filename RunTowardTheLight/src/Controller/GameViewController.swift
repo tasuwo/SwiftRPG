@@ -29,7 +29,6 @@ class GameViewController: UIViewController, GameSceneDelegate {
         self.view = SKView()
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.multipleTouchEnabled = false
@@ -39,7 +38,6 @@ class GameViewController: UIViewController, GameSceneDelegate {
         touchEvent.add(movePlayer_)
     }
 
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
@@ -54,30 +52,11 @@ class GameViewController: UIViewController, GameSceneDelegate {
             self.viewInitiated = true
         }
     }
-
     
-    ///  ディスプレイがタッチされた際に呼ばれる
-    ///  タッチ位置をタッチイベントに渡す
-    ///
-    ///  - parameter touch: タッチの情報
-    func displayTouched(touch: UITouch?) {
-        let skView = self.view as! SKView
-        let location = touch?.locationInNode(skView.scene!)
-        touchEvent.trigger(self, args: location)
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Release any cached data, images, etc that aren't in use.
     }
-
-    
-    ///  画面上のアクションボタン押下時に呼ばれる
-    func actionButtonTouched() {
-        actionEvent.trigger(self, args: nil)
-    }
-    
-    
-    func didPressMenuButton() {
-        let menuViewController: UIViewController = MenuViewController()
-        self.presentViewController(menuViewController, animated: false, completion: nil)
-    }
-
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
@@ -87,9 +66,22 @@ class GameViewController: UIViewController, GameSceneDelegate {
         }
     }
 
+    // MARK: GameSceneDelegate
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+    func displayTouched(touch: UITouch?) {
+        let skView = self.view as! SKView
+        let location = touch?.locationInNode(skView.scene!)
+        touchEvent.trigger(self, args: location)
     }
+
+    func actionButtonTouched() {
+        actionEvent.trigger(self, args: nil)
+    }
+    
+    func didPressMenuButton() {
+        let menuViewController: UIViewController = MenuViewController()
+        self.presentViewController(menuViewController, animated: false, completion: nil)
+    }
+    
+    func sceneUpdated() {}
 }

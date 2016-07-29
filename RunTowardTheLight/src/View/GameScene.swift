@@ -14,6 +14,7 @@ protocol GameSceneDelegate: class {
     func displayTouched(touch: UITouch?)
     func actionButtonTouched()
     func didPressMenuButton()
+    func sceneUpdated()
 }
 
 /// ゲーム画面
@@ -52,7 +53,6 @@ class GameScene: SKScene {
             self.map.addSheetTo(self)
         }
         
-        actionButton.setTitle("しゃべる", forState: UIControlState.Normal)
         actionButton.layer.borderColor = UIColor.whiteColor().CGColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), forControlEvents: .TouchUpInside)
         actionButton.hidden = true
@@ -64,27 +64,18 @@ class GameScene: SKScene {
         textBox_.setPositionY(Dialog.POSITION.top)
         textBox_.addTo(self)
     }
-
     
-    ///  タッチ時の処理
-    ///
-    ///  - parameter touches: タッチ情報
-    ///  - parameter event:   イベント
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // コントローラに処理を委譲する
-        gameSceneDelegate?.displayTouched(touches.first)
+        self.gameSceneDelegate?.displayTouched(touches.first)
     }
 
-    
-    ///  アクションボタン押下時の処理
-    ///  コントローラに処理を委譲する
-    ///
-    ///  - parameter sender: sender
     func actionButtonTouched(sender: UIButton) {
-        gameSceneDelegate?.actionButtonTouched()
+        self.gameSceneDelegate?.actionButtonTouched()
     }
     
     override func update(currentTime: CFTimeInterval) {
+        self.gameSceneDelegate?.sceneUpdated()
         map.updateObjectsZPosition()
     }
 }

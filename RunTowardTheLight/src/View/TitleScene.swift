@@ -27,7 +27,7 @@ class TitleScene: UIView {
         startBtn.duration = 1
         startBtn.repeatCount = 1
         startBtn.animate()
-        titleSceneDelegate?.newGameTouched()
+        self.titleSceneDelegate?.newGameTouched()
     }
     
     override init(frame: CGRect) {
