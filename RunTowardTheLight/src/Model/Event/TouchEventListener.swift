@@ -194,25 +194,26 @@ class TalkEventListener: EventListener {
             let map        = scene.map
             let sheet      = map.getSheet()
 
-            // params の検査
-            let talker: String
-            let talkBody: String
+            let talker = params[index]["talker"].string
+            let talkBody = params[index]["talk_body"].string
+            let talkSideString = params[index]["talk_side"].string
+            if talker == nil || talkBody == nil || talkSideString == nil {
+                print("Some required params are missing")
+                return
+            }
+
             let talkSide: Dialog.TALK_SIDE
-            if  let _character = params[index]["talker"].string,
-                let _body      = params[index]["talk_body"].string,
-                let _talk_side = params[index]["talk_side"].string,
-                let _talker    = TALKER_IMAGE[_character]
-            {
-                talker = _talker
-                talkBody = _body
-                switch _talk_side {
-                case "L": talkSide = Dialog.TALK_SIDE.left
-                case "R": talkSide = Dialog.TALK_SIDE.right
-                default: print("Invalid json param for talking"); return
-                }
-            } else {
-                print(params)
-                print("Invalid json param for talking")
+            switch talkSideString! {
+            case "L": talkSide = .left
+            case "R": talkSide = .right
+            default:
+                print("Invalid talk side param")
+                return
+            }
+            
+            let talkerImageName = TALKER_IMAGE[talker!]
+            if talkerImageName == nil {
+                print("Invalid talker image name")
                 return
             }
 
@@ -236,7 +237,7 @@ class TalkEventListener: EventListener {
             scene.textBox_.show(DialogPosition)
 
             // テキスト描画
-            scene.textBox_.drawText(talker, body: talkBody, side: talkSide)
+            scene.textBox_.drawText(talkerImageName!, body: talkBody!, side: talkSide)
         }
     }
 }
