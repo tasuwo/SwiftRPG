@@ -8,23 +8,49 @@
 
 import Foundation
 
-class EventManager {
-    private(set) var touchEventDispacher = EventDispatcher()
-    private(set) var actionButtonEventDispacher = EventDispatcher()
-    private(set) var objectEventDispacher = EventDispatcher()
-    private(set) var cyclicEventDispacher = EventDispatcher()
+protocol NotifiableFromDispacher {
+    func invoke(invoker: EventListener, listener: EventListener)
+}
+
+class EventManager: NotifiableFromDispacher {
+    private(set) var touchEventDispacher: EventDispatcher
+    private(set) var actionButtonEventDispacher: EventDispatcher
+    private(set) var objectEventDispacher: EventDispatcher
+    private(set) var cyclicEventDispacher: EventDispatcher
+
+    init() {
+        self.touchEventDispacher = EventDispatcher()
+        self.actionButtonEventDispacher = EventDispatcher()
+        self.objectEventDispacher = EventDispatcher()
+        self.cyclicEventDispacher = EventDispatcher()
+        self.touchEventDispacher.delegate = self
+        self.actionButtonEventDispacher.delegate = self
+        self.objectEventDispacher.delegate = self
+        self.cyclicEventDispacher.delegate = self
+    }
 
     func add(listener: EventListener) {
-        switch (listener.triggerType) {
+        let dispacher = self.getDispacherOf(listener)
+        dispacher.add(listener)
+    }
+
+    private func getDispacherOf(listener: EventListener) -> EventDispatcher {
+        switch listener.triggerType {
         case .Touch:
-            self.touchEventDispacher.removeAll()
-            self.touchEventDispacher.add(listener)
-        case .Immediate:
-            self.cyclicEventDispacher.removeAll()
-            self.cyclicEventDispacher.add(listener)
+            return self.touchEventDispacher
         case .Button:
-            self.actionButtonEventDispacher.removeAll()
-            self.actionButtonEventDispacher.add(listener)
+            return self.actionButtonEventDispacher
+        case .Immediate:
+            return self.cyclicEventDispacher
         }
+    }
+
+    // MARK: NotifiableFromDispacher
+
+    func invoke(invoker: EventListener, listener: EventListener) {
+        let invokerDispacher = self.getDispacherOf(invoker)
+        let nextListenersDispacher = self.getDispacherOf(listener)
+        invokerDispacher.remove(invoker)
+        nextListenersDispacher.add(listener)
     }
 }

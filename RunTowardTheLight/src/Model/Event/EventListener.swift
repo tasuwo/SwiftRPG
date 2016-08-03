@@ -29,5 +29,4 @@ protocol EventHandler: class {
 protocol EventListener: EventHandler {
     var id: UInt64! { get set }
     var delegate: NotifiableFromListener? { get set }
-    var nextListener: EventListener? { get }
 }

@@ -11,7 +11,7 @@ import SwiftyJSON
 import UIKit
 
 protocol NotifiableFromListener {
-    func didFinishEvent()
+    func invoke(invoker: EventListener, listener: EventListener)
 }
 
 class EventDispatcher : NotifiableFromListener {
@@ -20,6 +20,8 @@ class EventDispatcher : NotifiableFromListener {
 
     private var listeners = Dictionary<IdType, ListenerType>()
     private var uniqueId: UInt64 = 0
+
+    var delegate: NotifiableFromDispacher?
 
     init() {}
 
@@ -64,15 +66,8 @@ class EventDispatcher : NotifiableFromListener {
 
     // MARK: NotifilableFromListener
 
-    func didFinishEvent() {
-        for listener in listeners.values {
-            if listener.executionType == .Onece {
-                if let nextListener = listener.nextListener {
-                    self.add(nextListener)
-                }
-                self.remove(listener)
-            }
-        }
+    func invoke(invoker: EventListener, listener nextListener: EventListener) {
+        self.delegate?.invoke(invoker, listener: nextListener)
     }
 }
 
