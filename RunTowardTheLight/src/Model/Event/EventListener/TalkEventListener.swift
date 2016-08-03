@@ -54,6 +54,7 @@ class StartTalkEventListener: EventListener {
             let scene: GameScene = skView.scene as! GameScene
             
             scene.actionButton.hidden = true
+            scene.menuButton.hidden = true
 
             TalkEventListener.getListener(0, params: params!)(sender: sender, args: args)
             
@@ -106,6 +107,7 @@ class TalkEventListener: EventListener {
         let skView     = controller.view as! SKView
         let scene      = skView.scene as! GameScene
         scene.textBox_.hide()
+        scene.menuButton.hidden = false
     }
 
     static func getListener(index: Int, params: JSON) -> (sender: AnyObject!, args: JSON!) -> () {
