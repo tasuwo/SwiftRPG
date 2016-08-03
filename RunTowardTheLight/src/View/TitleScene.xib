@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TitleScene" customModule="RunTowardTheLight" customModuleProvider="target">
@@ -18,6 +18,10 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-1K-Vqa" customClass="SpringButton" customModule="Spring">
                     <rect key="frame" x="229" y="271" width="209" height="69"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="69" id="9pu-ba-0I8"/>
+                        <constraint firstAttribute="width" constant="209" id="muJ-Lc-bFa"/>
+                    </constraints>
                     <state key="normal" image="start.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
@@ -39,11 +43,8 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="hcf-1K-Vqa" secondAttribute="bottom" constant="35" id="335-F1-7sL"/>
-                <constraint firstAttribute="trailing" secondItem="hcf-1K-Vqa" secondAttribute="trailing" constant="229" id="7j8-ip-xMF"/>
-                <constraint firstItem="hcf-1K-Vqa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="229" id="8ay-uc-WKh"/>
-                <constraint firstItem="hcf-1K-Vqa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jjb-5A-ZZW"/>
-                <constraint firstItem="hcf-1K-Vqa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="271" id="oFD-nr-cVq"/>
+                <constraint firstItem="hcf-1K-Vqa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3XE-wJ-z6B"/>
+                <constraint firstAttribute="bottom" secondItem="hcf-1K-Vqa" secondAttribute="bottom" constant="35" id="DEf-Py-09S"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
