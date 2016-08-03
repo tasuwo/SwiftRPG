@@ -11,10 +11,12 @@ import Foundation
 
 /// view controller に処理を delegate する
 protocol GameSceneDelegate: class {
-    func displayTouched(touch: UITouch?)
+    func frameTouched(location: CGPoint)
+    func gameSceneTouched(location: CGPoint)
     func actionButtonTouched()
     func didPressMenuButton()
-    func sceneUpdated()
+    func viewUpdated()
+    func addEvent(events: [EventListener])
 }
 
 /// ゲーム画面
@@ -63,7 +65,12 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.gameSceneDelegate?.displayTouched(touches.first)
+        let location = touches.first!.locationInNode(self)
+        if self.map.getSheet()!.isOnFrame(location) {
+            self.gameSceneDelegate?.frameTouched(location)
+        } else {
+            self.gameSceneDelegate?.gameSceneTouched(location)
+        }
     }
 
     func actionButtonTouched(sender: UIButton) {
@@ -71,7 +78,26 @@ class GameScene: SKScene {
     }
 
     override func update(currentTime: CFTimeInterval) {
-        self.gameSceneDelegate?.sceneUpdated()
         map.updateObjectsZPosition()
+        self.gameSceneDelegate?.viewUpdated()
+    }
+
+    // MARK: EventListener
+
+    func movePlayer(playerActions: [SKAction], events: [EventListener], screenActions: [SKAction]) {
+        self.textBox_.hide()
+        self.actionButton.hidden = true
+
+        let player = self.map.getObjectByName(objectNameTable.PLAYER_NAME)!
+        player.runAction(playerActions, callback: {
+            self.gameSceneDelegate?.addEvent(events)
+        })
+
+        if screenActions.isEmpty { return }
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        self.map.getSheet()!.runAction(screenActions, callback: {
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            self.map.updateObjectPlacement(player)
+        })
     }
 }
