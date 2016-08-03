@@ -51,6 +51,8 @@ class EventManager: NotifiableFromDispacher {
         let invokerDispacher = self.getDispacherOf(invoker)
         let nextListenersDispacher = self.getDispacherOf(listener)
         invokerDispacher.remove(invoker)
+        // TODO: うまく排他制御する
+        nextListenersDispacher.removeAll()
         nextListenersDispacher.add(listener)
     }
 }
