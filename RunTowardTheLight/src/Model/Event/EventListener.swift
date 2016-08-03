@@ -9,10 +9,21 @@
 import Foundation
 import SwiftyJSON
 
+enum TriggerType {
+    case Touch
+    case Immediate
+    case Button
+}
 
+enum ExecutionType {
+    case Onece
+    case Loop
+}
 
 protocol EventHandler: class {
     var invoke: (sender: AnyObject!, args: JSON!) -> ()! { get set }
+    var triggerType: TriggerType { get }
+    var executionType: ExecutionType { get }
 }
 
 protocol EventListener: EventHandler {
