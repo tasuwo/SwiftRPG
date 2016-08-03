@@ -29,7 +29,7 @@ public class Tile: MapObject {
     private var coordinate_: TileCoordinate
     
     /// イベント
-    internal var events: [EventListener]?
+    internal var events: [EventListener] = []
     
     /// プロパティ
     private var property_: TileProperty
@@ -146,11 +146,12 @@ public class Tile: MapObject {
                 if let action = tile.getProperty("event") {
                     // TODO : イベントの切り出しはまとめる
                     let tmp = action.componentsSeparatedByString(",")
-                    let method = tmp[0]
-                    let args   = tmp.dropFirst()
-                    
-//                    events.add(GameSceneEvent.events[method]!(nil))
-//                    tile.event = (events, Array(args))
+                    let eventType = tmp[0]
+                    let args = Array(tmp.dropFirst())
+
+                    if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
+                        tile.events.append(event)
+                    }
                 }
                 
                 tiles[coordinate] = tile

@@ -176,10 +176,8 @@ public class Map {
 
         if let mapObjects = self.placement[coordinate] {
             for mapObject in mapObjects {
-                if let events_ = mapObject.events {
-                    for event in events_ {
-                        events.append(event)
-                    }
+                for event in mapObject.events {
+                    events.append(event)
                 }
             }
         }

@@ -115,7 +115,7 @@
              "0":
                 {
                  "collision":"1",
-                 "event":"ready_action,talk,talk_01.txt"
+                 "event":"talk,talk_01.txt"
                 }
             },
          "tilewidth":32

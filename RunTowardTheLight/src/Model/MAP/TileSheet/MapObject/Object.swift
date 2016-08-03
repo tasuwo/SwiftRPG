@@ -23,7 +23,7 @@ public class Object: MapObject {
     private var name_: String!
     
     /// イベント
-    internal var events: [EventListener]?
+    internal var events: [EventListener] = []
     
     /// オブジェクトの画像イメージ
     private let images_: IMAGE_SET?
@@ -135,20 +135,15 @@ public class Object: MapObject {
             nextTextures = [self.object_.texture!]
         }
 
-        let walkAction: SKAction = SKAction.animateWithTextures(
-            nextTextures!,
-            timePerFrame: NSTimeInterval(speed_/2))
-        let moveAction: SKAction = SKAction.moveByX(diff.x,
-            y: diff.y,
-            duration: NSTimeInterval(speed_))
+        let walkAction: SKAction = SKAction.animateWithTextures(nextTextures!, timePerFrame: NSTimeInterval(speed_/2))
+        let moveAction: SKAction = SKAction.moveByX(diff.x, y: diff.y, duration: NSTimeInterval(speed_))
         actions = [SKAction.group([walkAction, moveAction])]
 
-        position_ = CGPointMake(destination.x,
-                                destination.y)
+        position_ = CGPointMake(destination.x, destination.y)
         return actions
     }
 
-    
+
     ///  連続したアクションを実行する
     ///  アクション実行中は，他のイベントの発生は無視する
     ///
@@ -161,12 +156,11 @@ public class Object: MapObject {
             sequence,
             completion: {
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                
                 callback()
         })
     }
-    
-    
+
+
     ///  オブジェクトを生成する
     ///
     ///  - parameter tiles:           生成済みのタイル群．本メソッド内で内容を書き換えられる可能性有り．
@@ -182,79 +176,75 @@ public class Object: MapObject {
         properties: Dictionary<TileID, TileProperty>,
         tileSets: Dictionary<TileSetID, TileSet>,
         objectPlacement: Dictionary<TileCoordinate, Int>
-    ) throws -> Dictionary<TileCoordinate, [Object]> {
+        ) throws -> Dictionary<TileCoordinate, [Object]> {
         var objects: Dictionary<TileCoordinate, [Object]> = [:]
-        
+
         // オブジェクトの配置
         for (coordinate, _) in tiles {
-            let objectID: Int
-            if let id = objectPlacement[coordinate] {
-                objectID = id
-            } else {
+            let id = objectPlacement[coordinate]
+            if id == nil {
                 // TODO : 真面目にエラーハンドリングする
                 print("オブジェクトのID取得失敗")
                 throw E.error
             }
-            
-            if objectID != 0 {
-                let property = properties[objectID]
-                
-                // オブジェクトの生成
-                let tileSetID = Int(property!["tileSetID"]!)
-                do {
-                    let tileSet = tileSets[tileSetID!]
-                    let obj_image = try tileSet?.cropTileImage(objectID)
-                    let name = property!["tileSetName"]! + "_" + NSUUID().UUIDString
-                    objects[coordinate] = [Object(
-                        name: name, /* 一意の名前をつける */
-                        imageData: obj_image!,
-                        position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
-                        images: nil
+            let objectID = id!
+
+            // 該当箇所にオブジェクトが存在しない場合，無視
+            if objectID == 0 { continue }
+
+            let property = properties[objectID]
+
+            // オブジェクトの生成
+            let tileSetID = Int(property!["tileSetID"]!)
+            do {
+                let tileSet = tileSets[tileSetID!]
+                let obj_image = try tileSet?.cropTileImage(objectID)
+                let name = property!["tileSetName"]! + "_" + NSUUID().UUIDString
+                objects[coordinate] = [Object(
+                    name: name, /* 一意の名前をつける */
+                    imageData: obj_image!,
+                    position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
+                    images: nil
                     )]
-                } catch {
-                    print("object生成失敗")
-                    throw E.error
-                }
-                
-                // 当たり判定の付加
-                // TODO: タイルではなくオブジェクトに当たり判定をつける
-                if let hasCollision = property!["collision"] {
-                    if hasCollision == "1" {
-                        tiles[coordinate]?.setCollision()
-                    }
-                }
-                
-                // イベントの付加
-                if let obj_action = property!["event"] {
-                    // TODO : オブジェクトの切り出しはまとめる
-                    let tmp = obj_action.componentsSeparatedByString(",")
-                    // let eventType = tmp[0]
-                    let args   = tmp.dropFirst()
+            } catch {
+                print("object生成失敗")
+                throw E.error
+            }
 
-                    // TODO: 一般化
-                    let parser = TalkBodyParser(talkFileName: args[2])
-                    let event = ActivateButtonListener(params: parser?.parse())
-                    let events: [EventListener] = [ event ]
+            // 当たり判定の付加
+            // TODO: タイルではなくオブジェクトに当たり判定をつける
+            if let hasCollision = property!["collision"] {
+                if hasCollision == "1" {
+                    tiles[coordinate]?.setCollision()
+                }
+            }
 
+            // イベントの付加
+            if let obj_action = property!["event"] {
+                // TODO : オブジェクトの切り出しはまとめる
+                let tmp = obj_action.componentsSeparatedByString(",")
+                let eventType = tmp[0]
+                let args = Array(tmp.dropFirst())
+
+                if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
                     // 周囲四方向のタイルにイベントを設置
                     // TODO : 各方向に違うイベントが設置できないので修正
                     let x = coordinate.getX()
                     let y = coordinate.getY()
-                    tiles[TileCoordinate(x: x - 1, y: y)]?.events = events
-                    tiles[TileCoordinate(x: x + 1, y: y)]?.events = events
-                    tiles[TileCoordinate(x: x, y: y - 1)]?.events = events
-                    tiles[TileCoordinate(x: x, y: y + 1)]?.events = events
+                    tiles[TileCoordinate(x: x - 1, y: y)]?.events.append(event)
+                    tiles[TileCoordinate(x: x + 1, y: y)]?.events.append(event)
+                    tiles[TileCoordinate(x: x, y: y - 1)]?.events.append(event)
+                    tiles[TileCoordinate(x: x, y: y + 1)]?.events.append(event)
                 }
             }
         }
-        
         return objects
     }
-    
+
     func canPass() -> Bool {
         return !hasCollision
     }
-    
+
     func setCollision() {
         hasCollision = true
     }

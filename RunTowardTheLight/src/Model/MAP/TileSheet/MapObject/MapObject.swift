@@ -13,7 +13,7 @@ protocol MapObject {
     /// 当たり判定
     var hasCollision: Bool { get }
     
-    var events: [EventListener]? { get }
+    var events: [EventListener] { get }
     
     func canPass() -> Bool
     
