@@ -84,7 +84,6 @@ class TalkEventListener: EventListener {
         for index in 1 ..< maxIndex! {
             self.events.append(TalkEventListener.getListener(index, params: params!))
         }
-        self.events.append(self.endTalkEvent)
     }
 
     private func getMainEvent() -> (sender: AnyObject!, args: JSON!) -> () {
@@ -94,6 +93,7 @@ class TalkEventListener: EventListener {
                 self.events.first!(sender: sender, args: args)
                 _ = self.events.removeFirst()
             } else {
+                self.endTalkEvent(sender: sender, args: nil)
                 self.delegate!.invoke(self, listener: WalkEventListener(params: self.params))
                 self.initEvents()
             }
