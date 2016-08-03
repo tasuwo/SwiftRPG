@@ -10,8 +10,11 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
+protocol NotifiableFromListener {
+    func didFinishEvent()
+}
 
-class EventDispatcher {
+class EventDispatcher : NotifiableFromListener {
     typealias ListenerType = EventListener
     typealias IdType = UInt64
 
@@ -23,6 +26,7 @@ class EventDispatcher {
     func add(listener: ListenerType) -> Bool {
         if listener.id != nil { return false }
         let id = issueId()
+        listener.delegate = self
         listeners[id] = listener
         listener.id = id
         return true
