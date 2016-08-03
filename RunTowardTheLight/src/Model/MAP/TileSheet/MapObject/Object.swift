@@ -20,25 +20,25 @@ struct IMAGE_SET {
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
 public class Object: MapObject {
     /// オブジェクト名
-    private var name_: String!
+    private var name: String!
     
     /// イベント
     internal var events: [EventListener] = []
     
     /// オブジェクトの画像イメージ
-    private let images_: IMAGE_SET?
+    private let images: IMAGE_SET?
     
     /// ノード
-    private let object_: SKSpriteNode
+    private let object: SKSpriteNode
     
     /// スピード
-    private var speed_: CGFloat
+    private var speed: CGFloat
     
     /// 向き
-    private var direction_: DIRECTION
+    private var direction: DIRECTION
     
     /// 画面上の描画位置
-    private var position_: CGPoint
+    private var position: CGPoint
     
     /// 当たり判定
     internal var hasCollision: Bool
@@ -49,32 +49,32 @@ public class Object: MapObject {
 
     
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
-        object_ = SKSpriteNode()
-        object_.name = name
-        self.name_ = name
-        object_.anchorPoint = CGPointMake(0.5, 0.0)
-        object_.position = position
-        speed_ = 0.2
-        direction_ = DIRECTION.DOWN
+        object = SKSpriteNode()
+        object.name = name
+        self.name = name
+        object.anchorPoint = CGPointMake(0.5, 0.0)
+        object.position = position
+        speed = 0.2
+        direction = DIRECTION.DOWN
         self.hasCollision = false
-        self.images_ = images
-        position_ = position
+        self.images = images
+        self.position = position
     }
 
     
     convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
-        object_.texture = SKTexture(imageNamed: imageName)
-        object_.size = CGSize(width: (object_.texture?.size().width)!,
-                              height: (object_.texture?.size().height)!)
+        object.texture = SKTexture(imageNamed: imageName)
+        object.size = CGSize(width: (object.texture?.size().width)!,
+                              height: (object.texture?.size().height)!)
     }
 
     
     convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
-        object_.texture = SKTexture(image: imageData)
-        object_.size = CGSize(width: (object_.texture?.size().width)!,
-                              height: (object_.texture?.size().height)!)
+        object.texture = SKTexture(image: imageData)
+        object.size = CGSize(width: (object.texture?.size().width)!,
+                              height: (object.texture?.size().height)!)
     }
     
 
@@ -82,7 +82,7 @@ public class Object: MapObject {
     ///
     ///  - parameter node: オブジェクトを追加するノード
     func addTo(node: SKSpriteNode) {
-        node.addChild(self.object_)
+        node.addChild(self.object)
     }
     
 
@@ -95,51 +95,51 @@ public class Object: MapObject {
     ///  - returns: 目標地点へ移動するアニメーション
     func getActionTo(destination: CGPoint) -> Array<SKAction> {
         var actions: Array<SKAction> = []
-        let position = position_
+        let position = self.position
 
         let diff = CGPointMake(destination.x - position.x,
                                destination.y - position.y)
-        var nextTextures: [SKTexture]?
+        var nextTextures: [SKTexture] = []
 
-        if let images = self.images_ {
+        if let images = self.images {
             if (diff.x > 0 && diff.y == 0) {
-                direction_ = DIRECTION.RIGHT
+                self.direction = DIRECTION.RIGHT
                 nextTextures = []
                 for image in images.RIGHT[self.stepIndex] {
-                    nextTextures?.append(SKTexture(imageNamed: image))
+                    nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x < 0 && diff.y == 0) {
-                direction_ = DIRECTION.LEFT
+                self.direction = DIRECTION.LEFT
                 nextTextures = []
                 for image in images.LEFT[self.stepIndex] {
-                    nextTextures?.append(SKTexture(imageNamed: image))
+                    nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x == 0 && diff.y > 0) {
-                direction_ = DIRECTION.UP
+                self.direction = DIRECTION.UP
                 nextTextures = []
                 for image in images.UP[self.stepIndex] {
-                    nextTextures?.append(SKTexture(imageNamed: image))
+                    nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x == 0 && diff.y < 0) {
-                direction_ = DIRECTION.DOWN
+                self.direction = DIRECTION.DOWN
                 nextTextures = []
                 for image in images.DOWN[self.stepIndex] {
-                    nextTextures?.append(SKTexture(imageNamed: image))
+                    nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             }
         } else {
-            nextTextures = [self.object_.texture!]
+            nextTextures = [self.object.texture!]
         }
 
-        let walkAction: SKAction = SKAction.animateWithTextures(nextTextures!, timePerFrame: NSTimeInterval(speed_/2))
-        let moveAction: SKAction = SKAction.moveByX(diff.x, y: diff.y, duration: NSTimeInterval(speed_))
+        let walkAction: SKAction = SKAction.animateWithTextures(nextTextures, timePerFrame: NSTimeInterval(self.speed/2))
+        let moveAction: SKAction = SKAction.moveByX(diff.x, y: diff.y, duration: NSTimeInterval(self.speed))
         actions = [SKAction.group([walkAction, moveAction])]
 
-        position_ = CGPointMake(destination.x, destination.y)
+        self.position = CGPointMake(destination.x, destination.y)
         return actions
     }
 
@@ -152,12 +152,14 @@ public class Object: MapObject {
     func runAction(actions: Array<SKAction>, callback: () -> Void) {
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)
-        object_.runAction(
+        self.object.runAction(
             sequence,
-            completion: {
+            completion:
+            {
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 callback()
-        })
+            }
+        )
     }
 
 
@@ -176,15 +178,14 @@ public class Object: MapObject {
         properties: Dictionary<TileID, TileProperty>,
         tileSets: Dictionary<TileSetID, TileSet>,
         objectPlacement: Dictionary<TileCoordinate, Int>
-        ) throws -> Dictionary<TileCoordinate, [Object]> {
+    ) throws -> Dictionary<TileCoordinate, [Object]> {
         var objects: Dictionary<TileCoordinate, [Object]> = [:]
 
         // オブジェクトの配置
         for (coordinate, _) in tiles {
             let id = objectPlacement[coordinate]
             if id == nil {
-                // TODO : 真面目にエラーハンドリングする
-                print("オブジェクトのID取得失敗")
+                print("Object ID is not found")
                 throw E.error
             }
             let objectID = id!
@@ -193,23 +194,41 @@ public class Object: MapObject {
             if objectID == 0 { continue }
 
             let property = properties[objectID]
-
-            // オブジェクトの生成
-            let tileSetID = Int(property!["tileSetID"]!)
-            do {
-                let tileSet = tileSets[tileSetID!]
-                let obj_image = try tileSet?.cropTileImage(objectID)
-                let name = property!["tileSetName"]! + "_" + NSUUID().UUIDString
-                objects[coordinate] = [Object(
-                    name: name, /* 一意の名前をつける */
-                    imageData: obj_image!,
-                    position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
-                    images: nil
-                    )]
-            } catch {
-                print("object生成失敗")
+            if property == nil {
+                print("Object's property not found")
                 throw E.error
             }
+
+            let tileSetID = Int(property!["tileSetID"]!)
+            if tileSetID == nil {
+                print("tileSetID not found")
+                throw E.error
+            }
+            let tileSet = tileSets[tileSetID!]
+
+            let obj_image: UIImage?
+            do {
+                obj_image = try tileSet?.cropTileImage(objectID)
+            } catch {
+                print("Failed to crop image for object")
+                throw E.error
+            }
+
+            let tileSetName = property!["tileSetName"]
+            if tileSetName == nil {
+                print("tileSetName property is not found")
+                throw E.error
+            }
+            // 一意の名前
+            let name = tileSetName! + "_" + NSUUID().UUIDString
+
+            let object = Object(
+                name: name,
+                imageData: obj_image!,
+                position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
+                images: nil
+            )
+            objects[coordinate] = [object]
 
             // 当たり判定の付加
             // TODO: タイルではなくオブジェクトに当たり判定をつける
@@ -226,27 +245,31 @@ public class Object: MapObject {
                 let eventType = tmp[0]
                 let args = Array(tmp.dropFirst())
 
-                if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
-                    // 周囲四方向のタイルにイベントを設置
-                    // TODO : 各方向に違うイベントが設置できないので修正
-                    let x = coordinate.getX()
-                    let y = coordinate.getY()
-                    tiles[TileCoordinate(x: x - 1, y: y)]?.events.append(event)
-                    tiles[TileCoordinate(x: x + 1, y: y)]?.events.append(event)
-                    tiles[TileCoordinate(x: x, y: y - 1)]?.events.append(event)
-                    tiles[TileCoordinate(x: x, y: y + 1)]?.events.append(event)
+                let event = EventListenerGenerator.getListenerByID(eventType, params: args)
+                if event == nil {
+                    print("eventType is invalid")
+                    throw E.error
                 }
+
+                // 周囲四方向のタイルにイベントを設置
+                // TODO : 各方向に違うイベントが設置できないので修正
+                let x = coordinate.getX()
+                let y = coordinate.getY()
+                tiles[TileCoordinate(x: x - 1, y: y)]?.events.append(event!)
+                tiles[TileCoordinate(x: x + 1, y: y)]?.events.append(event!)
+                tiles[TileCoordinate(x: x, y: y - 1)]?.events.append(event!)
+                tiles[TileCoordinate(x: x, y: y + 1)]?.events.append(event!)
             }
         }
         return objects
     }
 
     func canPass() -> Bool {
-        return !hasCollision
+        return !self.hasCollision
     }
 
     func setCollision() {
-        hasCollision = true
+        self.hasCollision = true
     }
     
     func setEvents(events: [EventListener]) {
@@ -258,27 +281,27 @@ public class Object: MapObject {
     }
     
     func getName() -> String {
-        return self.name_
+        return self.name
     }
     
     func getMovingSpeed() -> CGFloat {
-        return speed_
+        return self.speed
     }
     
     func getDirection() -> DIRECTION {
-        return direction_
+        return self.direction
     }
     
     func getPosition() -> CGPoint {
-        return self.position_
+        return self.position
     }
     
     func getRealTimePosition() -> CGPoint {
-        return self.object_.position
+        return self.object.position
     }
     
     func setZPosition(position: CGFloat) {
-        self.object_.zPosition = position
+        self.object.zPosition = position
     }
 }
 

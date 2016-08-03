@@ -18,22 +18,22 @@ typealias TileProperty = Dictionary<String, String>
 public class Tile: MapObject {
     /// タイルID
     private let tileID: Int
-    
+
     /// ノード
-    private let tile_: SKSpriteNode
-    
+    private let tile: SKSpriteNode
+
     /// サイズ
     static var TILE_SIZE: CGFloat = 32.0
-    
+
     /// 座標
-    private var coordinate_: TileCoordinate
-    
+    private var coordinate: TileCoordinate
+
     /// イベント
     internal var events: [EventListener] = []
-    
+
     /// プロパティ
-    private var property_: TileProperty
-    
+    private var property: TileProperty
+
     /// 当たり判定
     internal var hasCollision: Bool
 
@@ -47,41 +47,41 @@ public class Tile: MapObject {
         let x = coordinate.getX()
         let y = coordinate.getY()
         self.tileID = id
-        self.tile_ = SKSpriteNode()
-        self.tile_.size = CGSizeMake(CGFloat(Tile.TILE_SIZE),
+        self.tile = SKSpriteNode()
+        self.tile.size = CGSizeMake(CGFloat(Tile.TILE_SIZE),
                                      CGFloat(Tile.TILE_SIZE))
-        self.tile_.position = CGPointMake(CGFloat(x - 1) * Tile.TILE_SIZE,
+        self.tile.position = CGPointMake(CGFloat(x - 1) * Tile.TILE_SIZE,
                                           CGFloat(y - 1) * Tile.TILE_SIZE)
-        self.tile_.anchorPoint = CGPointMake(0.0, 0.0)
-        self.tile_.zPosition = zPositionTable.TILE
-        self.coordinate_ = TileCoordinate(x: x, y: y)
+        self.tile.anchorPoint = CGPointMake(0.0, 0.0)
+        self.tile.zPosition = zPositionTable.TILE
+        self.coordinate = TileCoordinate(x: x, y: y)
         self.hasCollision = false
-        self.property_ = property
+        self.property = property
     }
-    
+
 
     ///  タイルにテクスチャ画像を付加する
     ///
     ///  - parameter imageName: 付加するテクスチャ画像名
     func setImageWithName(imageName: String) {
-        tile_.texture = SKTexture(imageNamed: imageName)
+        tile.texture = SKTexture(imageNamed: imageName)
     }
 
     ///  タイルにテクスチャ画像を付加する
     ///
     ///  - parameter image: 付加するテクスチャ画像
     func setImageWithUIImage(image: UIImage) {
-        tile_.texture = SKTexture(image: image)
+        tile.texture = SKTexture(image: image)
     }
 
     ///  タイルのノードに子ノードを追加する
     ///
     ///  - parameter node: 追加する子ノード
     func addTo(node: SKSpriteNode) {
-        node.addChild(tile_)
+        node.addChild(self.tile)
     }
-    
-    
+
+
     ///  タイル群を生成する
     ///
     ///  - parameter rows:               タイルを敷き詰める列数
@@ -101,69 +101,83 @@ public class Tile: MapObject {
         tileSets: Dictionary<TileSetID, TileSet>,
         collisionPlacement: Dictionary<TileCoordinate, Int>,
         tilePlacement: Dictionary<TileCoordinate, Int>
-        ) throws -> Dictionary<TileCoordinate, Tile>
-    {
-        do {
-            var tiles: Dictionary<TileCoordinate, Tile> = [:]
-            for (coordinate, _) in tilePlacement {
-                let hasCollision: Int
-                let tileID: Int
-                let tileProperty: TileProperty
-                if
-                    let col = collisionPlacement[coordinate],
-                    let id = tilePlacement[coordinate],
-                    let prop = properties[id]
-                {
-                    hasCollision = col
-                    tileID = id
-                    tileProperty = prop
-                } else {
-                    // TODO : 真面目にエラーハンドリングする
-                    print("タイル情報取得失敗")
-                    throw E.error
-                }
-                
-                // タイルを作成する
-                let tile = Tile(
-                    id: tileID,
-                    coordinate: coordinate,
-                    property: tileProperty
-                )
-                
-                // 当たり判定を付加する
-                if hasCollision != 0 { tile.setCollision() }
-                
-                // 画像を付加する
-                if let tileSetIDstr = tile.getProperty("tileSetID"),
-                   let tileSetID = Int(tileSetIDstr),
-                   let tileSet = tileSets[tileSetID]
-                {
-                    let tileImage = try tileSet.cropTileImage(tileID)
-                    tile.setImageWithUIImage(tileImage)
-                }
-                
-                // イベントを付加する
-                if let action = tile.getProperty("event") {
-                    // TODO : イベントの切り出しはまとめる
-                    let tmp = action.componentsSeparatedByString(",")
-                    let eventType = tmp[0]
-                    let args = Array(tmp.dropFirst())
-
-                    if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
-                        tile.events.append(event)
-                    }
-                }
-                
-                tiles[coordinate] = tile
+    ) throws -> Dictionary<TileCoordinate, Tile> {
+        var tiles: Dictionary<TileCoordinate, Tile> = [:]
+        for (coordinate, _) in tilePlacement {
+            let tileID = tilePlacement[coordinate]
+            if tileID == nil {
+                print("tileID not found")
+                throw E.error
             }
-            return tiles
-        } catch {
-            // TODO: Error handling
-            print("cropImage失敗")
-            throw error
+
+            let tileProperty = properties[tileID!]
+            if tileProperty == nil {
+                print("tileProperty not found")
+                throw E.error
+            }
+
+            // タイルを作成する
+            let tile = Tile(
+                id: tileID!,
+                coordinate: coordinate,
+                property: tileProperty!
+            )
+
+            // 当たり判定を付加する
+            let hasCollision = collisionPlacement[coordinate]
+            if hasCollision == nil {
+                print("hasCollision not found")
+                throw E.error
+            }
+            if hasCollision != 0 {
+                tile.setCollision()
+            }
+
+            // 画像を付与する
+            let tileSetIDstr = tile.getProperty("tileSetID")
+            if tileSetIDstr == nil {
+                print("tile's tileSetID not found")
+                throw E.error
+            }
+
+            let tileSetID = Int(tileSetIDstr!)
+            if tileSetID == nil {
+                print("tileSetID not found")
+                throw E.error
+            }
+
+            let tileSet = tileSets[tileSetID!]
+            if tileSet == nil {
+                print("tileSet not found")
+                throw E.error
+            }
+
+            let tileImage: UIImage?
+            do {
+                tileImage = try tileSet!.cropTileImage(tileID!)
+            } catch {
+                print("Failed to cropImage")
+                throw E.error
+            }
+            tile.setImageWithUIImage(tileImage!)
+
+            // イベントを付与する
+            if let action = tile.getProperty("event") {
+                // TODO : イベントの切り出しはまとめる
+                let tmp = action.componentsSeparatedByString(",")
+                let eventType = tmp[0]
+                let args = Array(tmp.dropFirst())
+
+                if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
+                    tile.events.append(event)
+                }
+            }
+
+            tiles[coordinate] = tile
         }
+        return tiles
     }
-    
+
     func setEvents(events: [EventListener]) {
         self.events = events
     }
@@ -177,18 +191,18 @@ public class Tile: MapObject {
     }
     
     func canPass() -> Bool {
-        return hasCollision
+        return self.hasCollision
     }
     
     func getCoordinate() -> TileCoordinate {
-        return self.coordinate_
+        return self.coordinate
     }
     
     func getProperty(name: String) -> String? {
-        return self.property_[name]
+        return self.property[name]
     }
     
     func getProperties() -> TileProperty {
-        return self.property_
+        return self.property
     }
 }
