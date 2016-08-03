@@ -14,7 +14,7 @@ import SwiftyJSON
 /// ゲーム画面の view controller
 class GameViewController: UIViewController, GameSceneDelegate {
     var viewInitiated: Bool = false
-    var eventManager: EventManager = EventManager()
+    var eventManager: EventManager!
 
     override func loadView() {
         self.view = SKView()
@@ -24,6 +24,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         super.viewDidLoad()
         self.view.multipleTouchEnabled = false
 
+        self.eventManager = EventManager()
         eventManager.add(WalkEventListener(params: nil))
     }
 

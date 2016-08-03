@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		094461156FB6E15DBCAA8578 /* Pods_RunTowardTheLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */; };
 		2C0564981D4B062300A2F527 /* myButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0564971D4B062300A2F527 /* myButton.swift */; };
+		2C2D31901D5242E5000D8A2B /* TalkEventListeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D318F1D5242E5000D8A2B /* TalkEventListeners.swift */; };
 		2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C21B78DA2000B25B6E /* AStar.swift */; };
 		2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */; };
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
-		2C556E7C1D4BA60400E03414 /* TouchEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E7B1D4BA60400E03414 /* TouchEventListener.swift */; };
+		2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */; };
 		2C556E811D50C11B00E03414 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E801D50C11B00E03414 /* EventManager.swift */; };
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
 		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
@@ -92,11 +93,12 @@
 
 /* Begin PBXFileReference section */
 		2C0564971D4B062300A2F527 /* myButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myButton.swift; sourceTree = "<group>"; };
+		2C2D318F1D5242E5000D8A2B /* TalkEventListeners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkEventListeners.swift; sourceTree = "<group>"; };
 		2C2E64C21B78DA2000B25B6E /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
 		2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
-		2C556E7B1D4BA60400E03414 /* TouchEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchEventListener.swift; sourceTree = "<group>"; };
+		2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkEventListener.swift; sourceTree = "<group>"; };
 		2C556E801D50C11B00E03414 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
 		5B9881F547528DC93B922240 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
@@ -306,8 +308,9 @@
 			children = (
 				2C363A531B7B20260042FA2D /* EventDispatcher.swift */,
 				A0B3C8491B991DA500DEDDE0 /* EventListener.swift */,
-				2C556E7B1D4BA60400E03414 /* TouchEventListener.swift */,
+				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
 				2C556E801D50C11B00E03414 /* EventManager.swift */,
+				2C2D318F1D5242E5000D8A2B /* TalkEventListeners.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -741,8 +744,9 @@
 				2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */,
 				2C556E811D50C11B00E03414 /* EventManager.swift in Sources */,
 				D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */,
+				2C2D31901D5242E5000D8A2B /* TalkEventListeners.swift in Sources */,
 				A0B4207A1BCBDAC700FBACF7 /* TiledMapJsonParser.swift in Sources */,
-				2C556E7C1D4BA60400E03414 /* TouchEventListener.swift in Sources */,
+				2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */,
 				2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */,
 				A0D839941C8017AD005CC12D /* TalkBodyParser.swift in Sources */,
 				D7D980011B6F05C3000704B0 /* TileSheet.swift in Sources */,

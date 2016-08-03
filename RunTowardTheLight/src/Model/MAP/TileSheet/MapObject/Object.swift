@@ -233,8 +233,7 @@ public class Object: MapObject {
 
                     // TODO: 一般化
                     let parser = TalkBodyParser(talkFileName: args[2])
-                    // let event = TalkEventListener(params: parser?.parse())
-                    let event = TalkEventListener(params: parser?.parse())
+                    let event = ActivateButtonListener(params: parser?.parse())
                     let events: [EventListener] = [ event ]
 
                     // 周囲四方向のタイルにイベントを設置
