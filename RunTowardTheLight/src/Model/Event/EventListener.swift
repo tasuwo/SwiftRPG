@@ -7,25 +7,16 @@
 //
 
 import Foundation
-import UIKit
+import SwiftyJSON
 
-class EventListener<EventArgType> {
-    typealias EventMethod = (sender:AnyObject!, args:EventArgType!) -> ()
-    typealias IdType = UInt64
 
-    /// イベントメソッド
-    let invoke: EventMethod!
-    
-    /// イベントID
-    internal var id: IdType?
 
-    ///  コンストラクタ
-    ///
-    ///  - parameter callback: イベントを実行するコールバック関数
-    ///
-    ///  - returns:
-    init(callback: EventMethod!) {
-        self.invoke = callback
-        self.id = nil
-    }
+protocol EventHandler: class {
+    var invoke: (sender: AnyObject!, args: JSON!) -> ()! { get set }
+}
+
+protocol EventListener: EventHandler {
+    var id: UInt64! { get set }
+    var delegate: NotifiableFromListener? { get set }
+    var nextListener: EventListener? { get }
 }
