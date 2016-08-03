@@ -134,18 +134,28 @@ public class Map {
     ///  - parameter name: オブジェクト名
     ///
     ///  - returns: 取得したオブジェクト．存在しなければ nil
-    func getObjectByName(name: String) -> (coordinate: TileCoordinate, object: Object)? {
-        for (coordinate, mapObjects) in placement {
+    func getObjectByName(name: String) -> Object? {
+        for (_, mapObjects) in placement {
             for object in mapObjects {
                 if let obj = object as? Object {
-                    if obj.getName() == name { return (coordinate, obj) }
+                    if obj.getName() == name { return obj }
                 }
             }
         }
         return nil
     }
-    
-    
+
+    func getObjectCoordinateByName(name: String) -> TileCoordinate? {
+        for (coordinate, mapObjects) in placement {
+            for object in mapObjects {
+                if let obj = object as? Object {
+                    if obj.getName() == name { return coordinate }
+                }
+            }
+        }
+        return nil
+    }
+
     ///  配置されたオブジェクトを取得する
     ///
     ///  - parameter coordinate: タイル座標
@@ -161,16 +171,15 @@ public class Map {
     ///  - parameter coordinate: イベントを取得するタイル座標
     ///
     ///  - returns: 取得したイベント群
-    func getEventsOn(coordinate: TileCoordinate) -> [(EventDispatcher<Any>, [String])] {
-        var events: [(EventDispatcher<Any>, [String])] = []
-        
+    func getEventsOn(coordinate: TileCoordinate) -> [EventListener] {
+        var events: [EventListener] = []
+
         if let mapObjects = self.placement[coordinate] {
             for mapObject in mapObjects {
-                if let event = mapObject.event {
-                    if event.0.hasListener() {
+                if let events_ = mapObject.events {
+                    for event in events_ {
                         events.append(event)
                     }
-                    events.append(event)
                 }
             }
         }
@@ -198,10 +207,8 @@ public class Map {
     ///
     ///  - parameter object:        更新対象のオブジェクト
     func updateObjectPlacement(object: Object) {
-        let departure: TileCoordinate
-        (departure, _) = self.getObjectByName(object.getName())!
-        let destination: TileCoordinate
-        destination = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.getRealTimePosition())
+        let departure   = self.getObjectCoordinateByName(object.getName())!
+        let destination = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.getRealTimePosition())
         
         var objectIndex: Int? = nil
         let mapObjects = self.placement[departure]

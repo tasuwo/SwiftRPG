@@ -23,7 +23,7 @@ public class Object: MapObject {
     private var name_: String!
     
     /// イベント
-    internal var event: (EventDispatcher<Any>, [String])?
+    internal var events: [EventListener]?
     
     /// オブジェクトの画像イメージ
     private let images_: IMAGE_SET?
@@ -228,19 +228,23 @@ public class Object: MapObject {
                 if let obj_action = property!["event"] {
                     // TODO : オブジェクトの切り出しはまとめる
                     let tmp = obj_action.componentsSeparatedByString(",")
-                    let method = tmp[0]
+                    // let eventType = tmp[0]
                     let args   = tmp.dropFirst()
-                    
-                    let events = EventDispatcher<Any>()
-                    events.add(GameSceneEvent.events[method]!(nil))
+
+                    // TODO: 一般化
+                    let parser = TalkBodyParser(talkFileName: args[2])
+                    // let event = TalkEventListener(params: parser?.parse())
+                    let event = TalkEventListener(params: parser?.parse())
+                    let events: [EventListener] = [ event ]
+
                     // 周囲四方向のタイルにイベントを設置
                     // TODO : 各方向に違うイベントが設置できないので修正
                     let x = coordinate.getX()
                     let y = coordinate.getY()
-                    tiles[TileCoordinate(x: x - 1, y: y)]?.event = (events, Array(args))
-                    tiles[TileCoordinate(x: x + 1, y: y)]?.event = (events, Array(args))
-                    tiles[TileCoordinate(x: x, y: y - 1)]?.event = (events, Array(args))
-                    tiles[TileCoordinate(x: x, y: y + 1)]?.event = (events, Array(args))
+                    tiles[TileCoordinate(x: x - 1, y: y)]?.events = events
+                    tiles[TileCoordinate(x: x + 1, y: y)]?.events = events
+                    tiles[TileCoordinate(x: x, y: y - 1)]?.events = events
+                    tiles[TileCoordinate(x: x, y: y + 1)]?.events = events
                 }
             }
         }
@@ -256,12 +260,12 @@ public class Object: MapObject {
         hasCollision = true
     }
     
-    func setEvent(event: EventDispatcher<Any>, args: [String]) {
-        self.event = (event, args)
+    func setEvents(events: [EventListener]) {
+        self.events = events
     }
     
-    func getEvent() -> (EventDispatcher<Any>, [String])? {
-        return self.event
+    func getEvents() -> [EventListener]? {
+        return self.events
     }
     
     func getName() -> String {
