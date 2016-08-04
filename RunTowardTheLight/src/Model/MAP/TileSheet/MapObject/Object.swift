@@ -15,6 +15,19 @@ struct IMAGE_SET {
     let DOWN: [[String]]
     let RIGHT: [[String]]
     let LEFT: [[String]]
+
+    func get(direction: DIRECTION) -> [[String]] {
+        switch direction {
+        case .UP:
+            return self.UP
+        case .DOWN:
+            return self.DOWN
+        case .LEFT:
+            return self.LEFT
+        case .RIGHT:
+            return self.RIGHT
+        }
+    }
 }
 
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
