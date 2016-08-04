@@ -37,6 +37,9 @@ public class Tile: MapObject {
     /// 当たり判定
     internal var hasCollision: Bool
 
+    /// 親オブジェクト
+    private(set) var parent: MapObject?
+
     ///  コンストラクタ
     ///
     ///  - parameter coordinate: タイルの座標

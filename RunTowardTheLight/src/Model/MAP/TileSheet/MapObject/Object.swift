@@ -47,6 +47,9 @@ public class Object: MapObject {
     /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
     private var stepIndex: Int = 0
 
+    /// 親オブジェクト
+    private(set) var parent: MapObject?
+
     
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
         object = SKSpriteNode()
@@ -271,6 +274,10 @@ public class Object: MapObject {
 
     func setCollision() {
         self.hasCollision = true
+    }
+
+    func setParent(parent: Object) {
+        self.parent = parent
     }
     
     func setEvents(events: [EventListener]) {

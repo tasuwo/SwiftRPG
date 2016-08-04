@@ -14,6 +14,8 @@ protocol MapObject {
     var hasCollision: Bool { get }
     
     var events: [EventListener] { get }
+
+    var parent: MapObject? { get }
     
     func canPass() -> Bool
     
