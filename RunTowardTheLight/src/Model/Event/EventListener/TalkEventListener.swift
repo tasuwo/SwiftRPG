@@ -17,7 +17,7 @@ class ActivateButtonListener: EventListener {
     private(set) var triggerType: TriggerType
     private(set) var executionType: ExecutionType
 
-    init(params: JSON?) {
+    init(params: JSON?, nextEventListener listener: EventListener) {
         self.triggerType = .Immediate
         self.executionType = .Onece
         self.invoke = { (sender: AnyObject!, args: JSON!) -> () in }
@@ -31,7 +31,7 @@ class ActivateButtonListener: EventListener {
 
             scene.actionButton.hidden = false
 
-            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params))
+            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, nextEventListener: listener))
         }
     }
 }
@@ -43,7 +43,7 @@ class StartTalkEventListener: EventListener {
     private(set) var triggerType: TriggerType
     private(set) var executionType: ExecutionType
 
-    init(params: JSON?) {
+    init(params: JSON?, nextEventListener listener: EventListener) {
         self.triggerType = .Button
         self.executionType = .Onece
         self.invoke = { (sender: AnyObject!, args: JSON!) -> () in }
@@ -73,7 +73,7 @@ class StartTalkEventListener: EventListener {
 
             TalkEventListener.getListener(0, params: newParams!)(sender: sender, args: args)
             
-            self.delegate?.invoke(self, listener: TalkEventListener(params: newParams))
+            self.delegate?.invoke(self, listener: TalkEventListener(params: newParams, nextEventListener: listener))
         }
     }
 }
@@ -87,10 +87,10 @@ class TalkEventListener: EventListener {
     var params: JSON?
     var events: [(sender: AnyObject!, args: JSON!) -> ()] = []
 
-    init(params: JSON?) {
+    init(params: JSON?, nextEventListener listener: EventListener) {
         self.params = params
         self.invoke = { sender, args -> () in }
-        self.invoke = self.getMainEvent()
+        self.invoke = self.getMainEvent(listener)
         self.initEvents()
         self.executionType = .Onece
     }
@@ -102,7 +102,7 @@ class TalkEventListener: EventListener {
         }
     }
 
-    private func getMainEvent() -> (sender: AnyObject!, args: JSON!) -> () {
+    private func getMainEvent(nextListener: EventListener) -> (sender: AnyObject!, args: JSON!) -> () {
         return {
             (sender: AnyObject!, args: JSON!) -> () in
             if self.events.count > 0 {
@@ -110,7 +110,7 @@ class TalkEventListener: EventListener {
                 _ = self.events.removeFirst()
             } else {
                 self.endTalkEvent(sender: sender, args: nil)
-                self.delegate!.invoke(self, listener: WalkEventListener(params: self.params))
+                self.delegate!.invoke(self, listener: nextListener)
                 self.initEvents()
             }
         }

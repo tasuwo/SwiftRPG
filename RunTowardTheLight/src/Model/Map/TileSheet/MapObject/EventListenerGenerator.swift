@@ -23,7 +23,7 @@ class EventListenerGenerator {
                 paramsJson = JSON(array!)
             }
 
-            return ActivateButtonListener(params: paramsJson)
+            return ActivateButtonListener(params: paramsJson, nextEventListener: WalkEventListener(params: nil))
         default:
             return nil
         }
