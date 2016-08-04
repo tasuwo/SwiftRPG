@@ -43,7 +43,7 @@ class WalkEventListener: EventListener {
         
         let player = map.getObjectByName(objectNameTable.PLAYER_NAME)!
         let departure   = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.getPosition())
-        let destination = TileCoordinate.getTileCoordinateFromScreenCoordinate(sheet.getSheetPosition(), screenCoordinate: touchedPoint)
+        var destination = TileCoordinate.getTileCoordinateFromScreenCoordinate(sheet.getSheetPosition(), screenCoordinate: touchedPoint)
 
         // ルート探索
         let aStar = AStar(map: map)
@@ -54,16 +54,19 @@ class WalkEventListener: EventListener {
         // 移動のためのアクションの定義
         var playerActions: Array<SKAction> = []
         var events: [EventListener] = []
+        var preStepPoint = player.getPosition()
         for step: TileCoordinate in path! {
-            let stepPoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(step)
-            playerActions += player.getActionTo(stepPoint)
+            let nextStePoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(step)
+            playerActions += player.getActionTo(preStepPoint, destination: nextStePoint)
 
             // 移動中にイベントが存在するタイルを踏んだら動きを止める
             let eventsOnStep = map.getEventsOn(step)
             if eventsOnStep.count > 0 {
                 events = eventsOnStep
+                destination = step
                 break
             }
+            preStepPoint = nextStePoint
         }
 
         // 画面をスクロールさせる
@@ -75,7 +78,7 @@ class WalkEventListener: EventListener {
             scrollActions.append(scrollAction!)
         }
 
-        scene.movePlayer(playerActions, events: events, screenActions: scrollActions)
+        scene.movePlayer(playerActions, destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination), events: events, screenActions: scrollActions)
     }
 }
 

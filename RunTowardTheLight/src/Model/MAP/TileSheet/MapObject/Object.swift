@@ -93,12 +93,10 @@ public class Object: MapObject {
     ///  - parameter destination: 目標地点
     ///
     ///  - returns: 目標地点へ移動するアニメーション
-    func getActionTo(destination: CGPoint) -> Array<SKAction> {
+    func getActionTo(departure: CGPoint, destination: CGPoint) -> Array<SKAction> {
         var actions: Array<SKAction> = []
-        let position = self.position
-
-        let diff = CGPointMake(destination.x - position.x,
-                               destination.y - position.y)
+        let diff = CGPointMake(destination.x - departure.x,
+                               destination.y - departure.y)
         var nextTextures: [SKTexture] = []
 
         if let images = self.images {
@@ -139,17 +137,18 @@ public class Object: MapObject {
         let moveAction: SKAction = SKAction.moveByX(diff.x, y: diff.y, duration: NSTimeInterval(self.speed))
         actions = [SKAction.group([walkAction, moveAction])]
 
-        self.position = CGPointMake(destination.x, destination.y)
         return actions
     }
 
 
     ///  連続したアクションを実行する
     ///  アクション実行中は，他のイベントの発生は無視する
+    ///  オブジェクトの位置情報の更新も行う
     ///
-    ///  - parameter actions:  実行するアクション
-    ///  - parameter callback: 実行終了時に呼ばれるコールバック関数ß
-    func runAction(actions: Array<SKAction>, callback: () -> Void) {
+    ///  - parameter actions:     実行するアクション
+    ///  - parameter destination: 最終目的地
+    ///  - parameter callback:    実行終了時に呼ばれるコールバック関数ß
+    func runAction(actions: Array<SKAction>, destination: CGPoint, callback: () -> Void) {
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)
         self.object.runAction(
@@ -158,6 +157,8 @@ public class Object: MapObject {
             {
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 callback()
+                // TODO: 現状，最終的な目的地にオブジェクトの位置情報を更新する．リアルタイムに更新できないか？
+                self.position = destination
             }
         )
     }

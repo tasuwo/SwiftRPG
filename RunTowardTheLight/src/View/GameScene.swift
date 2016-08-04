@@ -84,12 +84,12 @@ class GameScene: SKScene {
 
     // MARK: EventListener
 
-    func movePlayer(playerActions: [SKAction], events: [EventListener], screenActions: [SKAction]) {
+    func movePlayer(playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
         self.textBox_.hide()
         self.actionButton.hidden = true
 
         let player = self.map.getObjectByName(objectNameTable.PLAYER_NAME)!
-        player.runAction(playerActions, callback: {
+        player.runAction(playerActions, destination: destination, callback: {
             self.gameSceneDelegate?.addEvent(events)
         })
 
