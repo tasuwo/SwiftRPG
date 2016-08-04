@@ -22,7 +22,7 @@
                         <constraint firstAttribute="height" constant="69" id="9pu-ba-0I8"/>
                         <constraint firstAttribute="width" constant="209" id="muJ-Lc-bFa"/>
                     </constraints>
-                    <state key="normal" image="start.png"/>
+                    <state key="normal" backgroundImage="start"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
                         <userDefinedRuntimeAttribute type="string" keyPath="animation" value="flash"/>
@@ -53,6 +53,6 @@
         </view>
     </objects>
     <resources>
-        <image name="start.png" width="300" height="100"/>
+        <image name="start" width="300" height="100"/>
     </resources>
 </document>
