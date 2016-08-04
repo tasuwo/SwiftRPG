@@ -13,14 +13,14 @@ import SpriteKit
 class ActivateButtonListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()!
-    private(set) var triggerType: TriggerType
-    private(set) var executionType: ExecutionType
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
 
     init(params: JSON?, nextEventListener listener: EventListener) {
         self.triggerType = .Immediate
         self.executionType = .Onece
-        self.invoke = { (sender: AnyObject!, args: JSON!) -> () in }
+
         self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
             let controller = sender as! GameViewController
@@ -39,14 +39,14 @@ class ActivateButtonListener: EventListener {
 class StartTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()!
-    private(set) var triggerType: TriggerType
-    private(set) var executionType: ExecutionType
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
 
     init(params: JSON?, nextEventListener listener: EventListener) {
         self.triggerType = .Button
         self.executionType = .Onece
-        self.invoke = { (sender: AnyObject!, args: JSON!) -> () in }
+
         self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
             let controller = sender as! GameViewController
@@ -81,15 +81,14 @@ class StartTalkEventListener: EventListener {
 class TalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()!
-    private(set) var triggerType: TriggerType = .Touch
-    private(set) var executionType: ExecutionType = .Loop
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
     var params: JSON?
     var events: [(sender: AnyObject!, args: JSON!) -> ()] = []
 
     init(params: JSON?, nextEventListener listener: EventListener) {
         self.params = params
-        self.invoke = { sender, args -> () in }
         self.invoke = self.getMainEvent(listener)
         self.initEvents()
         self.executionType = .Onece

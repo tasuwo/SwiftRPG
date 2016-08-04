@@ -21,7 +21,7 @@ enum ExecutionType {
 }
 
 protocol EventHandler: class {
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()! { get set }
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())! { get set }
     var triggerType: TriggerType { get }
     var executionType: ExecutionType { get }
 }

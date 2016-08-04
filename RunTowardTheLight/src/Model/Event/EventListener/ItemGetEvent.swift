@@ -14,14 +14,14 @@ import RealmSwift
 class ShowItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()!
-    private(set) var triggerType: TriggerType
-    private(set) var executionType: ExecutionType
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
 
     init(params: JSON?, nextEventListener listener: EventListener) {
         self.triggerType = .Immediate
         self.executionType = .Onece
-        self.invoke = { (sender: AnyObject!, args: JSON!) -> () in }
+
         self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
             let controller = sender as! GameViewController
@@ -64,15 +64,17 @@ class ShowItemGetDialogEventListener: EventListener {
 class ItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: (sender: AnyObject!, args: JSON!) -> ()!
-    private(set) var triggerType: TriggerType = .Touch
-    private(set) var executionType: ExecutionType = .Loop
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
 
     private var isDialogShown = false
     private var itemName = ""
 
     init(params: JSON?, nextEventListener listener: EventListener) {
-        self.invoke = { sender, args -> () in }
+        self.triggerType = .Touch
+        self.executionType = .Onece
+
         self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
             let controller = sender as! GameViewController
@@ -82,6 +84,5 @@ class ItemGetDialogEventListener: EventListener {
             scene.eventDialog.hidden = true
             self.delegate?.invoke(self, listener: listener)
         }
-        self.executionType = .Onece
     }
 }
