@@ -11,6 +11,7 @@
 		2C0564981D4B062300A2F527 /* myButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0564971D4B062300A2F527 /* myButton.swift */; };
 		2C2D31901D5242E5000D8A2B /* TalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */; };
 		2C2D31931D525F35000D8A2B /* EventListenerGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */; };
+		2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31941D52F39F000D8A2B /* String+subscript.swift */; };
 		2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C21B78DA2000B25B6E /* AStar.swift */; };
 		2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */; };
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
@@ -96,6 +97,7 @@
 		2C0564971D4B062300A2F527 /* myButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myButton.swift; sourceTree = "<group>"; };
 		2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkEventListener.swift; sourceTree = "<group>"; };
 		2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListenerGenerator.swift; sourceTree = "<group>"; };
+		2C2D31941D52F39F000D8A2B /* String+subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+subscript.swift"; sourceTree = "<group>"; };
 		2C2E64C21B78DA2000B25B6E /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
 		2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				D7747D241B6E58F300793445 /* UIButtonAnimated.swift */,
 				A07DEBB21C9BAA3600B787BA /* DialogLabel.swift */,
 				2C0564971D4B062300A2F527 /* myButton.swift */,
+				2C2D31941D52F39F000D8A2B /* String+subscript.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
 				2C0564981D4B062300A2F527 /* myButton.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
+				2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */,
 				A07DEBA61C9B7F7700B787BA /* MenuViewController.swift in Sources */,
 				A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
