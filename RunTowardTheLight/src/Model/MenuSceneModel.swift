@@ -25,32 +25,32 @@ class MenuSceneModel: NSObject, UICollectionViewDataSource {
             "id" : 1,
             "name" : "タイル1",
             "description" : "テスト1用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ], [
             "id" : 2,
             "name" : "タイル2",
             "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ], [
             "id" : 2,
             "name" : "タイル2",
             "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ], [
             "id" : 2,
             "name" : "タイル2",
             "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ], [
             "id" : 2,
             "name" : "タイル2",
             "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ], [
             "id" : 2,
             "name" : "タイル2",
             "description" : "テスト2用です",
-            "image_name" : "kanamono_gake_01.png",
+            "image_name" : "kanamono_tile.png",
         ],
     ]
 
