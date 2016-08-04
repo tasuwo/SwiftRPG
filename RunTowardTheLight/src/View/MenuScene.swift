@@ -51,7 +51,7 @@ class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
         contentsView.registerClass(ItemCell.self, forCellWithReuseIdentifier: "cell")
         
         // DEBUG:
-        imageView.image = UIImage(named: "title.png")
+        imageView.backgroundColor = UIColor.whiteColor()
 
         dialog.layer.borderColor = UIColor.whiteColor().CGColor
     }
