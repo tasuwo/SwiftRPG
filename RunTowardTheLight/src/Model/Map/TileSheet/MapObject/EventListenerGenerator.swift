@@ -23,7 +23,7 @@ class EventListenerGenerator {
                 paramsJson = JSON(array!)
             }
 
-            return ActivateButtonListener(params: paramsJson, nextEventListener: WalkEventListener(params: nil))
+            return ActivateButtonListener(params: paramsJson, nextEventListener: WalkEventListener.self)
         case "item":
             let key: String = params[0]
             let item = ItemTable.get(key)
@@ -40,7 +40,7 @@ class EventListenerGenerator {
                 "description": description,
                 "image_name": image_name
             ])
-            return ShowItemGetDialogEventListener(params: json, nextEventListener: WalkEventListener(params: nil))
+            return ShowItemGetDialogEventListener(params: json, nextEventListener: WalkEventListener.self)
         default:
             return nil
         }

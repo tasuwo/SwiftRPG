@@ -18,7 +18,7 @@ class ShowItemGetDialogEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    init(params: JSON?, nextEventListener listener: EventListener) {
+    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
         self.triggerType = .Immediate
         self.executionType = .Onece
 
@@ -71,7 +71,7 @@ class ItemGetDialogEventListener: EventListener {
     private var isDialogShown = false
     private var itemName = ""
 
-    init(params: JSON?, nextEventListener listener: EventListener) {
+    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
         self.triggerType = .Touch
         self.executionType = .Onece
 
@@ -82,7 +82,7 @@ class ItemGetDialogEventListener: EventListener {
             let scene      = skView.scene as! GameScene
 
             scene.eventDialog.hidden = true
-            self.delegate?.invoke(self, listener: listener)
+            self.delegate?.invoke(self, listener: listener!.init(params: params, nextEventListener: nil))
         }
     }
 }

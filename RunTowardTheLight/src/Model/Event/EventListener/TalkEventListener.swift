@@ -17,7 +17,7 @@ class ActivateButtonListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    init(params: JSON?, nextEventListener listener: EventListener) {
+    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
         self.triggerType = .Immediate
         self.executionType = .Onece
 
@@ -28,10 +28,9 @@ class ActivateButtonListener: EventListener {
             let scene: GameScene = skView.scene as! GameScene
 
             scene.actionButton.titleLabel?.text = "はなす"
-
             scene.actionButton.hidden = false
 
-            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, nextEventListener: listener))
+            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, nextEventListener: listener!))
         }
     }
 }
@@ -43,7 +42,7 @@ class StartTalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    init(params: JSON?, nextEventListener listener: EventListener) {
+    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
         self.triggerType = .Button
         self.executionType = .Onece
 
@@ -54,8 +53,6 @@ class StartTalkEventListener: EventListener {
             let scene: GameScene = skView.scene as! GameScene
             let map        = scene.map
 
-            var newParams = params
-            
             scene.actionButton.hidden = true
             scene.menuButton.hidden = true
 
@@ -63,17 +60,12 @@ class StartTalkEventListener: EventListener {
             if let direction = params![maxIndex!-1]["direction"].string {
                 let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
                 player?.setDirection(DIRECTION.fromString(direction)!)
-
-                // 方向を取り除く
-                // TODO: error handling
-                var array = params!.arrayObject as? [[String:String]]
-                array?.removeLast()
-                newParams = JSON(array!)
             }
 
-            TalkEventListener.getListener(0, params: newParams!)(sender: sender, args: args)
-            
-            self.delegate?.invoke(self, listener: TalkEventListener(params: newParams, nextEventListener: listener))
+            TalkEventListener.getListener(0, params: params!)(sender: sender, args: args)
+
+            // TODO: index < 1 のときの処理
+            self.delegate?.invoke(self, listener: TalkEventListener(params: params!, nextEventListener: listener!, index: 1))
         }
     }
 }
@@ -84,44 +76,34 @@ class TalkEventListener: EventListener {
     var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
     let triggerType: TriggerType
     let executionType: ExecutionType
-    var params: JSON?
-    var events: [(sender: AnyObject!, args: JSON!) -> ()] = []
 
-    init(params: JSON?, nextEventListener listener: EventListener) {
-        self.params = params
-        self.invoke = self.getMainEvent(listener)
-        self.initEvents()
+    required convenience init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+        self.init(params: params, nextEventListener: listener, index: 0)
+    }
+
+    init(params: JSON?, nextEventListener listener: EventListener.Type?, index: Int) {
+        self.triggerType = .Touch
         self.executionType = .Onece
-    }
 
-    private func initEvents() {
-        let maxIndex = params!.arrayObject?.count
-        for index in 1 ..< maxIndex! {
-            self.events.append(TalkEventListener.getListener(index, params: params!))
+        var updatedParams = params
+        let maxIndex = params?.arrayObject?.count
+        if params![maxIndex!-1]["direction"].string != nil {
+            var array = params!.arrayObject as? [[String:String]]
+            array?.removeLast()
+            updatedParams = JSON(array!)
         }
-    }
 
-    private func getMainEvent(nextListener: EventListener) -> (sender: AnyObject!, args: JSON!) -> () {
-        return {
+        let updatedMaxIndex = updatedParams?.arrayObject?.count
+        self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
-            if self.events.count > 0 {
-                self.events.first!(sender: sender, args: args)
-                _ = self.events.removeFirst()
+            if index < updatedMaxIndex!-1 {
+                TalkEventListener.getListener(index, params: updatedParams!)(sender: sender, args: args)
+                self.delegate?.invoke(self, listener: TalkEventListener(params: updatedParams!, nextEventListener: listener, index: index+1))
             } else {
-                self.endTalkEvent(sender: sender, args: nil)
-                self.delegate!.invoke(self, listener: nextListener)
-                self.initEvents()
+                TalkEventListener.getListener(index, params: updatedParams!)(sender: sender, args: args)
+                self.delegate?.invoke(self, listener: EndTalkEventListener(params: params, nextEventListener: listener))
             }
         }
-    }
-
-    private let endTalkEvent: (sender: AnyObject!, args: JSON!) -> () =  {
-        sender, args in
-        let controller = sender as! GameViewController
-        let skView     = controller.view as! SKView
-        let scene      = skView.scene as! GameScene
-        scene.textBox_.hide()
-        scene.menuButton.hidden = false
     }
 
     static func getListener(index: Int, params: JSON) -> (sender: AnyObject!, args: JSON!) -> () {
@@ -174,6 +156,29 @@ class TalkEventListener: EventListener {
 
             // テキスト描画
             scene.textBox_.drawText(talkerImageName!, body: talkBody!, side: talkSide)
+        }
+    }
+}
+
+class EndTalkEventListener: EventListener {
+    var id: UInt64!
+    var delegate: NotifiableFromListener?
+    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    let triggerType: TriggerType
+    let executionType: ExecutionType
+
+    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+        self.triggerType = .Touch
+        self.executionType = .Onece
+
+        self.invoke = {
+            (sender: AnyObject!, args: JSON!) -> () in
+            let controller = sender as! GameViewController
+            let skView     = controller.view as! SKView
+            let scene      = skView.scene as! GameScene
+            scene.textBox_.hide()
+            scene.menuButton.hidden = false
+            self.delegate!.invoke(self, listener: listener!.init(params: params, nextEventListener: nil))
         }
     }
 }

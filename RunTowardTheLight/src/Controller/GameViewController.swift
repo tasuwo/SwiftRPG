@@ -25,7 +25,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         self.view.multipleTouchEnabled = false
 
         self.eventManager = EventManager()
-        eventManager.add(WalkEventListener(params: nil))
+        eventManager.add(WalkEventListener(params: nil, nextEventListener: nil))
     }
 
     override func viewWillLayoutSubviews() {
