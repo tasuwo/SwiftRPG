@@ -27,6 +27,19 @@ enum DIRECTION {
         }
     }
 
+    var reverse: DIRECTION {
+        switch self {
+        case .UP:
+            return .DOWN
+        case .DOWN:
+            return .UP
+        case .LEFT:
+            return .RIGHT
+        case .RIGHT:
+            return .LEFT
+        }
+    }
+
     static func fromString(direction: String) -> DIRECTION? {
         switch direction {
         case "UP":

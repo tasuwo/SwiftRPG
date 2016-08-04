@@ -7,13 +7,23 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class EventListenerGenerator {
-    class func getListenerByID(id: String, params: [String]) -> EventListener? {
+    class func getListenerByID(id: String, eventPlacedDirection: DIRECTION?, params: [String]) -> EventListener? {
         switch id {
         case "talk":
             let parser = TalkBodyParser(talkFileName: params[0])
-            return ActivateButtonListener(params: parser?.parse())
+            var paramsJson = parser?.parse()
+
+            if let direction = eventPlacedDirection {
+                // TODO: error handling
+                var array = paramsJson!.arrayObject as? [[String:String]]
+                array?.append(["direction":direction.toString])
+                paramsJson = JSON(array!)
+            }
+
+            return ActivateButtonListener(params: paramsJson)
         default:
             return nil
         }

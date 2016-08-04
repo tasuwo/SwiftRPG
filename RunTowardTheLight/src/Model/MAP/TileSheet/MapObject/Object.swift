@@ -260,28 +260,95 @@ public class Object: MapObject {
 
             // イベントの付加
             if let obj_action = property!["event"] {
-                // TODO : オブジェクトの切り出しはまとめる
                 let tmp = obj_action.componentsSeparatedByString(",")
+                // TODO: 引数の検査
                 let eventType = tmp[0]
-                let args = Array(tmp.dropFirst())
+                let placementDirections = tmp[1]
+                let args = Array(tmp.dropFirst().dropFirst())
 
-                let event = EventListenerGenerator.getListenerByID(eventType, params: args)
-                if event == nil {
+                // 周囲のタイルにイベントを設置
+                let x = coordinate.getX()
+                let y = coordinate.getY()
+                let leftCoordinate = TileCoordinate(x: x-1, y: y)
+                let rightCoordinate = TileCoordinate(x: x+1, y: y)
+                let downCoordiante = TileCoordinate(x: x, y: y-1)
+                let upCoordinate = TileCoordinate(x: x, y: y+1)
+
+                let leftObject = Object(
+                    name: object.name + "_left",
+                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(leftCoordinate),
+                    images: nil
+                )
+                leftObject.setParent(object)
+                let leftEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.LEFT.reverse, params: args)
+                if leftEvent == nil {
                     print("eventType is invalid")
                     throw E.error
                 }
+                leftObject.events.append(leftEvent!)
 
-                // 周囲四方向のタイルにイベントを設置
-                // TODO : 各方向に違うイベントが設置できないので修正
-                let x = coordinate.getX()
-                let y = coordinate.getY()
-                tiles[TileCoordinate(x: x - 1, y: y)]?.events.append(event!)
-                tiles[TileCoordinate(x: x + 1, y: y)]?.events.append(event!)
-                tiles[TileCoordinate(x: x, y: y - 1)]?.events.append(event!)
-                tiles[TileCoordinate(x: x, y: y + 1)]?.events.append(event!)
+                let rightObject = Object(
+                    name: object.name + "_right",
+                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(rightCoordinate),
+                    images: nil
+                )
+                rightObject.setParent(object)
+                let rightEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.RIGHT.reverse, params: args)
+                if rightEvent == nil {
+                    print("eventType is invalid")
+                    throw E.error
+                }
+                rightObject.events.append(rightEvent!)
+
+                let downObject = Object(
+                    name: object.name + "_down",
+                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(downCoordiante),
+                    images: nil
+                )
+                downObject.setParent(object)
+                let downEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.DOWN.reverse, params: args)
+                if downEvent == nil {
+                    print("eventType is invalid")
+                    throw E.error
+                }
+                downObject.events.append(downEvent!)
+
+                let upObject = Object(
+                    name: object.name + "_up",
+                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(upCoordinate),
+                    images: nil
+                )
+                upObject.setParent(object)
+                let upEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.UP.reverse, params: args)
+                if upEvent == nil {
+                    print("eventType is invalid")
+                    throw E.error
+                }
+                upObject.events.append(upEvent!)
+
+                if placementDirections[0] == "1" {
+                    objects[upCoordinate]?.append(upObject)
+                }
+                if placementDirections[1] == "1" {
+                    objects[downCoordiante]?.append(downObject)
+                }
+                if placementDirections[2] == "1" {
+                    objects[leftCoordinate]?.append(leftObject)
+                }
+                if placementDirections[3] == "1" {
+                    objects[rightCoordinate]?.append(rightObject)
+                }
             }
         }
         return objects
+    }
+
+    func setDirection(direction: DIRECTION) {
+        self.direction = direction
+        if let images = self.images {
+            let imageNames = images.get(direction)
+            self.object.texture = SKTexture(imageNamed: imageNames[0][1])
+        }
     }
 
     func canPass() -> Bool {

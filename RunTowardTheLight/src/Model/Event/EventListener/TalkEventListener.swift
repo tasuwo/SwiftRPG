@@ -52,13 +52,28 @@ class StartTalkEventListener: EventListener {
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
+            let map        = scene.map
+
+            var newParams = params
             
             scene.actionButton.hidden = true
             scene.menuButton.hidden = true
 
-            TalkEventListener.getListener(0, params: params!)(sender: sender, args: args)
+            let maxIndex = params?.arrayObject?.count
+            if let direction = params![maxIndex!-1]["direction"].string {
+                let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
+                player?.setDirection(DIRECTION.fromString(direction)!)
+
+                // 方向を取り除く
+                // TODO: error handling
+                var array = params!.arrayObject as? [[String:String]]
+                array?.removeLast()
+                newParams = JSON(array!)
+            }
+
+            TalkEventListener.getListener(0, params: newParams!)(sender: sender, args: args)
             
-            self.delegate?.invoke(self, listener: TalkEventListener(params: params))
+            self.delegate?.invoke(self, listener: TalkEventListener(params: newParams))
         }
     }
 }

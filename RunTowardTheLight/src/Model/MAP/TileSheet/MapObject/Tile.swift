@@ -171,7 +171,7 @@ public class Tile: MapObject {
                 let eventType = tmp[0]
                 let args = Array(tmp.dropFirst())
 
-                if let event = EventListenerGenerator.getListenerByID(eventType, params: args) {
+                if let event = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: nil, params: args) {
                     tile.events.append(event)
                 }
             }
