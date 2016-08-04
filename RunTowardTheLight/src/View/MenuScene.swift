@@ -15,7 +15,7 @@ protocol MenuSceneDelegate {
     func didSelectedItem(indexPath: NSIndexPath)
 }
 
-class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
+class MenuScene: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
     var menuSceneDelegate: MenuSceneDelegate?
     var model: MenuSceneModel! {
         didSet {
@@ -89,5 +89,11 @@ class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.menuSceneDelegate?.didSelectedItem(indexPath)
+    }
+
+    // MARK: UICollectionViewDelegateFlowLayout
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(40, 40)
     }
 }
