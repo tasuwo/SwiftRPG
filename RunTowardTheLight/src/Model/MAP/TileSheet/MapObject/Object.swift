@@ -197,6 +197,9 @@ public class Object: MapObject {
         objectPlacement: Dictionary<TileCoordinate, Int>
     ) throws -> Dictionary<TileCoordinate, [Object]> {
         var objects: Dictionary<TileCoordinate, [Object]> = [:]
+        for (coordinate, _) in tiles {
+            objects[coordinate] = []
+        }
 
         // オブジェクトの配置
         for (coordinate, _) in tiles {
@@ -245,7 +248,7 @@ public class Object: MapObject {
                 position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
                 images: nil
             )
-            objects[coordinate] = [object]
+            objects[coordinate]!.append(object)
 
             // 当たり判定の付加
             // TODO: タイルではなくオブジェクトに当たり判定をつける
