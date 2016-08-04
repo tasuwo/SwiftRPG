@@ -205,12 +205,14 @@ class Dialog {
     ///
     ///  - parameter text:     描画するテキスト
     ///  - parameter talkSide: テキスト描画位置
-    func drawText(talkerImageName: String, body: String, side: TALK_SIDE) {
+    func drawText(talkerImageName: String?, body: String, side: TALK_SIDE) {
         var iDrawingFont: CGFloat = 0     // 描画位置を決める
         var nDrawingFont: CGFloat = 0     // 描画している文字が何番目か決める
 
         // キャラクター画像表示
-        characterIcon_.texture = SKTexture(imageNamed: talkerImageName)
+        if let imageName = talkerImageName {
+            characterIcon_.texture = SKTexture(imageNamed: imageName)
+        }
         // 先送りボタン非表示
         nextButton_.removeAllActions()
         nextButton_.alpha = 0.0
