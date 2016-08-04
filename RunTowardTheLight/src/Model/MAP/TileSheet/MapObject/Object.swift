@@ -13,10 +13,10 @@ import SpriteKit
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
 public class Object: MapObject {
     /// オブジェクト名
-    private var name: String!
+    private(set) var name: String!
     
     /// イベント
-    internal var events: [EventListener] = []
+    private(set) var events: [EventListener] = []
     
     /// オブジェクトの画像イメージ
     private let images: IMAGE_SET?
@@ -25,16 +25,16 @@ public class Object: MapObject {
     private let object: SKSpriteNode
     
     /// スピード
-    private var speed: CGFloat
+    private(set) var speed: CGFloat
     
     /// 向き
-    private var direction: DIRECTION
+    private(set) var direction: DIRECTION
     
     /// 画面上の描画位置
-    private var position: CGPoint
+    private(set) var position: CGPoint
     
     /// 当たり判定
-    internal var hasCollision: Bool
+    private(set) var hasCollision: Bool
     
     /// 歩行のためのインデックス
     /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
@@ -331,10 +331,6 @@ public class Object: MapObject {
         }
     }
 
-    func canPass() -> Bool {
-        return !self.hasCollision
-    }
-
     func setCollision() {
         self.hasCollision = true
     }
@@ -345,26 +341,6 @@ public class Object: MapObject {
     
     func setEvents(events: [EventListener]) {
         self.events = events
-    }
-    
-    func getEvents() -> [EventListener]? {
-        return self.events
-    }
-    
-    func getName() -> String {
-        return self.name
-    }
-    
-    func getMovingSpeed() -> CGFloat {
-        return self.speed
-    }
-    
-    func getDirection() -> DIRECTION {
-        return self.direction
-    }
-    
-    func getPosition() -> CGPoint {
-        return self.position
     }
     
     func getRealTimePosition() -> CGPoint {

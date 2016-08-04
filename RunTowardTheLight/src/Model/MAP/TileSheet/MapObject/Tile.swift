@@ -26,16 +26,16 @@ public class Tile: MapObject {
     static var TILE_SIZE: CGFloat = 32.0
 
     /// 座標
-    private var coordinate: TileCoordinate
+    private(set) var coordinate: TileCoordinate
 
     /// イベント
-    internal var events: [EventListener] = []
+    private(set) var events: [EventListener] = []
 
     /// プロパティ
-    private var property: TileProperty
+    private(set) var property: TileProperty
 
     /// 当たり判定
-    internal var hasCollision: Bool
+    private(set) var hasCollision: Bool
 
     /// 親オブジェクト
     private(set) var parent: MapObject?
@@ -137,7 +137,7 @@ public class Tile: MapObject {
             }
 
             // 画像を付与する
-            let tileSetIDstr = tile.getProperty("tileSetID")
+            let tileSetIDstr = tile.property["tileSetID"]
             if tileSetIDstr == nil {
                 print("tile's tileSetID not found")
                 throw E.error
@@ -165,7 +165,7 @@ public class Tile: MapObject {
             tile.setImageWithUIImage(tileImage!)
 
             // イベントを付与する
-            if let action = tile.getProperty("event") {
+            if let action = tile.property["event"] {
                 // TODO : イベントの切り出しはまとめる
                 let tmp = action.componentsSeparatedByString(",")
                 let eventType = tmp[0]
@@ -185,27 +185,7 @@ public class Tile: MapObject {
         self.events = events
     }
     
-    func getEvents() -> [EventListener]? {
-        return self.events
-    }
-    
     func setCollision() {
         self.hasCollision = true
-    }
-    
-    func canPass() -> Bool {
-        return self.hasCollision
-    }
-    
-    func getCoordinate() -> TileCoordinate {
-        return self.coordinate
-    }
-    
-    func getProperty(name: String) -> String? {
-        return self.property[name]
-    }
-    
-    func getProperties() -> TileProperty {
-        return self.property
     }
 }

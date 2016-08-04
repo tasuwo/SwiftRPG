@@ -138,7 +138,7 @@ public class Map {
         for (_, mapObjects) in placement {
             for object in mapObjects {
                 if let obj = object as? Object {
-                    if obj.getName() == name { return obj }
+                    if obj.name == name { return obj }
                 }
             }
         }
@@ -149,7 +149,7 @@ public class Map {
         for (coordinate, mapObjects) in placement {
             for object in mapObjects {
                 if let obj = object as? Object {
-                    if obj.getName() == name { return coordinate }
+                    if obj.name == name { return coordinate }
                 }
             }
         }
@@ -205,14 +205,14 @@ public class Map {
     ///
     ///  - parameter object:        更新対象のオブジェクト
     func updateObjectPlacement(object: Object) {
-        let departure   = self.getObjectCoordinateByName(object.getName())!
+        let departure   = self.getObjectCoordinateByName(object.name)!
         let destination = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.getRealTimePosition())
         
         var objectIndex: Int? = nil
         let mapObjects = self.placement[departure]
         for (index, mapObject) in mapObjects!.enumerate() {
             if let obj = mapObject as? Object {
-                if obj.getName() == object.getName() {
+                if obj.name == object.name {
                     objectIndex = index
                     break
                 }
