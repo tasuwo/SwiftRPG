@@ -13,6 +13,34 @@ import SwiftyJSON
 
 enum DIRECTION {
     case UP, DOWN, LEFT, RIGHT
+
+    var toString : String! {
+        switch self {
+        case .UP:
+            return "UP"
+        case .DOWN:
+            return "DOWN"
+        case .LEFT:
+            return "LEFT"
+        case .RIGHT:
+            return "RIGHT"
+        }
+    }
+
+    static func fromString(direction: String) -> DIRECTION? {
+        switch direction {
+        case "UP":
+            return DIRECTION.UP
+        case "DOWN":
+            return DIRECTION.DOWN
+        case "RIGHT":
+            return DIRECTION.RIGHT
+        case "LEFT":
+            return DIRECTION.LEFT
+        default:
+            return nil
+        }
+    }
 }
 
 // TODO : ちゃんとエラーハンドリングする
