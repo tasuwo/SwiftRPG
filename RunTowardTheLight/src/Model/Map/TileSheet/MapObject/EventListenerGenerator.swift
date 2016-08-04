@@ -24,6 +24,17 @@ class EventListenerGenerator {
             }
 
             return ActivateButtonListener(params: paramsJson, nextEventListener: WalkEventListener(params: nil))
+        case "item":
+            let key: String = params[0]
+            let item = ItemTable.get(key)
+            if item == nil {
+                print("Item not found")
+                return nil
+            }
+            let name: String = item!.name
+
+            let json = JSON(["key": key, "name": name])
+            return ShowItemGetDialogEventListener(params: json, nextEventListener: WalkEventListener(params: nil))
         default:
             return nil
         }

@@ -29,6 +29,7 @@ class GameScene: SKScene {
     @IBAction func didPressMenuButton(sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
+    @IBOutlet weak var eventDialog: DialogLabel!
 
     /* ゲーム画面の各構成要素 */
     var map: Map!
@@ -62,6 +63,10 @@ class GameScene: SKScene {
         textBox_.hide()
         textBox_.setPositionY(Dialog.POSITION.top)
         textBox_.addTo(self)
+
+        eventDialog.hidden = true
+        eventDialog.layer.backgroundColor = UIColor.blackColor().CGColor
+        eventDialog.layer.borderColor = UIColor.whiteColor().CGColor
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
