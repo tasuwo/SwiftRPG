@@ -25,6 +25,8 @@ class MenuViewController: UIViewController, MenuSceneDelegate {
         self.model = MenuSceneModel()
         self.model.delegate = scene
         scene.model = self.model
+
+        self.model.updateItems()
     }
     
     // MARK: MenuSceneDelegate

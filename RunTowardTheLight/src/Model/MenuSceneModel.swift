@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import RealmSwift
 
 protocol MenuSceneModelDelegate {
-    func updateMenuScene()
+    func updateItemSelect()
+    func reloadTable()
 }
 
 class MenuSceneModel: NSObject, UICollectionViewDataSource {
@@ -20,44 +22,21 @@ class MenuSceneModel: NSObject, UICollectionViewDataSource {
     let defaultMessage = "...。"
     private(set) var deselectedIndexPath: NSIndexPath? = nil
     private(set) var selectedIndexPath: NSIndexPath? = nil
-    private(set) var contents: JSON = [
-        [
-            "id" : 1,
-            "name" : "タイル1",
-            "description" : "テスト1用です",
-            "image_name" : "kanamono_tile.png",
-        ], [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_tile.png",
-        ], [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_tile.png",
-        ], [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_tile.png",
-        ], [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_tile.png",
-        ], [
-            "id" : 2,
-            "name" : "タイル2",
-            "description" : "テスト2用です",
-            "image_name" : "kanamono_tile.png",
-        ],
-    ]
+    private(set) var contents: [Item] = []
+
+    func updateItems() {
+        let realm = try! Realm()
+        let items = realm.objects(StoredItems)
+        for item in items {
+            contents.append(Item(key: item.key, name: item.name, description: item.text, image_name: item.image_name))
+        }
+        self.delegate.reloadTable()
+    }
 
     func selectItem(indexPath: NSIndexPath) {
         self.deselectedIndexPath = self.selectedIndexPath
         self.selectedIndexPath = indexPath
-        self.delegate.updateMenuScene()
+        self.delegate.updateItemSelect()
     }
     
     // MARK: UICollectionViewDataSource
@@ -72,7 +51,7 @@ class MenuSceneModel: NSObject, UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! ItemCell
-        cell.imageView.image = UIImage(named: contents[indexPath.row]["image_name"].string!)
+        cell.imageView.image = UIImage(named: contents[indexPath.row].image_name)
         return cell
     }
 }

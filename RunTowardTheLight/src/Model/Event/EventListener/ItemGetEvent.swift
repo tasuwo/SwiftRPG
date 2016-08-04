@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import SpriteKit
+import RealmSwift
 
 class ShowItemGetDialogEventListener: EventListener {
     var id: UInt64!
@@ -29,13 +30,31 @@ class ShowItemGetDialogEventListener: EventListener {
 
             let itemKey = params!["key"].string
             let itemName = params!["name"].string
-            if itemKey == nil || itemName == nil {
+            let itemText = params!["description"].string
+            let itemImageName = params!["image_name"].string
+            if itemKey == nil || itemName == nil || itemText == nil || itemImageName == nil {
                 print("Invalid arguement for getting item")
                 return
             }
 
             scene.eventDialog.hidden = false
-            scene.eventDialog.text = "\(itemName!) を手に入れた"
+
+            let realm = try! Realm()
+            try! realm.write {
+                var item = realm.objects(StoredItems).filter("key == \"\(itemKey!)\"").first
+                if item != nil {
+                    item!.num += 1
+                } else {
+                    item = StoredItems()
+                    item!.key = itemKey!
+                    item!.name = itemName!
+                    item!.text = itemText!
+                    item!.image_name = itemImageName!
+                }
+                realm.add(item!, update: true)
+            }
+
+            scene.eventDialog.text = "\(itemName!) を手に入れた．"
 
             self.delegate?.invoke(self, listener: ItemGetDialogEventListener(params: params, nextEventListener: listener))
         }

@@ -31,9 +31,15 @@ class EventListenerGenerator {
                 print("Item not found")
                 return nil
             }
-            let name: String = item!.name
-
-            let json = JSON(["key": key, "name": name])
+            let name = item!.name
+            let description = item!.description
+            let image_name = item!.image_name
+            let json = JSON([
+                "key": key,
+                "name": name,
+                "description": description,
+                "image_name": image_name
+            ])
             return ShowItemGetDialogEventListener(params: json, nextEventListener: WalkEventListener(params: nil))
         default:
             return nil

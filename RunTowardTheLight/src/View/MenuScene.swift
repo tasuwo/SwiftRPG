@@ -62,7 +62,7 @@ class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
     
     // MARK: MenuSceneModelDelegate
 
-    func updateMenuScene() {
+    func updateItemSelect() {
         let selectedCell = self.contentsView.cellForItemAtIndexPath(self.model.selectedIndexPath!) as! ItemCell
 
         // 選択されたセル以外の全てのセルを非選択にする
@@ -77,8 +77,12 @@ class MenuScene: UIView, UICollectionViewDelegate, MenuSceneModelDelegate {
             self.dialog.text = self.model.defaultMessage
         } else {
             selectedCell.imageView.alpha = MenuScene.SELECTED_ALPHA
-            self.dialog.text = self.model.contents[self.model.selectedIndexPath!.row]["description"].string!
+            self.dialog.text = self.model.contents[self.model.selectedIndexPath!.row].description
         }
+    }
+
+    func reloadTable() {
+        self.contentsView.reloadData()
     }
 
     // MARK: UICollectionViewDelegate
