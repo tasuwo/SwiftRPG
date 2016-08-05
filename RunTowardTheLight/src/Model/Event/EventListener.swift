@@ -29,5 +29,5 @@ protocol EventHandler: class {
 protocol EventListener: EventHandler {
     var id: UInt64! { get set }
     var delegate: NotifiableFromListener? { get set }
-    init(params: JSON?, nextEventListener: EventListener.Type?)
+    init(params: JSON?, chainListeners: [(listener: EventListener.Type, params: JSON?)]?)
 }

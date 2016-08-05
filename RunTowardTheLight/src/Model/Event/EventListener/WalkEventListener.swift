@@ -18,7 +18,7 @@ class WalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, nextEventListener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Touch
         self.executionType = .Loop
         self.invoke = {

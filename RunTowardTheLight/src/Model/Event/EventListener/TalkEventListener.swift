@@ -17,7 +17,7 @@ class ActivateButtonListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Immediate
         self.executionType = .Onece
 
@@ -30,7 +30,7 @@ class ActivateButtonListener: EventListener {
             scene.actionButton.titleLabel?.text = "はなす"
             scene.actionButton.hidden = false
 
-            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, nextEventListener: listener!))
+            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, chainListeners: listeners))
         }
     }
 }
@@ -42,7 +42,7 @@ class StartTalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Button
         self.executionType = .Onece
 
@@ -65,7 +65,7 @@ class StartTalkEventListener: EventListener {
             TalkEventListener.getListener(0, params: params!)(sender: sender, args: args)
 
             // TODO: index < 1 のときの処理
-            self.delegate?.invoke(self, listener: TalkEventListener(params: params!, nextEventListener: listener!, index: 1))
+            self.delegate?.invoke(self, listener: TalkEventListener(params: params!, chainListeners: listeners, index: 1))
         }
     }
 }
@@ -77,11 +77,11 @@ class TalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required convenience init(params: JSON?, nextEventListener listener: EventListener.Type?) {
-        self.init(params: params, nextEventListener: listener, index: 0)
+    internal required convenience init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+        self.init(params: params, chainListeners: listeners, index: 0)
     }
 
-    init(params: JSON?, nextEventListener listener: EventListener.Type?, index: Int) {
+    init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?, index: Int) {
         self.triggerType = .Touch
         self.executionType = .Onece
 
@@ -98,10 +98,10 @@ class TalkEventListener: EventListener {
             (sender: AnyObject!, args: JSON!) -> () in
             if index < updatedMaxIndex!-1 {
                 TalkEventListener.getListener(index, params: updatedParams!)(sender: sender, args: args)
-                self.delegate?.invoke(self, listener: TalkEventListener(params: updatedParams!, nextEventListener: listener, index: index+1))
+                self.delegate?.invoke(self, listener: TalkEventListener(params: updatedParams!, chainListeners: listeners, index: index+1))
             } else {
                 TalkEventListener.getListener(index, params: updatedParams!)(sender: sender, args: args)
-                self.delegate?.invoke(self, listener: EndTalkEventListener(params: params, nextEventListener: listener))
+                self.delegate?.invoke(self, listener: EndTalkEventListener(params: params, chainListeners: listeners))
             }
         }
     }
@@ -167,7 +167,7 @@ class EndTalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Touch
         self.executionType = .Onece
 
@@ -178,7 +178,12 @@ class EndTalkEventListener: EventListener {
             let scene      = skView.scene as! GameScene
             scene.textBox_.hide()
             scene.menuButton.hidden = false
-            self.delegate!.invoke(self, listener: listener!.init(params: params, nextEventListener: nil))
+
+            if listeners?.count == 0 || listeners == nil { return }
+            let nextListener = listeners?.first?.listener
+            let nextParams = listeners?.first?.params
+            let nextChainListeners = Array(listeners!.dropFirst())
+            self.delegate!.invoke(self, listener: nextListener!.init(params: nextParams, chainListeners: nextChainListeners))
         }
     }
 }

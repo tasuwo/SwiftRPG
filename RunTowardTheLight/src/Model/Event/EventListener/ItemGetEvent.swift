@@ -18,7 +18,7 @@ class ShowItemGetDialogEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Immediate
         self.executionType = .Onece
 
@@ -56,7 +56,7 @@ class ShowItemGetDialogEventListener: EventListener {
 
             scene.eventDialog.text = "\(itemName!) を手に入れた．"
 
-            self.delegate?.invoke(self, listener: ItemGetDialogEventListener(params: params, nextEventListener: listener))
+            self.delegate?.invoke(self, listener: ItemGetDialogEventListener(params: params, chainListeners: listeners))
         }
     }
 }
@@ -71,7 +71,7 @@ class ItemGetDialogEventListener: EventListener {
     private var isDialogShown = false
     private var itemName = ""
 
-    required init(params: JSON?, nextEventListener listener: EventListener.Type?) {
+    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
         self.triggerType = .Touch
         self.executionType = .Onece
 
@@ -82,7 +82,12 @@ class ItemGetDialogEventListener: EventListener {
             let scene      = skView.scene as! GameScene
 
             scene.eventDialog.hidden = true
-            self.delegate?.invoke(self, listener: listener!.init(params: params, nextEventListener: nil))
+
+            if listeners?.count == 0 || listeners == nil { return }
+            let nextListener = listeners?.first?.listener
+            let nextParams = listeners?.first?.params
+            let nextChainListeners = Array(listeners!.dropFirst())
+            self.delegate?.invoke(self, listener: nextListener!.init(params: nextParams, chainListeners: nextChainListeners))
         }
     }
 }
