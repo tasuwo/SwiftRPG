@@ -27,6 +27,7 @@
 		2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */; };
 		2C556E811D50C11B00E03414 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E801D50C11B00E03414 /* EventManager.swift */; };
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
+		2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */; };
 		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
 		A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE11C7ACEAD007C5BC2 /* TileSet.swift */; };
 		A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DDEE51C7AF0C9007C5BC2 /* Map.swift */; };
@@ -93,6 +94,7 @@
 		2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkEventListener.swift; sourceTree = "<group>"; };
 		2C556E801D50C11B00E03414 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
+		2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateButtonListener.swift; sourceTree = "<group>"; };
 		5B9881F547528DC93B922240 /* Pods-RunTowardTheLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.debug.xcconfig"; sourceTree = "<group>"; };
 		99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunTowardTheLightTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D01E4F79EC0364D73943671 /* Pods-RunTowardTheLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunTowardTheLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunTowardTheLight/Pods-RunTowardTheLight.release.xcconfig"; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */,
 				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
 				2C2D31A41D531F04000D8A2B /* ItemGetEvent.swift */,
+				2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */,
 			);
 			path = EventListener;
 			sourceTree = "<group>";
@@ -681,6 +684,7 @@
 				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
 				A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
+				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				2C2D31A51D531F04000D8A2B /* ItemGetEvent.swift in Sources */,
 				2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */,

@@ -10,31 +10,6 @@ import Foundation
 import SwiftyJSON
 import SpriteKit
 
-class ActivateButtonListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-
-    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
-        self.triggerType = .Immediate
-        self.executionType = .Onece
-
-        self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene: GameScene = skView.scene as! GameScene
-
-            scene.actionButton.titleLabel?.text = "はなす"
-            scene.actionButton.hidden = false
-
-            self.delegate?.invoke(self, listener: StartTalkEventListener(params: params, chainListeners: listeners))
-        }
-    }
-}
-
 class StartTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
