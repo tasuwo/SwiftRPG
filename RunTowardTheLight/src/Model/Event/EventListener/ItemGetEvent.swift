@@ -14,11 +14,11 @@ import RealmSwift
 class ShowItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.triggerType = .Immediate
         self.executionType = .Onece
 
@@ -64,14 +64,14 @@ class ShowItemGetDialogEventListener: EventListener {
 class ItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
     private var isDialogShown = false
     private var itemName = ""
 
-    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.triggerType = .Touch
         self.executionType = .Onece
 

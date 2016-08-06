@@ -20,14 +20,16 @@ enum ExecutionType {
     case Loop
 }
 
+typealias EventMethod = (sender: AnyObject!, args: JSON!) -> ()
 protocol EventHandler: class {
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())! { get set }
+    var invoke: EventMethod! { get set }
     var triggerType: TriggerType { get }
     var executionType: ExecutionType { get }
 }
 
+typealias ListenerChain = [(listener: EventListener.Type, params: JSON?)]
 protocol EventListener: EventHandler {
     var id: UInt64! { get set }
     var delegate: NotifiableFromListener? { get set }
-    init(params: JSON?, chainListeners: [(listener: EventListener.Type, params: JSON?)]?)
+    init(params: JSON?, chainListeners: ListenerChain?)
 }

@@ -38,11 +38,11 @@ class ActivateButtonListener: EventListener {
 class StartTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.triggerType = .Button
         self.executionType = .Onece
 
@@ -73,15 +73,15 @@ class StartTalkEventListener: EventListener {
 class TalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    internal required convenience init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    internal required convenience init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.init(params: params, chainListeners: listeners, index: 0)
     }
 
-    init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?, index: Int) {
+    init(params: JSON?, chainListeners listeners: ListenerChain?, index: Int) {
         self.triggerType = .Touch
         self.executionType = .Onece
 
@@ -106,7 +106,7 @@ class TalkEventListener: EventListener {
         }
     }
 
-    static func getListener(index: Int, params: JSON) -> (sender: AnyObject!, args: JSON!) -> () {
+    static func getListener(index: Int, params: JSON) -> EventMethod {
         return {
             sender, args in
             let controller = sender as! GameViewController
@@ -163,11 +163,11 @@ class TalkEventListener: EventListener {
 class EndTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, chainListeners listeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.triggerType = .Touch
         self.executionType = .Onece
 

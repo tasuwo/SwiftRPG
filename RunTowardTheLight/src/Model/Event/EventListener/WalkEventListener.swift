@@ -14,11 +14,11 @@ import SwiftyJSON
 class WalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: ((sender: AnyObject!, args: JSON!) -> ())!
+    var invoke: EventMethod!
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, chainListeners: [(listener: EventListener.Type, params: JSON?)]?) {
+    required init(params: JSON?, chainListeners: ListenerChain?) {
         self.triggerType = .Touch
         self.executionType = .Loop
         self.invoke = {
