@@ -71,7 +71,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         let location = touches.first!.locationInNode(self)
-        if self.map.getSheet()!.isOnFrame(location) {
+        if self.map.sheet!.isOnFrame(location) {
             self.gameSceneDelegate?.frameTouched(location)
         } else {
             self.gameSceneDelegate?.gameSceneTouched(location)
@@ -100,7 +100,7 @@ class GameScene: SKScene {
 
         if screenActions.isEmpty { return }
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        self.map.getSheet()!.runAction(screenActions, callback: {
+        self.map.sheet!.runAction(screenActions, callback: {
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
             self.map.updateObjectPlacement(player)
         })

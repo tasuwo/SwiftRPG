@@ -10,12 +10,10 @@ import Foundation
 
 protocol MapObject {
     var hasCollision: Bool { get }
-    
-    var events: [EventListener] { get }
 
-    var parent: MapObject? { get }
-    
+    var events: [EventListener] { get set }
+
+    var parent: MapObject? { get set }
+
     func setCollision()
-    
-    func setEvents(events: [EventListener])
 }

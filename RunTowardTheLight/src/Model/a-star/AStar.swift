@@ -78,7 +78,7 @@ class AStar {
         for index in indexes {
             nodeList_[index].open(nodeList_[iBaseNode_], destination: destination_)
             // 終了判定
-            if nodeList_[index].getCoordinates().isEqual(destination_) {
+            if nodeList_[index].getCoordinates() == destination_ {
                 return getAStarResult()
             }
         }
@@ -123,8 +123,8 @@ class AStar {
     private func searchCanOpenNodeIndexes(iBaseNode: Int) -> [Int] {
         var checkCoordinates: [TileCoordinate] = []
         var indexes: [Int] = []
-        let baseX = nodeList_[iBaseNode_].getCoordinates().getX()
-        let baseY = nodeList_[iBaseNode_].getCoordinates().getY()
+        let baseX = nodeList_[iBaseNode_].getCoordinates().x
+        let baseY = nodeList_[iBaseNode_].getCoordinates().y
 
         // 基準ノードの上下左右のノードを調べる
         checkCoordinates.append(TileCoordinate(x: baseX - 1, y: baseY))
@@ -139,7 +139,7 @@ class AStar {
             }
             // ノードリストにノードとして存在するか
             let i_node = nodeList_.indexOf() {
-                $0.getCoordinates().isEqual(coordinate)
+                $0.getCoordinates() == coordinate
             }
             if (i_node != nil) {
                 if (nodeList_[i_node!].getState() == Node.STATE.None) {
@@ -165,7 +165,7 @@ class AStar {
         var node: Node
 
         let index = nodeList_.indexOf() {
-            $0.getCoordinates().isEqual(destination_)
+            $0.getCoordinates() == destination_
         }
         node = nodeList_[index!]
         while node.getParent() != nil {

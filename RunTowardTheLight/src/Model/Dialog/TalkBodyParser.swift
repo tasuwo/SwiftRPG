@@ -13,10 +13,9 @@ class TalkBodyParser {
     private var body: String!
     
     init?(talkFileName: String) {
-        if
-            let path: String = NSBundle.mainBundle().pathForResource(talkFileName, ofType: nil),
-            let fileHandle: NSFileHandle = NSFileHandle(forReadingAtPath: path),
-            let data: NSData = fileHandle.readDataToEndOfFile()
+        if let path: String = NSBundle.mainBundle().pathForResource(talkFileName, ofType: nil),
+           let fileHandle: NSFileHandle = NSFileHandle(forReadingAtPath: path),
+           let data: NSData = fileHandle.readDataToEndOfFile()
         {
             self.body = NSString(data:data, encoding:NSUTF8StringEncoding) as! String
         } else {
@@ -42,7 +41,9 @@ class TalkBodyParser {
         var talkInfo = [String: String]()
         var tmpTalkBody: String = ""
         
-        self.body.enumerateLines { (line, stop) -> () in
+        self.body.enumerateLines {
+            (line, stop) -> () in
+
             if line == "!" {
                 talkInfo["talk_body"] = tmpTalkBody
                 talksInfo.append(talkInfo)

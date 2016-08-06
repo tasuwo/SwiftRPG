@@ -113,7 +113,7 @@ class TalkEventListener: EventListener {
             let skView     = controller.view as! SKView
             let scene      = skView.scene as! GameScene
             let map        = scene.map
-            let sheet      = map.getSheet()
+            let sheet      = map.sheet
 
             let talker = params[index]["talker"].string
             let talkBody = params[index]["talk_body"].string

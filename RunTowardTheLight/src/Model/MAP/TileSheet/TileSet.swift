@@ -36,16 +36,14 @@ class TileSet {
     /// タイルセット内の各タイルの縦幅
     private let tileHeight: Int!
     
-    init?(
-        id: Int,
-        imageName: String,
-        nTile: Int,
-        firstTileID: Int,
-        width: Int,
-        height: Int,
-        tileWidth: Int,
-        tileHeight: Int
-    ) {
+    init?(id: Int,
+          imageName: String,
+          nTile: Int,
+          firstTileID: Int,
+          width: Int,
+          height: Int,
+          tileWidth: Int,
+          tileHeight: Int) {
         self.tileSetID = id
         self.imageName = imageName
         self.count = nTile
@@ -55,14 +53,13 @@ class TileSet {
         self.tileWidth = tileWidth
         self.tileHeight = tileHeight
     }
-    
-    
+
     ///  タイルの画像を，タイルセット(1画像ファイル)から切り出し，返す
     ///
     ///  - parameter tileSetID: 対象タイルが含まれるタイルセットID
     ///  - parameter tileID:    対象タイルのタイルID
     ///
-    ///  - throws:
+    ///  - throws: otherError
     ///
     ///  - returns: タイル画像
     func cropTileImage(tileID: Int) throws -> UIImage {

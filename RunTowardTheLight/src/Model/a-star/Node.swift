@@ -38,8 +38,8 @@ class Node {
     ///  - parameter coordinates: タイル座標
     init(coordinates: TileCoordinate) {
         state_ = STATE.None
-        coordinates_ = TileCoordinate(x: coordinates.getX(),
-                                      y: coordinates.getY())
+        coordinates_ = TileCoordinate(x: coordinates.x,
+                                      y: coordinates.y)
     }
 
     
@@ -59,8 +59,8 @@ class Node {
         }
 
         // 推定コストを求める
-        let dx = abs(destination.getX() - coordinates_.getX())
-        let dy = abs(destination.getY() - coordinates_.getY())
+        let dx = abs(destination.x - coordinates_.x)
+        let dy = abs(destination.y - coordinates_.y)
         heuristicCost_ = dx + dy
 
         // 親ノードを保持する
@@ -80,7 +80,7 @@ class Node {
     ///
     ///  - returns: 指定した座標にノードが存在しなければ false, 存在すれば true
     func isPositioned(coordinates: TileCoordinate) -> Bool {
-        if coordinates_.isEqual(coordinates) {
+        if coordinates_ == coordinates {
             return true
         } else {
             return false

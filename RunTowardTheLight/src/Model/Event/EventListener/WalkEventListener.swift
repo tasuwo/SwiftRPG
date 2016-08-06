@@ -27,7 +27,7 @@ class WalkEventListener: EventListener {
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
             let map        = scene.map
-            let sheet      = map.getSheet()!
+            let sheet      = map.sheet!
 
             let touchedPointString = args["touchedPoint"].string
             if touchedPointString == nil {

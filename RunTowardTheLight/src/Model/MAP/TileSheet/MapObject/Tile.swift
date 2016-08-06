@@ -28,17 +28,38 @@ public class Tile: MapObject {
     /// 座標
     private(set) var coordinate: TileCoordinate
 
-    /// イベント
-    private(set) var events: [EventListener] = []
-
     /// プロパティ
     private(set) var property: TileProperty
 
-    /// 当たり判定
+    // MARK: - MapObject
+
     private(set) var hasCollision: Bool
 
-    /// 親オブジェクト
-    private(set) var parent: MapObject?
+    private var events_: [EventListener] = []
+    var events: [EventListener] {
+        get {
+            return self.events_
+        }
+        set {
+            self.events_ = newValue
+        }
+    }
+
+    private var parent_: MapObject?
+    var parent: MapObject? {
+        get {
+            return self.parent_
+        }
+        set {
+            self.parent_ = newValue
+        }
+    }
+
+    func setCollision() {
+        self.hasCollision = true
+    }
+
+    // MARK: -
 
     ///  コンストラクタ
     ///
@@ -47,8 +68,8 @@ public class Tile: MapObject {
     ///
     ///  - returns: なし
     init(id: TileID, coordinate: TileCoordinate, property: TileProperty) {
-        let x = coordinate.getX()
-        let y = coordinate.getY()
+        let x = coordinate.x
+        let y = coordinate.y
         self.tileID = id
         self.tile = SKSpriteNode()
         self.tile.size = CGSizeMake(CGFloat(Tile.TILE_SIZE),
@@ -61,7 +82,6 @@ public class Tile: MapObject {
         self.hasCollision = false
         self.property = property
     }
-
 
     ///  タイルにテクスチャ画像を付加する
     ///
@@ -84,6 +104,7 @@ public class Tile: MapObject {
         node.addChild(self.tile)
     }
 
+    // MARK: - class method
 
     ///  タイル群を生成する
     ///
@@ -181,11 +202,5 @@ public class Tile: MapObject {
         return tiles
     }
 
-    func setEvents(events: [EventListener]) {
-        self.events = events
-    }
-    
-    func setCollision() {
-        self.hasCollision = true
-    }
+    // MARK: -
 }

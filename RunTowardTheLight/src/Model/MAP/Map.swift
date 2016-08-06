@@ -11,7 +11,7 @@ import SpriteKit
 
 public class Map {
     /// タイルシート
-    private var sheet: TileSheet? = nil
+    private(set) var sheet: TileSheet? = nil
     
     /// マップオブジェクトの配置を保持しておくディクショナリ
     private var placement: Dictionary<TileCoordinate, [MapObject]> = [:]
@@ -26,109 +26,89 @@ public class Map {
     ///  - parameter frameHeight: フレームの高さ
     ///
     ///  - returns:
-    init?(
-        mapName: String,
-        frameWidth: CGFloat,
-        frameHeight: CGFloat
-    ) {
-        if let parser = TiledMapJsonParser(fileName: mapName) {
-            do {
-                let cols, rows: Int
-                (cols, rows) = try parser.getLayerSize()
-                
-                // タイルの生成
-                let tiles = try Tile.createTiles(
-                    rows,
-                    cols:       cols,
-                    properties: try parser.getTileProperties(),
-                    tileSets:   try parser.getTileSets(),
-                    collisionPlacement:
-                        try parser.getInfoFromLayer(
-                                cols,
-                                layerTileRows: rows,
-                                kind: TiledMapJsonParser.LAYER.COLLISION),
-                    tilePlacement:
-                        try parser.getInfoFromLayer(
-                                cols,
-                                layerTileRows: rows,
-                                kind: TiledMapJsonParser.LAYER.TILE))
-                
-                
-                // オブジェクトの生成
-                var objects = try Object.createObjects(
-                    tiles,
-                    properties: try parser.getTileProperties(),
-                    tileSets: try parser.getTileSets(),
-                    objectPlacement: try parser.getInfoFromLayer(
-                        cols,
-                        layerTileRows: rows,
-                        kind: TiledMapJsonParser.LAYER.OBJECT))
-                // 主人公の作成
-                let playerPosition = TileCoordinate(x: 10, y: 10)
-                let player = Object(
-                    name: objectNameTable.PLAYER_NAME,
-                    imageName: objectNameTable.PLAYER_IMAGE_DOWN,
-                    position: TileCoordinate.getSheetCoordinateFromTileCoordinate(playerPosition),
-                    images: objectNameTable.PLAYER_IMAGE_SET)
-                // 主人公をオブジェクトとして登録
-                if objects[playerPosition] == nil {
-                    objects[playerPosition] = [player]
-                } else {
-                    objects[playerPosition]!.append(player)
-                }
-                
-                // シートの生成
-                let sheet = TileSheet(
-                    parser: parser,
-                    frameWidth: frameWidth,
-                    frameHeight: frameHeight,
-                    tiles: tiles,
-                    objects: objects
-                )
-                self.sheet = sheet!
-                
-                // タイル，及びオブジェクトの位置情報を保持
-                for (coordinate, tile) in tiles {
-                    self.placement[coordinate] = [tile]
-                }
-                for (coordinate, objectsOnTile) in objects {
-                    for object in objectsOnTile {
-                        self.placement[coordinate]!.append(object)
-                    }
-                }
-                
-                // オブジェクトのみ，別ディクショナリでも保持
-                self.objects_ = objects
-                
-            } catch ParseError.IllegalJsonFormat {
-                print("Json 形式が正しくありません")
-            } catch ParseError.JsonFileNotFound {
-                print("JSON ファイルが見つかりません")
-            } catch ParseError.otherError(let str) {
-                print(str)
-            } catch ParseError.SwiftyJsonError(let errors) {
-                for error in errors {
-                    print(error)
-                }
-            } catch {
-                print("その他のエラー")
-            }
-        } else {
-            print("パーサの初期化失敗")
+    init?(mapName: String,
+          frameWidth: CGFloat,
+          frameHeight: CGFloat)
+    {
+        let parser: TiledMapJsonParser
+        do {
+            parser = try TiledMapJsonParser(fileName: mapName)
+        } catch ParseError.IllegalJsonFormat {
+            print("Json 形式が正しくありません")
+            return nil
+        } catch ParseError.JsonFileNotFound {
+            print("JSON ファイルが見つかりません")
+            return nil
+        } catch {
+            return nil
         }
+
+        let tiles: Dictionary<TileCoordinate, Tile>
+        var objects: Dictionary<TileCoordinate, [Object]>
+        do {
+            let cols, rows: Int
+            (cols, rows) = try parser.getLayerSize()
+            let tileProperties = try parser.getTileProperties()
+            let tileSets = try parser.getTileSets()
+            let collisionLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .COLLISION)
+            let tileLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .TILE)
+            let objectLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .OBJECT)
+            tiles = try Tile.createTiles(rows,
+                                         cols: cols,
+                                         properties: tileProperties,
+                                         tileSets: tileSets,
+                                         collisionPlacement: collisionLayer,
+                                         tilePlacement: tileLayer)
+            objects = try Object.createObjects(tiles,
+                                               properties: tileProperties,
+                                               tileSets: tileSets,
+                                               objectPlacement: objectLayer)
+
+        } catch ParseError.otherError(let str) {
+            print(str)
+            return nil
+        } catch ParseError.SwiftyJsonError(let errors) {
+            for error in errors { print(error) }
+            return nil
+        } catch {
+            return nil
+        }
+
+        // 主人公の作成
+        let playerPosition = TileCoordinate(x: 10, y: 10)
+        let player = Object(name: objectNameTable.PLAYER_NAME,
+                            imageName: objectNameTable.PLAYER_IMAGE_DOWN,
+                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(playerPosition),
+                            images: objectNameTable.PLAYER_IMAGE_SET)
+        if objects[playerPosition] == nil {
+            objects[playerPosition] = [player]
+        } else {
+            objects[playerPosition]!.append(player)
+        }
+
+        let sheet = TileSheet(parser: parser,
+                              frameWidth: frameWidth,
+                              frameHeight: frameHeight,
+                              tiles: tiles,
+                              objects: objects)
+        self.sheet = sheet!
+
+        for (coordinate, tile) in tiles {
+            self.placement[coordinate] = [tile]
+        }
+        for (coordinate, objectsOnTile) in objects {
+            for objectOnTile in objectsOnTile {
+                self.placement[coordinate]!.append(objectOnTile)
+            }
+        }
+
+        self.objects_ = objects
     }
-    
-    
-    func getSheet() -> TileSheet? {
-        return self.sheet
-    }
-    
-    
+
     func addSheetTo(scene: SKScene) {
         self.sheet?.addTo(scene)
     }
-    
-    
+
     ///  名前からオブジェクトを取得する
     ///
     ///  - parameter name: オブジェクト名
@@ -164,8 +144,7 @@ public class Map {
     func getMapObjectsOn(coordinate: TileCoordinate) -> [MapObject]? {
         return self.placement[coordinate]
     }
-    
-    
+
     ///  配置されたイベントを取得する
     ///
     ///  - parameter coordinate: イベントを取得するタイル座標
@@ -184,8 +163,7 @@ public class Map {
         
         return events
     }
-    
-    
+
     ///  タイル座標の通行可否を判定する
     ///
     ///  - parameter coordinate: 判定対象のタイル座標
@@ -199,8 +177,7 @@ public class Map {
         }
         return true
     }
-    
-    
+
     ///  オブジェクトの位置情報を，実際のSKSpriteNodeの位置から更新する
     ///
     ///  - parameter object:        更新対象のオブジェクト
@@ -224,8 +201,7 @@ public class Map {
         self.placement[destination]!.append(object)
         print(destination.description)
     }
-    
-    
+
     ///  オブジェクトのZ方向の位置を更新する
     func updateObjectsZPosition() {
         var objects: [(Object, CGFloat)] = []

@@ -14,10 +14,7 @@ import SpriteKit
 public class Object: MapObject {
     /// オブジェクト名
     private(set) var name: String!
-    
-    /// イベント
-    private(set) var events: [EventListener] = []
-    
+
     /// オブジェクトの画像イメージ
     private let images: IMAGE_SET?
     
@@ -32,18 +29,41 @@ public class Object: MapObject {
     
     /// 画面上の描画位置
     private(set) var position: CGPoint
-    
-    /// 当たり判定
-    private(set) var hasCollision: Bool
-    
+
     /// 歩行のためのインデックス
     /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
     private var stepIndex: Int = 0
 
-    /// 親オブジェクト
-    private(set) var parent: MapObject?
+    // MARK: - MapObject
 
-    
+    private(set) var hasCollision: Bool
+
+    private var events_: [EventListener] = []
+    var events: [EventListener] {
+        get {
+            return self.events_
+        }
+        set {
+            self.events_ = newValue
+        }
+    }
+
+    private var parent_: MapObject?
+    var parent: MapObject? {
+        get {
+            return self.parent_
+        }
+        set {
+            self.parent_ = newValue
+        }
+    }
+
+    func setCollision() {
+        self.hasCollision = true
+    }
+
+    // MARK: -
+
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
         object = SKSpriteNode()
         object.name = name
@@ -57,7 +77,6 @@ public class Object: MapObject {
         self.position = position
     }
 
-    
     convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
         object.texture = SKTexture(imageNamed: imageName)
@@ -65,14 +84,12 @@ public class Object: MapObject {
                               height: (object.texture?.size().height)!)
     }
 
-    
     convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
         object.texture = SKTexture(image: imageData)
         object.size = CGSize(width: (object.texture?.size().width)!,
                               height: (object.texture?.size().height)!)
     }
-    
 
     ///  オブジェクトを子ノードとして追加する
     ///
@@ -80,7 +97,6 @@ public class Object: MapObject {
     func addTo(node: SKSpriteNode) {
         node.addChild(self.object)
     }
-    
 
     ///  オブジェクトが対象座標へ直線移動するためのアニメーションを返す
     ///  移動時のテクスチャ変更も含めて行う
@@ -136,7 +152,6 @@ public class Object: MapObject {
         return actions
     }
 
-
     ///  連続したアクションを実行する
     ///  アクション実行中は，他のイベントの発生は無視する
     ///  オブジェクトの位置情報の更新も行う
@@ -159,6 +174,34 @@ public class Object: MapObject {
         )
     }
 
+    ///  オブジェクトの方向を指定する．
+    ///  画像が存在すれば，方向に応じて適切な画像に切り替える．
+    ///
+    ///  - parameter direction: オブジェクトの向く方向
+    func setDirection(direction: DIRECTION) {
+        self.direction = direction
+        if let images = self.images {
+            let imageNames = images.get(direction)
+            self.object.texture = SKTexture(imageNamed: imageNames[0][1])
+        }
+    }
+
+    ///  オブジェクト(SKNode)の現在位置を取得する．
+    ///  座標と同期して管理される Object との位置とは違い，画面上の現在位置を取得する．
+    ///
+    ///  - returns: SKNode の画面上の位置
+    func getRealTimePosition() -> CGPoint {
+        return self.object.position
+    }
+
+    ///  オブジェクトの Z 軸方向の位置を指定する．
+    ///
+    ///  - parameter position: z軸方向の位置
+    func setZPosition(position: CGFloat) {
+        self.object.zPosition = position
+    }
+
+    // MARK: - class method
 
     ///  オブジェクトを生成する
     ///
@@ -247,8 +290,8 @@ public class Object: MapObject {
                 let args = Array(tmp.dropFirst().dropFirst())
 
                 // 周囲のタイルにイベントを設置
-                let x = coordinate.getX()
-                let y = coordinate.getY()
+                let x = coordinate.x
+                let y = coordinate.y
                 let leftCoordinate = TileCoordinate(x: x-1, y: y)
                 let rightCoordinate = TileCoordinate(x: x+1, y: y)
                 let downCoordiante = TileCoordinate(x: x, y: y-1)
@@ -259,7 +302,7 @@ public class Object: MapObject {
                     position:TileCoordinate.getSheetCoordinateFromTileCoordinate(leftCoordinate),
                     images: nil
                 )
-                leftObject.setParent(object)
+                leftObject.parent = object
                 let leftEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.LEFT.reverse, params: args)
                 if leftEvent == nil {
                     print("eventType is invalid")
@@ -272,7 +315,7 @@ public class Object: MapObject {
                     position:TileCoordinate.getSheetCoordinateFromTileCoordinate(rightCoordinate),
                     images: nil
                 )
-                rightObject.setParent(object)
+                rightObject.parent = object
                 let rightEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.RIGHT.reverse, params: args)
                 if rightEvent == nil {
                     print("eventType is invalid")
@@ -285,7 +328,7 @@ public class Object: MapObject {
                     position:TileCoordinate.getSheetCoordinateFromTileCoordinate(downCoordiante),
                     images: nil
                 )
-                downObject.setParent(object)
+                downObject.parent = object
                 let downEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.DOWN.reverse, params: args)
                 if downEvent == nil {
                     print("eventType is invalid")
@@ -298,7 +341,7 @@ public class Object: MapObject {
                     position:TileCoordinate.getSheetCoordinateFromTileCoordinate(upCoordinate),
                     images: nil
                 )
-                upObject.setParent(object)
+                upObject.parent = object
                 let upEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.UP.reverse, params: args)
                 if upEvent == nil {
                     print("eventType is invalid")
@@ -323,32 +366,6 @@ public class Object: MapObject {
         return objects
     }
 
-    func setDirection(direction: DIRECTION) {
-        self.direction = direction
-        if let images = self.images {
-            let imageNames = images.get(direction)
-            self.object.texture = SKTexture(imageNamed: imageNames[0][1])
-        }
-    }
-
-    func setCollision() {
-        self.hasCollision = true
-    }
-
-    func setParent(parent: Object) {
-        self.parent = parent
-    }
-    
-    func setEvents(events: [EventListener]) {
-        self.events = events
-    }
-    
-    func getRealTimePosition() -> CGPoint {
-        return self.object.position
-    }
-    
-    func setZPosition(position: CGFloat) {
-        self.object.zPosition = position
-    }
+    // MARK: -
 }
 
