@@ -1,6 +1,6 @@
 //
-//  RunTowardTheLightTests.swift
-//  RunTowardTheLightTests
+//  SwiftRPGTests.swift
+//  SwiftRPGTests
 //
 //  Created by 兎澤佑 on 2015/06/27.
 //  Copyright (c) 2015年 兎澤佑. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class RunTowardTheLightTests: XCTestCase {
+class SwiftRPGTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

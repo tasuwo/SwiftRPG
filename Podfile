@@ -6,11 +6,11 @@ pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 pod 'RealmSwift'
 pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift2'
 
-target 'RunTowardTheLight' do
+target 'SwiftRPG' do
 
 end
 
-target 'RunTowardTheLightTests' do
+target 'SwiftRPGTests' do
 
 end
 
