@@ -192,9 +192,14 @@ public class Tile: MapObject {
                 let eventType = tmp[0]
                 let args = Array(tmp.dropFirst())
 
-                if let event = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: nil, params: args) {
-                    tile.events.append(event)
+                let event: EventListener
+                do {
+                    event = try EventListenerGenerator.getListenerByID(eventType, directionToParent: nil, params: args)
+                } catch {
+                    // TODO: Event Listener 生成時のエラーハンドリング
+                    throw error
                 }
+                tile.events.append(event)
             }
 
             tiles[coordinate] = tile

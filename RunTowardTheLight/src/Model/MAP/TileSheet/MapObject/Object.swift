@@ -284,86 +284,67 @@ public class Object: MapObject {
             // イベントの付加
             if let obj_action = property!["event"] {
                 let tmp = obj_action.componentsSeparatedByString(",")
-                // TODO: 引数の検査
                 let eventType = tmp[0]
-                let placementDirections = tmp[1]
-                let args = Array(tmp.dropFirst().dropFirst())
+                let eventPlacedDirectionsFromParent = tmp[1]
+                let eventArgs = Array(tmp.dropFirst().dropFirst())
 
-                // 周囲のタイルにイベントを設置
-                let x = coordinate.x
-                let y = coordinate.y
-                let leftCoordinate = TileCoordinate(x: x-1, y: y)
-                let rightCoordinate = TileCoordinate(x: x+1, y: y)
-                let downCoordiante = TileCoordinate(x: x, y: y-1)
-                let upCoordinate = TileCoordinate(x: x, y: y+1)
-
-                let leftObject = Object(
-                    name: object.name + "_left",
-                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(leftCoordinate),
-                    images: nil
-                )
-                leftObject.parent = object
-                let leftEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.LEFT.reverse, params: args)
-                if leftEvent == nil {
-                    print("eventType is invalid")
-                    throw E.error
-                }
-                leftObject.events.append(leftEvent!)
-
-                let rightObject = Object(
-                    name: object.name + "_right",
-                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(rightCoordinate),
-                    images: nil
-                )
-                rightObject.parent = object
-                let rightEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.RIGHT.reverse, params: args)
-                if rightEvent == nil {
-                    print("eventType is invalid")
-                    throw E.error
-                }
-                rightObject.events.append(rightEvent!)
-
-                let downObject = Object(
-                    name: object.name + "_down",
-                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(downCoordiante),
-                    images: nil
-                )
-                downObject.parent = object
-                let downEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.DOWN.reverse, params: args)
-                if downEvent == nil {
-                    print("eventType is invalid")
-                    throw E.error
-                }
-                downObject.events.append(downEvent!)
-
-                let upObject = Object(
-                    name: object.name + "_up",
-                    position:TileCoordinate.getSheetCoordinateFromTileCoordinate(upCoordinate),
-                    images: nil
-                )
-                upObject.parent = object
-                let upEvent = EventListenerGenerator.getListenerByID(eventType, eventPlacedDirection: DIRECTION.UP.reverse, params: args)
-                if upEvent == nil {
-                    print("eventType is invalid")
-                    throw E.error
-                }
-                upObject.events.append(upEvent!)
-
-                if placementDirections[0] == "1" {
-                    objects[upCoordinate]?.append(upObject)
-                }
-                if placementDirections[1] == "1" {
-                    objects[downCoordiante]?.append(downObject)
-                }
-                if placementDirections[2] == "1" {
-                    objects[leftCoordinate]?.append(leftObject)
-                }
-                if placementDirections[3] == "1" {
-                    objects[rightCoordinate]?.append(rightObject)
+                do {
+                    if eventPlacedDirectionsFromParent[0] == "1" {
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .UP)
+                    }
+                    if eventPlacedDirectionsFromParent[1] == "1" {
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .DOWN)
+                    }
+                    if eventPlacedDirectionsFromParent[2] == "1" {
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .LEFT)
+                    }
+                    if eventPlacedDirectionsFromParent[3] == "1" {
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .RIGHT)
+                    }
+                } catch {
+                    // TODO: event listener 生成時のエラー
+                    throw error
                 }
             }
         }
         return objects
+    }
+
+    private class func addEventObject(
+        inout objects: Dictionary<TileCoordinate, [Object]>,
+              id: String, args: [String],
+              coordinate: TileCoordinate,
+              directionFromParent: DIRECTION
+    ) throws {
+        let eventPlacedTileCoordinate = Object.getTileCoordinateTo(directionFromParent, base: coordinate)
+        let eventPlacedSheetCoordinate = TileCoordinate.getSheetCoordinateFromTileCoordinate(eventPlacedTileCoordinate)
+        let event: EventListener
+        do {
+            event = try EventListenerGenerator.getListenerByID(id, directionToParent: directionFromParent.reverse, params: args)
+        } catch {
+            throw error
+        }
+        let object = Object(name: "", position: eventPlacedSheetCoordinate, images: nil)
+        object.events.append(event)
+
+        objects[eventPlacedTileCoordinate]!.append(object)
+    }
+
+    private class func getTileCoordinateTo(direction: DIRECTION, base: TileCoordinate) -> TileCoordinate {
+        let placementCoordinate: TileCoordinate
+
+        switch direction {
+        case .LEFT:
+            placementCoordinate = TileCoordinate(x: base.x-1, y: base.y)
+        case .RIGHT:
+            placementCoordinate = TileCoordinate(x: base.x+1, y: base.y)
+        case .DOWN:
+            placementCoordinate = TileCoordinate(x: base.x, y: base.y-1)
+        case .UP:
+            placementCoordinate = TileCoordinate(x: base.x, y: base.y+1)
+        }
+
+        return placementCoordinate
     }
 
     // MARK: -

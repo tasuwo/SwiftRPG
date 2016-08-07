@@ -10,26 +10,33 @@ import Foundation
 import SwiftyJSON
 
 class EventListenerGenerator {
-    class func getListenerByID(id: String, eventPlacedDirection: DIRECTION?, params: [String]) -> EventListener? {
+    class func getListenerByID(id: String, directionToParent: DIRECTION?, params: [String]) throws -> EventListener {
         switch id {
         case "talk":
             let parser = TalkBodyParser(talkFileName: params[0])
             var paramsJson = parser?.parse()
 
-            if let direction = eventPlacedDirection {
-                // TODO: error handling
-                var array = paramsJson!.arrayObject as? [[String:String]]
-                array?.append(["direction":direction.toString])
-                paramsJson = JSON(array!)
-            }
+            // TODO: Error Handling
+            var array = paramsJson!.arrayObject as? [[String:String]]
+            let directionString = directionToParent == nil ? "" : directionToParent!.toString
+            array?.append(["direction":directionString])
+            paramsJson = JSON(array!)
 
-            return ActivateButtonListener(params: paramsJson, chainListeners: [(listener: WalkEventListener.self, params: nil)])
+            do {
+                return try ActivateButtonListener(params: JSON(["text":"はなす"]), chainListeners: [
+                    (listener: StartTalkEventListener.self, params: paramsJson),
+                    (listener: WalkEventListener.self, params: nil)
+                ])
+            } catch {
+                throw error
+            }
         case "item":
+            // TODO: Error Handling
             let key: String = params[0]
             let item = ItemTable.get(key)
             if item == nil {
                 print("Item not found")
-                return nil
+                throw E.error
             }
             let name = item!.name
             let description = item!.description
@@ -40,9 +47,14 @@ class EventListenerGenerator {
                 "description": description,
                 "image_name": image_name
             ])
-            return ShowItemGetDialogEventListener(params: json, chainListeners: [(listener: WalkEventListener.self, params: nil)])
+
+            do {
+                return try ShowItemGetDialogEventListener(params: json, chainListeners: [(listener: WalkEventListener.self, params: nil)])
+            } catch {
+                throw error
+            }
         default:
-            return nil
+            throw E.error
         }
     }
 }

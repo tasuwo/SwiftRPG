@@ -11,6 +11,7 @@ import UIKit
 import SpriteKit
 import SwiftyJSON
 
+/// プレイヤー移動のリスナー
 class WalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
@@ -31,8 +32,10 @@ class WalkEventListener: EventListener {
 
             let touchedPointString = args["touchedPoint"].string
             if touchedPointString == nil {
-                print("Invalid arguement")
-                return
+                throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                    ["touchedPoint": touchedPointString],
+                    handler: WalkEventListener.self)
+                )
             }
             let touchedPoint = CGPointFromString(touchedPointString!)
 

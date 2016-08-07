@@ -45,9 +45,13 @@ class EventDispatcher : NotifiableFromListener {
         listeners.removeAll()
     }
 
-    func trigger(sender: AnyObject!, args: JSON!) {
+    func trigger(sender: AnyObject!, args: JSON!) throws {
         for listener in listeners.values {
-            listener.invoke(sender: sender, args: args)
+            do {
+                try listener.invoke(sender: sender, args: args)
+            } catch {
+                throw error
+            }
         }
     }
     

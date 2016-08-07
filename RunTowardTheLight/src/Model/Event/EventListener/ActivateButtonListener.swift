@@ -10,6 +10,7 @@ import Foundation
 import SwiftyJSON
 import SpriteKit
 
+/// アクションボタン表示のリスナー
 class ActivateButtonListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
@@ -17,9 +18,31 @@ class ActivateButtonListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
+    private let text: String
+
+    ///  コンストラクタ
+    ///
+    ///  - parameter params:    JSON形式の引数．
+    ///    - text : action button に表示するテキスト
+    ///  - parameter listeners: 次に実行する event listener
+    ///
+    ///  - returns: なし
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         self.triggerType = .Immediate
         self.executionType = .Onece
+
+        if params == nil {
+            throw EventListenerError.ParamIsNil
+        }
+
+        let text = params!["text"].string
+        if text == nil {
+            throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                ["text": text],
+                handler: ActivateButtonListener.self)
+            )
+        }
+        self.text = text!
 
         self.invoke = {
             (sender: AnyObject!, args: JSON!) -> () in
@@ -27,19 +50,17 @@ class ActivateButtonListener: EventListener {
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
 
-            let text = params!["text"].string
-            if text == nil {
-                throw EventListenerError.IllegalParamFormat
-            }
-
-            scene.actionButton.titleLabel?.text = text!
+            scene.actionButton.titleLabel?.text = self.text
             scene.actionButton.hidden = false
 
             if listeners == nil || listeners?.count == 0 { return }
             let nextListener = listeners!.first!.listener
-            let nextParams = listeners!.first!.params
-            let nextChainListeners = listeners?.count == 1 ? nil : Array(listeners!.dropFirst())
-            self.delegate!.invoke(self, listener: nextListener.init(params: nextParams, chainListeners: nextChainListeners))
+            let nextListenerChain: ListenerChain? = listeners?.count == 1 ? nil : Array(listeners!.dropFirst())
+            let nextListenerInstance: EventListener
+            do {
+                nextListenerInstance = try nextListener.init(params: listeners?.first?.params, chainListeners: nextListenerChain)
+            }
+            self.delegate!.invoke(self, listener: nextListenerInstance)
         }
     }
 }

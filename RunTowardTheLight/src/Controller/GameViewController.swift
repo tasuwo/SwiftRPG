@@ -62,11 +62,35 @@ class GameViewController: UIViewController, GameSceneDelegate {
 
     func gameSceneTouched(location: CGPoint) {
         let args = JSON(["touchedPoint": NSStringFromCGPoint(location)])
-        self.eventManager.touchEventDispacher.trigger(self, args: args)
+        do {
+            try self.eventManager.touchEventDispacher.trigger(self, args: args)
+        } catch EventListenerError.IllegalArguementFormat(let string) {
+            print(string)
+        } catch EventListenerError.IllegalParamFormat(let string) {
+            print(string)
+        } catch EventListenerError.InvalidParam(let string) {
+            print(string)
+        } catch EventListenerError.ParamIsNil {
+            print("Required param is nil")
+        } catch {
+            print("Unexpected error occured")
+        }
     }
 
     func actionButtonTouched() {
-        self.eventManager.actionButtonEventDispacher.trigger(self, args: nil)
+        do {
+            try self.eventManager.actionButtonEventDispacher.trigger(self, args: nil)
+        } catch EventListenerError.IllegalArguementFormat(let string) {
+            print(string)
+        } catch EventListenerError.IllegalParamFormat(let string) {
+            print(string)
+        } catch EventListenerError.InvalidParam(let string) {
+            print(string)
+        } catch EventListenerError.ParamIsNil {
+            print("Required param is nil")
+        } catch {
+            print("Unexpected error occured")
+        }
     }
 
     func didPressMenuButton() {
@@ -75,7 +99,19 @@ class GameViewController: UIViewController, GameSceneDelegate {
     }
 
     func viewUpdated() {
-        eventManager.cyclicEventDispacher.trigger(self, args: nil)
+        do {
+            try self.eventManager.cyclicEventDispacher.trigger(self, args: nil)
+        } catch EventListenerError.IllegalArguementFormat(let string) {
+            print(string)
+        } catch EventListenerError.IllegalParamFormat(let string) {
+            print(string)
+        } catch EventListenerError.InvalidParam(let string) {
+            print(string)
+        } catch EventListenerError.ParamIsNil {
+            print("Required param is nil")
+        } catch {
+            print("Unexpected error occured")
+        }
     }
 
     func addEvent(events: [EventListener]) {
