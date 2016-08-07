@@ -18,14 +18,15 @@ class TitleViewController: UIViewController, TitleSceneDelegate {
         
         self.view.addSubview(view)
     }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+    // MARK: - TitleSceneDelegate
     
-    ///  スタートボタンが押された
     func newGameTouched() {
         let gameViewController: UIViewController = GameViewController()
         self.presentViewController(gameViewController, animated: false, completion: nil)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 }

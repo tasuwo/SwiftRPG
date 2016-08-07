@@ -32,11 +32,9 @@ class GameViewController: UIViewController, GameSceneDelegate {
         super.viewWillLayoutSubviews()
 
         if (!viewInitiated) {
-            // 1. delegate を設定した game scene を生成
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
-            // 2. game scene を親とした skview 取得
             self.view = scene.gameView
 
             self.viewInitiated = true
@@ -56,7 +54,7 @@ class GameViewController: UIViewController, GameSceneDelegate {
         }
     }
 
-    // MARK: GameSceneDelegate
+    // MARK: - GameSceneDelegate
 
     func frameTouched(location: CGPoint) {}
 

@@ -29,7 +29,7 @@ class MenuViewController: UIViewController, MenuSceneDelegate {
         self.model.updateItems()
     }
     
-    // MARK: MenuSceneDelegate
+    // MARK: - MenuSceneDelegate
     
     func didPressBackButton() {
         self.dismissViewControllerAnimated(true, completion: nil)
