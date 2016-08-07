@@ -103,14 +103,19 @@ class GameViewController: UIViewController, GameSceneDelegate {
             try self.eventManager.cyclicEventDispacher.trigger(self, args: nil)
         } catch EventListenerError.IllegalArguementFormat(let string) {
             print(string)
+            self.eventManager.cyclicEventDispacher.removeAll()
         } catch EventListenerError.IllegalParamFormat(let string) {
             print(string)
+            self.eventManager.cyclicEventDispacher.removeAll()
         } catch EventListenerError.InvalidParam(let string) {
             print(string)
+            self.eventManager.cyclicEventDispacher.removeAll()
         } catch EventListenerError.ParamIsNil {
             print("Required param is nil")
+            self.eventManager.cyclicEventDispacher.removeAll()
         } catch {
             print("Unexpected error occured")
+            self.eventManager.cyclicEventDispacher.removeAll()
         }
     }
 
