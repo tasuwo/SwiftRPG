@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum MapObjectError: ErrorType {
+    case FailedToGenerate(String)
+}
+
 protocol MapObject {
     var hasCollision: Bool { get }
 

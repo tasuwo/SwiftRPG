@@ -32,7 +32,7 @@ class GameScene: SKScene {
     @IBOutlet weak var eventDialog: DialogLabel!
 
     /* ゲーム画面の各構成要素 */
-    var map: Map!
+    var map: Map?
     var textBox_: Dialog!
     var actionButton_: UIButton!
 
@@ -47,10 +47,9 @@ class GameScene: SKScene {
     }
 
     override func didMoveToView(view: SKView) {
-        // マップ生成
         if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
             self.map = map
-            self.map.addSheetTo(self)
+            self.map!.addSheetTo(self)
         }
 
         actionButton.layer.borderColor = UIColor.whiteColor().CGColor
@@ -70,8 +69,9 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if map == nil { return }
         let location = touches.first!.locationInNode(self)
-        if self.map.sheet!.isOnFrame(location) {
+        if self.map!.sheet!.isOnFrame(location) {
             self.gameSceneDelegate?.frameTouched(location)
         } else {
             self.gameSceneDelegate?.gameSceneTouched(location)
@@ -83,7 +83,7 @@ class GameScene: SKScene {
     }
 
     override func update(currentTime: CFTimeInterval) {
-        map.updateObjectsZPosition()
+        map?.updateObjectsZPosition()
         self.gameSceneDelegate?.viewUpdated()
     }
 
@@ -93,16 +93,16 @@ class GameScene: SKScene {
         self.textBox_.hide()
         self.actionButton.hidden = true
 
-        let player = self.map.getObjectByName(objectNameTable.PLAYER_NAME)!
-        player.runAction(playerActions, destination: destination, callback: {
+        let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
+        player?.runAction(playerActions, destination: destination, callback: {
             self.gameSceneDelegate?.addEvent(events)
         })
 
         if screenActions.isEmpty { return }
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        self.map.sheet!.runAction(screenActions, callback: {
+        self.map?.sheet!.runAction(screenActions, callback: {
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            self.map.updateObjectPlacement(player)
+            self.map?.updateObjectPlacement(player!)
         })
     }
 }

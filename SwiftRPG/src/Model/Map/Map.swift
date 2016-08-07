@@ -34,10 +34,10 @@ public class Map {
         do {
             parser = try TiledMapJsonParser(fileName: mapName)
         } catch ParseError.IllegalJsonFormat {
-            print("Json 形式が正しくありません")
+            print("Invalid JSON format in \(mapName)")
             return nil
         } catch ParseError.JsonFileNotFound {
-            print("JSON ファイルが見つかりません")
+            print("JSON file \(mapName) is not found")
             return nil
         } catch {
             return nil
@@ -63,12 +63,14 @@ public class Map {
                                                properties: tileProperties,
                                                tileSets: tileSets,
                                                objectPlacement: objectLayer)
-
-        } catch ParseError.otherError(let str) {
-            print(str)
+        } catch ParseError.InvalidValueError(let string) {
+            print(string)
             return nil
         } catch ParseError.SwiftyJsonError(let errors) {
             for error in errors { print(error) }
+            return nil
+        } catch MapObjectError.FailedToGenerate(let string) {
+            print(string)
             return nil
         } catch {
             return nil

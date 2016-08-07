@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import SpriteKit
 
+enum TileSetError: ErrorType {
+    case FailedToCrop
+}
+
 /// タイルセット : 1画像ファイル内のタイル群 = 1タイルセットに対応
 class TileSet {
     /// タイルセットを一意に識別するID
@@ -96,7 +100,7 @@ class TileSet {
             let cropCGImageRef = CGImageCreateWithImageInRect(image.CGImage, tileSize) {
                 return UIImage(CGImage: cropCGImageRef)
         } else {
-            throw ParseError.otherError("画像の切り抜きに失敗")
+            throw TileSetError.FailedToCrop
         }
     }
 }

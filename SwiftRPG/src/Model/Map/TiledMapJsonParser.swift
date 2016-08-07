@@ -14,7 +14,7 @@ enum ParseError: ErrorType {
     case JsonFileNotFound
     case IllegalJsonFormat
     case SwiftyJsonError([NSError?])
-    case otherError(String)
+    case InvalidValueError(String)
 }
 
 /// タイルの配置や種類の情報を記述したJSONファイルのパーサ
@@ -117,7 +117,7 @@ class TiledMapJsonParser {
                     if properties[tileID] != nil {
                         properties[tileID]![property] = value.string
                     } else {
-                        throw ParseError.otherError("Invalid tile id in tile properties.")
+                        throw ParseError.InvalidValueError("TileID is not found in properties")
                     }
                 }
             }
@@ -154,7 +154,7 @@ class TiledMapJsonParser {
         var info: Dictionary<TileCoordinate, Int> = [:]
         
         if (layerTileCols < 1 || layerTileRows < 1) {
-            throw ParseError.otherError("Layer size is invalid.")
+            throw ParseError.InvalidValueError("Invalid layer size: cols or rows is fewer than 1")
         }
         
         let layer = json["layers"][kind.rawValue]["data"].array

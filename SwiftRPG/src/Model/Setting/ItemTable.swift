@@ -7,12 +7,22 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 struct Item {
     var key: String
     var name: String
     var description: String
     var image_name: String
+
+    func getJSON() -> JSON {
+        return JSON([
+            "key": self.key,
+            "name": self.name,
+            "description": self.description,
+            "image_name": self.image_name
+        ])
+    }
 }
 
 struct ItemTable {

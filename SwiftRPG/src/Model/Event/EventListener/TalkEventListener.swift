@@ -55,7 +55,7 @@ class StartTalkEventListener: EventListener {
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
-            let map        = scene.map
+            let map        = scene.map!
 
             scene.actionButton.hidden = true
             scene.menuButton.hidden = true
@@ -186,7 +186,7 @@ class TalkEventListener: EventListener {
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene      = skView.scene as! GameScene
-            let map        = scene.map
+            let map        = scene.map!
             let sheet      = map.sheet
 
             // 画面上のプレイヤーの位置を取得

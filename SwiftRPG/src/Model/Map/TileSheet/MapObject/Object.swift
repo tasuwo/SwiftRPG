@@ -228,8 +228,7 @@ public class Object: MapObject {
         for (coordinate, _) in tiles {
             let id = objectPlacement[coordinate]
             if id == nil {
-                print("Object ID is not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("Coordinate(\(coordinate.description)) specified in tiles is not defined at objectPlacement")
             }
             let objectID = id!
 
@@ -238,29 +237,29 @@ public class Object: MapObject {
 
             let property = properties[objectID]
             if property == nil {
-                print("Object's property not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("ObjectID \(objectID.description)'s property is not defined in properties")
             }
 
             let tileSetID = Int(property!["tileSetID"]!)
             if tileSetID == nil {
-                print("tileSetID not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("tileSetID is not defined in objectID \(objectID.description)'s property(\(property?.description))")
             }
+
             let tileSet = tileSets[tileSetID!]
+            if tileSet == nil {
+                throw MapObjectError.FailedToGenerate("tileSet(ID = \(tileSetID?.description)) is not defined in tileSets(\(tileSets.description))")
+            }
 
             let obj_image: UIImage?
             do {
                 obj_image = try tileSet?.cropTileImage(objectID)
             } catch {
-                print("Failed to crop image for object")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("Failed to crop image of object which objectID is \(objectID.description)")
             }
 
             let tileSetName = property!["tileSetName"]
             if tileSetName == nil {
-                print("tileSetName property is not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("tileSetName is not defined in objectID \(objectID.description)'s property(\(property?.description))")
             }
             // 一意の名前
             let name = tileSetName! + "_" + NSUUID().UUIDString
@@ -288,6 +287,7 @@ public class Object: MapObject {
                 let eventPlacedDirectionsFromParent = tmp[1]
                 let eventArgs = Array(tmp.dropFirst().dropFirst())
 
+                let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     if eventPlacedDirectionsFromParent[0] == "1" {
                         try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .UP)
@@ -301,9 +301,20 @@ public class Object: MapObject {
                     if eventPlacedDirectionsFromParent[3] == "1" {
                         try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .RIGHT)
                     }
+                } catch EventListenerError.IllegalArguementFormat(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.IllegalParamFormat(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.InvalidParam(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.ParamIsNil {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Required param is nil")
+                } catch EventGeneratorError.EventIdNotFound {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
+                } catch EventGeneratorError.InvalidParams(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
                 } catch {
-                    // TODO: event listener 生成時のエラー
-                    throw error
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
                 }
             }
         }

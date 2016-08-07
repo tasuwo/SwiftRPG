@@ -11,11 +11,6 @@ import UIKit
 import SpriteKit
 import SwiftyJSON
 
-// TODO : ちゃんとエラーハンドリングする
-enum E : ErrorType {
-    case error
-}
-
 /// TiledMapEditor で作成したマップを読み込み，クラスとして保持する
 public class TileSheet {
     /// タイルシートのノード
@@ -112,8 +107,7 @@ public class TileSheet {
             return nil
         }
     }
-    
-    
+
     ///  スクロールすべきか否かを検知し，すべきであればスクロール用のアクションを返す
     ///  キャラクターの移動ごとに呼び出される必要がある
     ///

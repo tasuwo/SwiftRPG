@@ -127,22 +127,15 @@ public class Tile: MapObject {
         tilePlacement: Dictionary<TileCoordinate, Int>
     ) throws -> Dictionary<TileCoordinate, Tile> {
         var tiles: Dictionary<TileCoordinate, Tile> = [:]
-        for (coordinate, _) in tilePlacement {
-            let tileID = tilePlacement[coordinate]
-            if tileID == nil {
-                print("tileID not found")
-                throw E.error
-            }
-
-            let tileProperty = properties[tileID!]
+        for (coordinate, tileID) in tilePlacement {
+            let tileProperty = properties[tileID]
             if tileProperty == nil {
-                print("tileProperty not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("tileID \(tileID.description)'s property is not defined in properties(\(properties.description))")
             }
 
             // タイルを作成する
             let tile = Tile(
-                id: tileID!,
+                id: tileID,
                 coordinate: coordinate,
                 property: tileProperty!
             )
@@ -150,38 +143,28 @@ public class Tile: MapObject {
             // 当たり判定を付加する
             let hasCollision = collisionPlacement[coordinate]
             if hasCollision == nil {
-                print("hasCollision not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("Coordinate(\(coordinate.description)) specified in tilePlacement is not defined at collisionPlacement(\(collisionPlacement.description))")
             }
             if hasCollision != 0 {
                 tile.setCollision()
             }
 
             // 画像を付与する
-            let tileSetIDstr = tile.property["tileSetID"]
-            if tileSetIDstr == nil {
-                print("tile's tileSetID not found")
-                throw E.error
-            }
-
-            let tileSetID = Int(tileSetIDstr!)
+            let tileSetID = Int(tile.property["tileSetID"]!)
             if tileSetID == nil {
-                print("tileSetID not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("tileSetID is not defined in tile \(tile)'s property(\(tile.property.description))")
             }
 
             let tileSet = tileSets[tileSetID!]
             if tileSet == nil {
-                print("tileSet not found")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("tileSet(ID = \(tileSetID?.description)) is not defined in tileSets(\(tileSets.description))")
             }
 
             let tileImage: UIImage?
             do {
-                tileImage = try tileSet!.cropTileImage(tileID!)
+                tileImage = try tileSet!.cropTileImage(tileID)
             } catch {
-                print("Failed to cropImage")
-                throw E.error
+                throw MapObjectError.FailedToGenerate("Failed to crop image of object which tileID is \(tileID)")
             }
             tile.setImageWithUIImage(tileImage!)
 
@@ -193,11 +176,23 @@ public class Tile: MapObject {
                 let args = Array(tmp.dropFirst())
 
                 let event: EventListener
+                let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     event = try EventListenerGenerator.getListenerByID(eventType, directionToParent: nil, params: args)
+                } catch EventListenerError.IllegalArguementFormat(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.IllegalParamFormat(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.InvalidParam(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.ParamIsNil {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Required param is nil")
+                } catch EventGeneratorError.EventIdNotFound {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
+                } catch EventGeneratorError.InvalidParams(let string) {
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
                 } catch {
-                    // TODO: Event Listener 生成時のエラーハンドリング
-                    throw error
+                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
                 }
                 tile.events.append(event)
             }
