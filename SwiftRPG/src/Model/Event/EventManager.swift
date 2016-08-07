@@ -45,7 +45,7 @@ class EventManager: NotifiableFromDispacher {
         }
     }
 
-    // MARK: NotifiableFromDispacher
+    // MARK: - NotifiableFromDispacher
 
     func invoke(invoker: EventListener, listener: EventListener) {
         let invokerDispacher = self.getDispacherOf(invoker)

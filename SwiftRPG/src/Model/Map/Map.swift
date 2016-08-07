@@ -17,7 +17,7 @@ public class Map {
     private var placement: Dictionary<TileCoordinate, [MapObject]> = [:]
     
     /// オブジェクトのみ保持するディクショナリ
-    private var objects_: Dictionary<TileCoordinate, [Object]> = [:]
+    private var objects: Dictionary<TileCoordinate, [Object]> = [:]
     
     ///  コンストラクタ
     ///
@@ -96,13 +96,14 @@ public class Map {
         for (coordinate, tile) in tiles {
             self.placement[coordinate] = [tile]
         }
+
         for (coordinate, objectsOnTile) in objects {
             for objectOnTile in objectsOnTile {
                 self.placement[coordinate]!.append(objectOnTile)
             }
         }
 
-        self.objects_ = objects
+        self.objects = objects
     }
 
     func addSheetTo(scene: SKScene) {
@@ -206,7 +207,7 @@ public class Map {
     func updateObjectsZPosition() {
         var objects: [(Object, CGFloat)] = []
         
-        for objectsOnTile in objects_.values {
+        for objectsOnTile in self.objects.values {
             for object in objectsOnTile {
                 objects.append((object, object.getRealTimePosition().y))
             }
