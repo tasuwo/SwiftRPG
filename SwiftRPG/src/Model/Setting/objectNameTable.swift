@@ -1,6 +1,6 @@
 //
 //  objectNameTable.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by 兎澤佑 on 2016/02/23.
 //  Copyright © 2016年 兎澤佑. All rights reserved.

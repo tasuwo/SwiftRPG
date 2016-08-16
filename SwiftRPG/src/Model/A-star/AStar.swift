@@ -1,6 +1,6 @@
 //
 //  AStar.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by tasuku tozawa on 2015/08/10.
 //  Copyright © 2015年 兎澤佑. All rights reserved.

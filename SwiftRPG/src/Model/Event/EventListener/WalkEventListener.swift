@@ -1,6 +1,6 @@
 //
 //  TouchEventListener.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by tasuku tozawa on 2016/07/29.
 //  Copyright © 2016年 兎澤佑. All rights reserved.

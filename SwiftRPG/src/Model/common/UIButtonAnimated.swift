@@ -1,6 +1,6 @@
 //
 //  common.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by 兎澤佑 on 2015/07/16.
 //  Copyright (c) 2015年 兎澤佑. All rights reserved.

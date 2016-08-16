@@ -1,6 +1,6 @@
 //
 //  TileSheet.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by 兎澤佑 on 2015/08/03.
 //  Copyright © 2015年 兎澤佑. All rights reserve d.

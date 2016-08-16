@@ -1,6 +1,6 @@
 //
 //  ItemGetEvent.swift
-//  RunTowardTheLight
+//  SwiftRPG
 //
 //  Created by tasuku tozawa on 2016/08/04.
 //  Copyright © 2016年 兎澤佑. All rights reserved.
