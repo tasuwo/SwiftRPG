@@ -15,6 +15,7 @@ import SwiftyJSON
 class GameViewController: UIViewController, GameSceneDelegate {
     var viewInitiated: Bool = false
     var eventManager: EventManager!
+    let transition = TransitionBetweenGameAndMenuSceneAnimator()
 
     override func loadView() {
         self.view = SKView()
@@ -93,7 +94,8 @@ class GameViewController: UIViewController, GameSceneDelegate {
 
     func didPressMenuButton() {
         let menuViewController: UIViewController = MenuViewController()
-        self.presentViewController(menuViewController, animated: false, completion: nil)
+        menuViewController.transitioningDelegate = self
+        self.presentViewController(menuViewController, animated: true, completion: nil)
     }
 
     func viewUpdated() {
@@ -121,5 +123,24 @@ class GameViewController: UIViewController, GameSceneDelegate {
         for event in events {
             self.eventManager.add(event)
         }
+    }
+}
+
+
+extension GameViewController: UIViewControllerTransitioningDelegate {
+    func animationControllerForPresentedController(
+        presented: UIViewController,
+        presentingController presenting: UIViewController,
+                             sourceController source: UIViewController) ->
+        UIViewControllerAnimatedTransitioning?
+    {
+        transition.originFrame = self.view.frame
+        transition.presenting = true
+        return transition
+    }
+
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.presenting = false
+        return transition
     }
 }

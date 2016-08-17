@@ -109,8 +109,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>DataModel</string>
 			<key>path</key>
 			<string>DataModel</string>
 			<key>sourceTree</key>
@@ -474,6 +472,41 @@ fi
 			<string>2C556E801D50C11B00E03414</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>2C59EF2E1D630A0600DCCCA5</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>TransitionToMenuAnimator.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2C59EF2F1D630A0600DCCCA5</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2C59EF2E1D630A0600DCCCA5</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2C59EF321D641B6C00DCCCA5</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>2C59EF2E1D630A0600DCCCA5</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>animation</string>
+			<key>path</key>
+			<string>animation</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>2CAEA0BC1D4AE1C90084D8B0</key>
 		<dict>
@@ -1344,6 +1377,7 @@ fi
 		<dict>
 			<key>children</key>
 			<array>
+				<string>2C59EF321D641B6C00DCCCA5</string>
 				<string>2C0564961D4B034C00A2F527</string>
 				<string>D7BFE5471B521BBF00AB0D3A</string>
 				<string>A06D85A81C7EA58A003F19BB</string>
@@ -1524,6 +1558,7 @@ fi
 				<string>2C2E64C31B78DA2000B25B6E</string>
 				<string>A02DDEE61C7AF0C9007C5BC2</string>
 				<string>A06593D21C721A1000148D2B</string>
+				<string>2C59EF2F1D630A0600DCCCA5</string>
 				<string>2C2E64C51B78DC7600B25B6E</string>
 				<string>A0D8398F1C8010E1005CC12D</string>
 				<string>A02DDEE21C7ACEAE007C5BC2</string>
@@ -1652,8 +1687,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>SwiftRPG</string>
 			<key>path</key>
 			<string>SwiftRPG</string>
 			<key>sourceTree</key>
@@ -1886,8 +1919,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>SwiftRPGTests</string>
 			<key>path</key>
 			<string>SwiftRPGTests</string>
 			<key>sourceTree</key>
