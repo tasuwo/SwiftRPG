@@ -11,11 +11,11 @@ import SpriteKit
 import AVFoundation
 import SwiftyJSON
 
-/// ゲーム画面の view controller
-class GameViewController: UIViewController, GameSceneDelegate {
+class GameViewController: UIViewController {
     var viewInitiated: Bool = false
     var eventManager: EventManager!
     let transition = TransitionBetweenGameAndMenuSceneAnimator()
+    private var model: MenuSceneModel!
 
     override func loadView() {
         self.view = SKView()
@@ -36,7 +36,11 @@ class GameViewController: UIViewController, GameSceneDelegate {
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
+            let view = self.view as! SKView
+            view.presentScene(scene)
             self.view = scene.gameView
+
+            self.model = MenuSceneModel()
 
             self.viewInitiated = true
         }
@@ -54,9 +58,9 @@ class GameViewController: UIViewController, GameSceneDelegate {
             return UIInterfaceOrientationMask.All
         }
     }
+}
 
-    // MARK: - GameSceneDelegate
-
+extension GameViewController: GameSceneDelegate {
     func frameTouched(location: CGPoint) {}
 
     func gameSceneTouched(location: CGPoint) {
@@ -93,9 +97,17 @@ class GameViewController: UIViewController, GameSceneDelegate {
     }
 
     func didPressMenuButton() {
-        let menuViewController: UIViewController = MenuViewController()
-        menuViewController.transitioningDelegate = self
-        self.presentViewController(menuViewController, animated: true, completion: nil)
+        let newScene = MenuScene(size: self.view.bounds.size)
+        newScene.menuSceneDelegate = self
+
+        self.model.delegate = newScene
+        newScene.model = self.model
+        self.model.updateItems()
+
+        //let view: SKView = self.view as! SKView
+        //let transition = SKTransition.fadeWithDuration(1)
+        //view.presentScene(newScene, transition: transition)
+        self.view = newScene.menuView
     }
 
     func viewUpdated() {
@@ -126,6 +138,21 @@ class GameViewController: UIViewController, GameSceneDelegate {
     }
 }
 
+extension GameViewController: MenuSceneDelegate {
+    func didPressBackButton() {
+        let newScene = GameScene(size: self.view.bounds.size)
+        newScene.gameSceneDelegate = self
+
+        //let view: SKView = self.view as! SKView
+        //let transition = SKTransition.fadeWithDuration(1)
+        //view.presentScene(newScene, transition: transition)
+        self.view = newScene.gameView
+    }
+    
+    func didSelectedItem(indexPath: NSIndexPath) {
+        self.model.selectItem(indexPath)
+    }
+}
 
 extension GameViewController: UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(

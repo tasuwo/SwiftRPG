@@ -39,7 +39,6 @@ class GameScene: SKScene {
     override init(size: CGSize) {
         super.init(size: size)
         NSBundle.mainBundle().loadNibNamed("GameScene", owner: self, options: nil)
-        gameView.presentScene(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +46,7 @@ class GameScene: SKScene {
     }
 
     override func didMoveToView(view: SKView) {
-        if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
+        /*if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
             self.map = map
             self.map!.addSheetTo(self)
         }
@@ -65,7 +64,7 @@ class GameScene: SKScene {
 
         eventDialog.hidden = true
         eventDialog.layer.backgroundColor = UIColor.blackColor().CGColor
-        eventDialog.layer.borderColor = UIColor.whiteColor().CGColor
+        eventDialog.layer.borderColor = UIColor.whiteColor().CGColor*/
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

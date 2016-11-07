@@ -9,13 +9,14 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import SpriteKit
 
 protocol MenuSceneDelegate {
     func didPressBackButton()
     func didSelectedItem(indexPath: NSIndexPath)
 }
 
-class MenuScene: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
+class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
     var menuSceneDelegate: MenuSceneDelegate?
     var model: MenuSceneModel! {
         didSet {
@@ -26,27 +27,22 @@ class MenuScene: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlowL
     private static let SELECTED_ALPHA: CGFloat = 1.0
     private static let DESELECTED_ALPHA: CGFloat = 0.5
     
-    @IBOutlet var menuView: UIView!
+    @IBOutlet var menuView: SKView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var menuListView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var dialog: UILabel!
     @IBOutlet weak var contentsView: UICollectionView!
-    @IBAction func showPreviousContents(sender: AnyObject) {
-    }
-    @IBAction func showNextContents(sender: AnyObject) {
-    }
     @IBAction func didPressBackButton(sender: AnyObject) {
         self.menuSceneDelegate?.didPressBackButton()
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    override init(size: CGSize) {
+        super.init(size: size)
+
         NSBundle.mainBundle().loadNibNamed("MenuScene", owner: self, options: nil)
-        menuView.frame = frame
-        addSubview(menuView)
-        
+        self.view?.addSubview(menuView)
+
         contentsView.delegate = self
         contentsView.registerClass(ItemCell.self, forCellWithReuseIdentifier: "cell")
         
