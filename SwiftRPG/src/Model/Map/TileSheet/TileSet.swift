@@ -10,35 +10,35 @@ import Foundation
 import UIKit
 import SpriteKit
 
-enum TileSetError: ErrorType {
-    case FailedToCrop
+enum TileSetError: Error {
+    case failedToCrop
 }
 
 /// タイルセット : 1画像ファイル内のタイル群 = 1タイルセットに対応
 class TileSet {
     /// タイルセットを一意に識別するID
-    private let tileSetID: Int!
+    fileprivate let tileSetID: Int!
     
     /// 画像ファイル名
-    private let imageName: String!
+    fileprivate let imageName: String!
     
     /// セット内のタイル数
-    private let count: Int!
+    fileprivate let count: Int!
     
     /// 一番若いタイルID
-    private let firstTileID: Int!
+    fileprivate let firstTileID: Int!
     
     /// タイルセット(画像ファイル)の横幅
-    private let imageWidth: Int!
+    fileprivate let imageWidth: Int!
     
     /// タイルセット(画像ファイル)の縦幅
-    private let imageHeight: Int!
+    fileprivate let imageHeight: Int!
     
     /// タイルセット内の各タイルの横幅
-    private let tileWidth: Int!
+    fileprivate let tileWidth: Int!
     
     /// タイルセット内の各タイルの縦幅
-    private let tileHeight: Int!
+    fileprivate let tileHeight: Int!
     
     init?(id: Int,
           imageName: String,
@@ -66,15 +66,15 @@ class TileSet {
     ///  - throws: otherError
     ///
     ///  - returns: タイル画像
-    func cropTileImage(tileID: Int) throws -> UIImage {
+    func cropTileImage(_ tileID: Int) throws -> UIImage {
         let tileSetRows = self.imageWidth / self.tileWidth
         let firstTileID = self.firstTileID
         var iTargetTileInSet: Int
         
         // ID は左上から順番
         // TODO: tileSet の中に tileID が含まれていない場合の validation
-        if firstTileID >= tileID {
-            iTargetTileInSet = firstTileID - tileID
+        if firstTileID! >= tileID {
+            iTargetTileInSet = firstTileID! - tileID
         } else {
             iTargetTileInSet = tileID - 1
         }
@@ -91,16 +91,16 @@ class TileSet {
         }
         
         // 画像の切り抜き
-        let tileSize = CGRectMake(
-            CGFloat(tileWidth) * CGFloat(targetRow - 1),
-            CGFloat(tileHeight) * CGFloat(targetCol - 1),
-            CGFloat(tileWidth),
-            CGFloat(tileHeight))
+        let tileSize = CGRect(
+            x: CGFloat(tileWidth) * CGFloat(targetRow - 1),
+            y: CGFloat(tileHeight) * CGFloat(targetCol - 1),
+            width: CGFloat(tileWidth),
+            height: CGFloat(tileHeight))
         if let image = UIImage(named: self.imageName),
-            let cropCGImageRef = CGImageCreateWithImageInRect(image.CGImage, tileSize) {
-                return UIImage(CGImage: cropCGImageRef)
+            let cropCGImageRef = image.cgImage?.cropping(to: tileSize) {
+                return UIImage(cgImage: cropCGImageRef)
         } else {
-            throw TileSetError.FailedToCrop
+            throw TileSetError.failedToCrop
         }
     }
 }

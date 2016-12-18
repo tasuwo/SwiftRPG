@@ -11,34 +11,34 @@ import UIKit
 import SpriteKit
 
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
-public class Object: MapObject {
+open class Object: MapObject {
     /// オブジェクト名
-    private(set) var name: String!
+    fileprivate(set) var name: String!
 
     /// オブジェクトの画像イメージ
-    private let images: IMAGE_SET?
+    fileprivate let images: IMAGE_SET?
     
     /// ノード
-    private let object: SKSpriteNode
+    fileprivate let object: SKSpriteNode
     
     /// スピード
-    private(set) var speed: CGFloat
+    fileprivate(set) var speed: CGFloat
     
     /// 向き
-    private(set) var direction: DIRECTION
+    fileprivate(set) var direction: DIRECTION
     
     /// 画面上の描画位置
-    private(set) var position: CGPoint
+    fileprivate(set) var position: CGPoint
 
     /// 歩行のためのインデックス
     /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
-    private var stepIndex: Int = 0
+    fileprivate var stepIndex: Int = 0
 
     // MARK: - MapObject
 
-    private(set) var hasCollision: Bool
+    fileprivate(set) var hasCollision: Bool
 
-    private var events_: [EventListener] = []
+    fileprivate var events_: [EventListener] = []
     var events: [EventListener] {
         get {
             return self.events_
@@ -48,7 +48,7 @@ public class Object: MapObject {
         }
     }
 
-    private var parent_: MapObject?
+    fileprivate var parent_: MapObject?
     var parent: MapObject? {
         get {
             return self.parent_
@@ -68,10 +68,10 @@ public class Object: MapObject {
         object = SKSpriteNode()
         object.name = name
         self.name = name
-        object.anchorPoint = CGPointMake(0.5, 0.0)
+        object.anchorPoint = CGPoint(x: 0.5, y: 0.0)
         object.position = position
         speed = 0.2
-        direction = DIRECTION.DOWN
+        direction = DIRECTION.down
         self.hasCollision = false
         self.images = images
         self.position = position
@@ -94,7 +94,7 @@ public class Object: MapObject {
     ///  オブジェクトを子ノードとして追加する
     ///
     ///  - parameter node: オブジェクトを追加するノード
-    func addTo(node: SKSpriteNode) {
+    func addTo(_ node: SKSpriteNode) {
         node.addChild(self.object)
     }
 
@@ -105,36 +105,36 @@ public class Object: MapObject {
     ///  - parameter destination: 目標地点
     ///
     ///  - returns: 目標地点へ移動するアニメーション
-    func getActionTo(departure: CGPoint, destination: CGPoint) -> Array<SKAction> {
+    func getActionTo(_ departure: CGPoint, destination: CGPoint) -> Array<SKAction> {
         var actions: Array<SKAction> = []
-        let diff = CGPointMake(destination.x - departure.x,
-                               destination.y - departure.y)
+        let diff = CGPoint(x: destination.x - departure.x,
+                               y: destination.y - departure.y)
         var nextTextures: [SKTexture] = []
 
         if let images = self.images {
             if (diff.x > 0 && diff.y == 0) {
-                self.direction = DIRECTION.RIGHT
+                self.direction = DIRECTION.right
                 nextTextures = []
                 for image in images.RIGHT[self.stepIndex] {
                     nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x < 0 && diff.y == 0) {
-                self.direction = DIRECTION.LEFT
+                self.direction = DIRECTION.left
                 nextTextures = []
                 for image in images.LEFT[self.stepIndex] {
                     nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x == 0 && diff.y > 0) {
-                self.direction = DIRECTION.UP
+                self.direction = DIRECTION.up
                 nextTextures = []
                 for image in images.UP[self.stepIndex] {
                     nextTextures.append(SKTexture(imageNamed: image))
                     self.stepIndex = abs(self.stepIndex-1)
                 }
             } else if (diff.x == 0 && diff.y < 0) {
-                self.direction = DIRECTION.DOWN
+                self.direction = DIRECTION.down
                 nextTextures = []
                 for image in images.DOWN[self.stepIndex] {
                     nextTextures.append(SKTexture(imageNamed: image))
@@ -145,8 +145,8 @@ public class Object: MapObject {
             nextTextures = [self.object.texture!]
         }
 
-        let walkAction: SKAction = SKAction.animateWithTextures(nextTextures, timePerFrame: NSTimeInterval(self.speed/2))
-        let moveAction: SKAction = SKAction.moveByX(diff.x, y: diff.y, duration: NSTimeInterval(self.speed))
+        let walkAction: SKAction = SKAction.animate(with: nextTextures, timePerFrame: TimeInterval(self.speed/2))
+        let moveAction: SKAction = SKAction.moveBy(x: diff.x, y: diff.y, duration: TimeInterval(self.speed))
         actions = [SKAction.group([walkAction, moveAction])]
 
         return actions
@@ -159,14 +159,14 @@ public class Object: MapObject {
     ///  - parameter actions:     実行するアクション
     ///  - parameter destination: 最終目的地
     ///  - parameter callback:    実行終了時に呼ばれるコールバック関数ß
-    func runAction(actions: Array<SKAction>, destination: CGPoint, callback: () -> Void) {
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+    func runAction(_ actions: Array<SKAction>, destination: CGPoint, callback: @escaping () -> Void) {
+        UIApplication.shared.beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)
-        self.object.runAction(
+        self.object.run(
             sequence,
             completion:
             {
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 callback()
                 // TODO: 現状，最終的な目的地にオブジェクトの位置情報を更新する．リアルタイムに更新できないか？
                 self.position = destination
@@ -178,7 +178,7 @@ public class Object: MapObject {
     ///  画像が存在すれば，方向に応じて適切な画像に切り替える．
     ///
     ///  - parameter direction: オブジェクトの向く方向
-    func setDirection(direction: DIRECTION) {
+    func setDirection(_ direction: DIRECTION) {
         self.direction = direction
         if let images = self.images {
             let imageNames = images.get(direction)
@@ -197,7 +197,7 @@ public class Object: MapObject {
     ///  オブジェクトの Z 軸方向の位置を指定する．
     ///
     ///  - parameter position: z軸方向の位置
-    func setZPosition(position: CGFloat) {
+    func setZPosition(_ position: CGFloat) {
         self.object.zPosition = position
     }
 
@@ -214,7 +214,7 @@ public class Object: MapObject {
     ///
     ///  - returns: 生成したオブジェクト群
     class func createObjects(
-        tiles: Dictionary<TileCoordinate, Tile>,
+        _ tiles: Dictionary<TileCoordinate, Tile>,
         properties: Dictionary<TileID, TileProperty>,
         tileSets: Dictionary<TileSetID, TileSet>,
         objectPlacement: Dictionary<TileCoordinate, Int>
@@ -228,7 +228,7 @@ public class Object: MapObject {
         for (coordinate, _) in tiles {
             let id = objectPlacement[coordinate]
             if id == nil {
-                throw MapObjectError.FailedToGenerate("Coordinate(\(coordinate.description)) specified in tiles is not defined at objectPlacement")
+                throw MapObjectError.failedToGenerate("Coordinate(\(coordinate.description)) specified in tiles is not defined at objectPlacement")
             }
             let objectID = id!
 
@@ -237,32 +237,32 @@ public class Object: MapObject {
 
             let property = properties[objectID]
             if property == nil {
-                throw MapObjectError.FailedToGenerate("ObjectID \(objectID.description)'s property is not defined in properties")
+                throw MapObjectError.failedToGenerate("ObjectID \(objectID.description)'s property is not defined in properties")
             }
 
             let tileSetID = Int(property!["tileSetID"]!)
             if tileSetID == nil {
-                throw MapObjectError.FailedToGenerate("tileSetID is not defined in objectID \(objectID.description)'s property(\(property?.description))")
+                throw MapObjectError.failedToGenerate("tileSetID is not defined in objectID \(objectID.description)'s property(\(property?.description))")
             }
 
             let tileSet = tileSets[tileSetID!]
             if tileSet == nil {
-                throw MapObjectError.FailedToGenerate("tileSet(ID = \(tileSetID?.description)) is not defined in tileSets(\(tileSets.description))")
+                throw MapObjectError.failedToGenerate("tileSet(ID = \(tileSetID?.description)) is not defined in tileSets(\(tileSets.description))")
             }
 
             let obj_image: UIImage?
             do {
                 obj_image = try tileSet?.cropTileImage(objectID)
             } catch {
-                throw MapObjectError.FailedToGenerate("Failed to crop image of object which objectID is \(objectID.description)")
+                throw MapObjectError.failedToGenerate("Failed to crop image of object which objectID is \(objectID.description)")
             }
 
             let tileSetName = property!["tileSetName"]
             if tileSetName == nil {
-                throw MapObjectError.FailedToGenerate("tileSetName is not defined in objectID \(objectID.description)'s property(\(property?.description))")
+                throw MapObjectError.failedToGenerate("tileSetName is not defined in objectID \(objectID.description)'s property(\(property?.description))")
             }
             // 一意の名前
-            let name = tileSetName! + "_" + NSUUID().UUIDString
+            let name = tileSetName! + "_" + UUID().uuidString
 
             let object = Object(
                 name: name,
@@ -282,7 +282,7 @@ public class Object: MapObject {
 
             // イベントの付加
             if let obj_action = property!["event"] {
-                let tmp = obj_action.componentsSeparatedByString(",")
+                let tmp = obj_action.components(separatedBy: ",")
                 let eventType = tmp[0]
                 let eventPlacedDirectionsFromParent = tmp[1]
                 let eventArgs = Array(tmp.dropFirst().dropFirst())
@@ -290,39 +290,39 @@ public class Object: MapObject {
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     if eventPlacedDirectionsFromParent[0] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .UP)
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .up)
                     }
                     if eventPlacedDirectionsFromParent[1] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .DOWN)
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .down)
                     }
                     if eventPlacedDirectionsFromParent[2] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .LEFT)
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .left)
                     }
                     if eventPlacedDirectionsFromParent[3] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .RIGHT)
+                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .right)
                     }
-                } catch EventListenerError.IllegalArguementFormat(let string) {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.IllegalParamFormat(let string) {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.InvalidParam(let string) {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.ParamIsNil {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Required param is nil")
-                } catch EventGeneratorError.EventIdNotFound {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
-                } catch EventGeneratorError.InvalidParams(let string) {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.illegalArguementFormat(let string) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.illegalParamFormat(let string) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.invalidParam(let string) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.paramIsNil {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Required param is nil")
+                } catch EventGeneratorError.eventIdNotFound {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
+                } catch EventGeneratorError.invalidParams(let string) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch {
-                    throw MapObjectError.FailedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
                 }
             }
         }
         return objects
     }
 
-    private class func addEventObject(
-        inout objects: Dictionary<TileCoordinate, [Object]>,
+    fileprivate class func addEventObject(
+        _ objects: inout Dictionary<TileCoordinate, [Object]>,
               id: String, args: [String],
               coordinate: TileCoordinate,
               directionFromParent: DIRECTION
@@ -341,17 +341,17 @@ public class Object: MapObject {
         objects[eventPlacedTileCoordinate]!.append(object)
     }
 
-    private class func getTileCoordinateTo(direction: DIRECTION, base: TileCoordinate) -> TileCoordinate {
+    fileprivate class func getTileCoordinateTo(_ direction: DIRECTION, base: TileCoordinate) -> TileCoordinate {
         let placementCoordinate: TileCoordinate
 
         switch direction {
-        case .LEFT:
+        case .left:
             placementCoordinate = TileCoordinate(x: base.x-1, y: base.y)
-        case .RIGHT:
+        case .right:
             placementCoordinate = TileCoordinate(x: base.x+1, y: base.y)
-        case .DOWN:
+        case .down:
             placementCoordinate = TileCoordinate(x: base.x, y: base.y-1)
-        case .UP:
+        case .up:
             placementCoordinate = TileCoordinate(x: base.x, y: base.y+1)
         }
 

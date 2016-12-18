@@ -9,25 +9,25 @@
 import Foundation
 import SwiftyJSON
 
-enum EventGeneratorError: ErrorType {
-    case EventIdNotFound
-    case InvalidParams(String)
+enum EventGeneratorError: Error {
+    case eventIdNotFound
+    case invalidParams(String)
 }
 
 class EventListenerGenerator {
-    class func getListenerByID(id: String, directionToParent: DIRECTION?, params: [String]) throws -> EventListener {
+    class func getListenerByID(_ id: String, directionToParent: DIRECTION?, params: [String]) throws -> EventListener {
         switch id {
         case "talk":
             let parser = TalkBodyParser(talkFileName: params[0])
             if parser == nil {
-                throw EventGeneratorError.InvalidParams("Specified talk file (\(params[0])) is not found. Check your params (\(params.description) format)")
+                throw EventGeneratorError.invalidParams("Specified talk file (\(params[0])) is not found. Check your params (\(params.description) format)")
             }
             var paramsJson = parser?.parse()
 
             // direction を追加
             var array = paramsJson!.arrayObject as? [[String:String]]
             let directionString = directionToParent == nil ? "" : directionToParent!.toString
-            array!.append(["direction":directionString])
+            array!.append(["direction":directionString!])
             paramsJson = JSON(array!)
 
             do {
@@ -41,7 +41,7 @@ class EventListenerGenerator {
         case "item":
             let item = ItemTable.get(params[0])
             if item == nil {
-                throw EventGeneratorError.InvalidParams("Specified item key (\(params[0])) in params(\(params.description)) is not found. Check ItemTable definition")
+                throw EventGeneratorError.invalidParams("Specified item key (\(params[0])) in params(\(params.description)) is not found. Check ItemTable definition")
             }
 
             do {
@@ -50,7 +50,7 @@ class EventListenerGenerator {
                 throw error
             }
         default:
-            throw EventGeneratorError.EventIdNotFound
+            throw EventGeneratorError.eventIdNotFound
         }
     }
 }

@@ -11,12 +11,12 @@ import Foundation
 
 /// view controller に処理を delegate する
 protocol GameSceneDelegate: class {
-    func frameTouched(location: CGPoint)
-    func gameSceneTouched(location: CGPoint)
+    func frameTouched(_ location: CGPoint)
+    func gameSceneTouched(_ location: CGPoint)
     func actionButtonTouched()
     func didPressMenuButton()
     func viewUpdated()
-    func addEvent(events: [EventListener])
+    func addEvent(_ events: [EventListener])
 }
 
 /// ゲーム画面
@@ -26,7 +26,7 @@ class GameScene: SKScene {
     @IBOutlet var gameView: SKView!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
-    @IBAction func didPressMenuButton(sender: AnyObject) {
+    @IBAction func didPressMenuButton(_ sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
     @IBOutlet weak var eventDialog: DialogLabel!
@@ -36,40 +36,42 @@ class GameScene: SKScene {
     var textBox_: Dialog!
     var actionButton_: UIButton!
 
+    private var spinnyNode : SKShapeNode?
+
     override init(size: CGSize) {
         super.init(size: size)
-        NSBundle.mainBundle().loadNibNamed("GameScene", owner: self, options: nil)
+        Bundle.main.loadNibNamed("GameScene", owner: self, options: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func didMoveToView(view: SKView) {
-        /*if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
+    override func didMove(to view: SKView) {
+        if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
             self.map = map
             self.map!.addSheetTo(self)
         }
 
-        actionButton.layer.borderColor = UIColor.whiteColor().CGColor
-        actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), forControlEvents: .TouchUpInside)
-        actionButton.hidden = true
+        actionButton.layer.borderColor = UIColor.white.cgColor
+        actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
+        actionButton.isHidden = true
 
-        menuButton.layer.borderColor = UIColor.whiteColor().CGColor
+        menuButton.layer.borderColor = UIColor.white.cgColor
 
         textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
         textBox_.hide()
         textBox_.setPositionY(Dialog.POSITION.top)
         textBox_.addTo(self)
 
-        eventDialog.hidden = true
-        eventDialog.layer.backgroundColor = UIColor.blackColor().CGColor
-        eventDialog.layer.borderColor = UIColor.whiteColor().CGColor*/
+        eventDialog.isHidden = true
+        eventDialog.layer.backgroundColor = UIColor.black.cgColor
+        eventDialog.layer.borderColor = UIColor.white.cgColor
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if map == nil { return }
-        let location = touches.first!.locationInNode(self)
+        let location = touches.first!.location(in: self)
         if self.map!.sheet!.isOnFrame(location) {
             self.gameSceneDelegate?.frameTouched(location)
         } else {
@@ -77,20 +79,20 @@ class GameScene: SKScene {
         }
     }
 
-    func actionButtonTouched(sender: UIButton) {
+    func actionButtonTouched(_ sender: UIButton) {
         self.gameSceneDelegate?.actionButtonTouched()
     }
 
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         map?.updateObjectsZPosition()
         self.gameSceneDelegate?.viewUpdated()
     }
 
     // MARK: EventListener
 
-    func movePlayer(playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
+    func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
         self.textBox_.hide()
-        self.actionButton.hidden = true
+        self.actionButton.isHidden = true
 
         let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
         player?.runAction(playerActions, destination: destination, callback: {
@@ -98,9 +100,9 @@ class GameScene: SKScene {
         })
 
         if screenActions.isEmpty { return }
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         self.map?.sheet!.runAction(screenActions, callback: {
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            UIApplication.shared.endIgnoringInteractionEvents()
             self.map?.updateObjectPlacement(player!)
         })
     }

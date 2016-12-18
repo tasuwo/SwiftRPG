@@ -13,13 +13,13 @@ class TransitionBetweenGameAndMenuSceneAnimator: NSObject, UIViewControllerAnima
     var presenting  = true
     var originFrame = CGRect.zero
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?)-> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)-> TimeInterval {
         return duration
     }
 
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
+        let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
 
         let toView = toVC?.view!
         let fromView = fromVC?.view!
@@ -27,13 +27,13 @@ class TransitionBetweenGameAndMenuSceneAnimator: NSObject, UIViewControllerAnima
         toView!.alpha = 0.0
 
         let backgroundView = UIView(frame: originFrame)
-        backgroundView.backgroundColor = UIColor.blackColor()
+        backgroundView.backgroundColor = UIColor.black
 
-        transitionContext.containerView()!.addSubview(backgroundView)
-        transitionContext.containerView()!.addSubview(toView!)
+        transitionContext.containerView.addSubview(backgroundView)
+        transitionContext.containerView.addSubview(toView!)
 
-        UIView.animateWithDuration(
-            duration/2.0,
+        UIView.animate(
+            withDuration: duration/2.0,
             delay: 0.0,
             options: [],
             animations: {
@@ -41,8 +41,8 @@ class TransitionBetweenGameAndMenuSceneAnimator: NSObject, UIViewControllerAnima
             },
             completion: {
                 _ in
-                UIView.animateWithDuration(
-                    self.duration/2.0,
+                UIView.animate(
+                    withDuration: self.duration/2.0,
                     delay: 0.0,
                     options: [],
                     animations: {

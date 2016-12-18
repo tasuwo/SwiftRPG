@@ -14,23 +14,23 @@ import SpriteKit
 class Node {
 
     enum STATE {
-        case None, Open, Closed
+        case none, open, closed
     }
 
     /// ステータス
-    private(set) var state: STATE!
+    fileprivate(set) var state: STATE!
     
     /// XY座標
-    private(set) var coordinates: TileCoordinate!
+    fileprivate(set) var coordinates: TileCoordinate!
     
     /// 親ノード
-    private(set) var parentNode: Node!
+    fileprivate(set) var parentNode: Node!
     
     /// 推定コスト
-    private var heuristicCost: Int!
+    fileprivate var heuristicCost: Int!
     
     /// 移動コスト
-    private(set) var moveCost: Int!
+    fileprivate(set) var moveCost: Int!
 
     var score: Int {
         get {
@@ -42,7 +42,7 @@ class Node {
     ///
     ///  - parameter coordinates: タイル座標
     init(coordinates: TileCoordinate) {
-        self.state = STATE.None
+        self.state = STATE.none
         self.coordinates = TileCoordinate(x: coordinates.x,
                                           y: coordinates.y)
     }
@@ -51,9 +51,9 @@ class Node {
     ///
     ///  - parameter parentNode:  親ノード
     ///  - parameter destination: 目的地のタイル座標
-    func open(parentNode: Node?, destination: TileCoordinate) {
+    func open(_ parentNode: Node?, destination: TileCoordinate) {
         // ノードをOpen状態にする
-        self.state = STATE.Open
+        self.state = STATE.open
 
         // 実コストを求める. スタート地点だった場合には 0
         if parentNode == nil {
@@ -73,7 +73,7 @@ class Node {
 
     ///  ノードを閉じる
     func close() {
-        self.state = STATE.Closed
+        self.state = STATE.closed
     }
 
     ///  ノードの現在位置を確認する
@@ -81,7 +81,7 @@ class Node {
     ///  - parameter coordinates: 確認する座標
     ///
     ///  - returns: 指定した座標にノードが存在しなければ false, 存在すれば true
-    func isPositioned(coordinates: TileCoordinate) -> Bool {
+    func isPositioned(_ coordinates: TileCoordinate) -> Bool {
         if coordinates == coordinates {
             return true
         } else {

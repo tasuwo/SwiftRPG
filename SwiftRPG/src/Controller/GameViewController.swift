@@ -15,7 +15,7 @@ class GameViewController: UIViewController {
     var viewInitiated: Bool = false
     var eventManager: EventManager!
     let transition = TransitionBetweenGameAndMenuSceneAnimator()
-    private var model: MenuSceneModel!
+    fileprivate var model: MenuSceneModel!
 
     override func loadView() {
         self.view = SKView()
@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.multipleTouchEnabled = false
+        self.view.isMultipleTouchEnabled = false
 
         self.eventManager = EventManager()
         eventManager.add(WalkEventListener(params: nil, chainListeners: nil))
@@ -36,9 +36,9 @@ class GameViewController: UIViewController {
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
+            self.view = scene.gameView
             let view = self.view as! SKView
             view.presentScene(scene)
-            self.view = scene.gameView
 
             self.model = MenuSceneModel()
 
@@ -51,29 +51,29 @@ class GameViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return UIInterfaceOrientationMask.AllButUpsideDown
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return UIInterfaceOrientationMask.allButUpsideDown
         } else {
-            return UIInterfaceOrientationMask.All
+            return UIInterfaceOrientationMask.all
         }
     }
 }
 
 extension GameViewController: GameSceneDelegate {
-    func frameTouched(location: CGPoint) {}
+    func frameTouched(_ location: CGPoint) {}
 
-    func gameSceneTouched(location: CGPoint) {
+    func gameSceneTouched(_ location: CGPoint) {
         let args = JSON(["touchedPoint": NSStringFromCGPoint(location)])
         do {
             try self.eventManager.touchEventDispacher.trigger(self, args: args)
-        } catch EventListenerError.IllegalArguementFormat(let string) {
+        } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
-        } catch EventListenerError.IllegalParamFormat(let string) {
+        } catch EventListenerError.illegalParamFormat(let string) {
             print(string)
-        } catch EventListenerError.InvalidParam(let string) {
+        } catch EventListenerError.invalidParam(let string) {
             print(string)
-        } catch EventListenerError.ParamIsNil {
+        } catch EventListenerError.paramIsNil {
             print("Required param is nil")
         } catch {
             print("Unexpected error occured")
@@ -83,13 +83,13 @@ extension GameViewController: GameSceneDelegate {
     func actionButtonTouched() {
         do {
             try self.eventManager.actionButtonEventDispacher.trigger(self, args: nil)
-        } catch EventListenerError.IllegalArguementFormat(let string) {
+        } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
-        } catch EventListenerError.IllegalParamFormat(let string) {
+        } catch EventListenerError.illegalParamFormat(let string) {
             print(string)
-        } catch EventListenerError.InvalidParam(let string) {
+        } catch EventListenerError.invalidParam(let string) {
             print(string)
-        } catch EventListenerError.ParamIsNil {
+        } catch EventListenerError.paramIsNil {
             print("Required param is nil")
         } catch {
             print("Unexpected error occured")
@@ -113,16 +113,16 @@ extension GameViewController: GameSceneDelegate {
     func viewUpdated() {
         do {
             try self.eventManager.cyclicEventDispacher.trigger(self, args: nil)
-        } catch EventListenerError.IllegalArguementFormat(let string) {
+        } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
             self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.IllegalParamFormat(let string) {
+        } catch EventListenerError.illegalParamFormat(let string) {
             print(string)
             self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.InvalidParam(let string) {
+        } catch EventListenerError.invalidParam(let string) {
             print(string)
             self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.ParamIsNil {
+        } catch EventListenerError.paramIsNil {
             print("Required param is nil")
             self.eventManager.cyclicEventDispacher.removeAll()
         } catch {
@@ -131,7 +131,7 @@ extension GameViewController: GameSceneDelegate {
         }
     }
 
-    func addEvent(events: [EventListener]) {
+    func addEvent(_ events: [EventListener]) {
         for event in events {
             self.eventManager.add(event)
         }
@@ -149,16 +149,16 @@ extension GameViewController: MenuSceneDelegate {
         self.view = newScene.gameView
     }
     
-    func didSelectedItem(indexPath: NSIndexPath) {
+    func didSelectedItem(_ indexPath: IndexPath) {
         self.model.selectItem(indexPath)
     }
 }
 
 extension GameViewController: UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(
-        presented: UIViewController,
-        presentingController presenting: UIViewController,
-                             sourceController source: UIViewController) ->
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+                             source: UIViewController) ->
         UIViewControllerAnimatedTransitioning?
     {
         transition.originFrame = self.view.frame
@@ -166,7 +166,7 @@ extension GameViewController: UIViewControllerTransitioningDelegate {
         return transition
     }
 
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.presenting = false
         return transition
     }

@@ -10,32 +10,56 @@ import Foundation
 import UIKit
 import SpriteKit
 import SwiftyJSON
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 /// TiledMapEditor で作成したマップを読み込み，クラスとして保持する
-public class TileSheet {
+open class TileSheet {
     /// タイルシートのノード
-    private let sheetNode: SKSpriteNode!
+    fileprivate let sheetNode: SKSpriteNode!
 
     /// 描画範囲外を塗りつぶすノード群
-    private let outerFrame: [SKShapeNode]!
+    fileprivate let outerFrame: [SKShapeNode]!
 
     /// 敷き詰めるタイルの行数
-    private let sheetTileRows: Int
+    fileprivate let sheetTileRows: Int
 
     /// 敷き詰めるタイルの列数
-    private let sheetTileCols: Int
+    fileprivate let sheetTileCols: Int
 
     /// 描画範囲の横幅
-    private let drawingRangeWidth: CGFloat!
+    fileprivate let drawingRangeWidth: CGFloat!
 
     /// 描画範囲の縦幅
-    private let drawingRangeHeight: CGFloat!
+    fileprivate let drawingRangeHeight: CGFloat!
 
     /// 描画範囲内に描画されるタイル行数
-    private let drawingTileRows: Int!
+    fileprivate let drawingTileRows: Int!
 
     /// 描画範囲内に描画されるタイルの列数
-    private let drawingTileCols: Int!
+    fileprivate let drawingTileCols: Int!
 
     ///  コンストラクタ
     ///
@@ -82,13 +106,13 @@ public class TileSheet {
         
         // タイルシートの生成
         self.sheetNode = SKSpriteNode(
-            color: UIColor.whiteColor(),
-            size: CGSizeMake(CGFloat(sheetTileRows) * Tile.TILE_SIZE,
-            CGFloat(sheetTileCols) * Tile.TILE_SIZE)
+            color: UIColor.white,
+            size: CGSize(width: CGFloat(sheetTileRows) * Tile.TILE_SIZE,
+            height: CGFloat(sheetTileCols) * Tile.TILE_SIZE)
         )
-        self.sheetNode.position = CGPointMake(drawingRangeWidth, drawingRangeHeight)
+        self.sheetNode.position = CGPoint(x: drawingRangeWidth, y: drawingRangeHeight)
         // 左下が基準
-        self.sheetNode.anchorPoint = CGPointMake(0.0, 0.0)
+        self.sheetNode.anchorPoint = CGPoint(x: 0.0, y: 0.0)
         
         // タイルの追加
         for tile in tiles.values {
@@ -114,13 +138,13 @@ public class TileSheet {
     ///  - parameter position: キャラクターの現在位置
     ///
     ///  - returns: スクロールのためのアクション
-    func scrollSheet(playerPosition: TileCoordinate) -> SKAction? {
+    func scrollSheet(_ playerPosition: TileCoordinate) -> SKAction? {
         // 到達していたらスクロールするタイル
         // 原点沿いのタイル
         // WARNING: 補正値 +1
         let sheetOrigin = TileCoordinate.getTileCoordinateFromScreenCoordinate(
             self.sheetNode.position,
-            screenCoordinate: CGPointMake(self.drawingRangeWidth + 1, self.drawingRangeHeight + 1)
+            screenCoordinate: CGPoint(x: self.drawingRangeWidth + 1, y: self.drawingRangeHeight + 1)
         )
         // 原点から見て画面端のタイル
         let max_x = sheetOrigin.x + self.drawingTileRows - 1
@@ -138,35 +162,35 @@ public class TileSheet {
         var direction: DIRECTION
 
         if (playerPosition.x >= max_x) {
-            direction = DIRECTION.RIGHT
+            direction = DIRECTION.right
         } else if (playerPosition.y >= max_y) {
-            direction = DIRECTION.UP
+            direction = DIRECTION.up
         } else if (playerPosition.x <= sheetOrigin.x) {
-            direction = DIRECTION.LEFT
+            direction = DIRECTION.left
         } else if (playerPosition.y <= sheetOrigin.y) {
-            direction = DIRECTION.DOWN
+            direction = DIRECTION.down
         } else {
             // WARNING: won't use
-            direction = DIRECTION.UP
+            direction = DIRECTION.up
         }
 
         var deltaX: CGFloat = 0
         var deltaY: CGFloat = 0
         switch (direction) {
-        case .UP:
+        case .up:
             deltaX = 0
             deltaY = -(CGFloat(self.drawingTileCols - 1) * Tile.TILE_SIZE)
-        case .DOWN:
+        case .down:
             deltaX = 0
             deltaY = CGFloat(self.drawingTileCols - 1) * Tile.TILE_SIZE
-        case .LEFT:
+        case .left:
             deltaX = CGFloat(self.drawingTileRows - 1) * Tile.TILE_SIZE
             deltaY = 0
-        case .RIGHT:
+        case .right:
             deltaX = -(CGFloat(self.drawingTileRows - 1) * Tile.TILE_SIZE)
             deltaY = 0
         }
-        return SKAction.moveByX(deltaX, y: deltaY, duration: 0.5)
+        return SKAction.moveBy(x: deltaX, y: deltaY, duration: 0.5)
     }
 
     ///  描画範囲外を黒く塗りつぶすための，画面の外枠を生成する
@@ -177,33 +201,33 @@ public class TileSheet {
     ///  - parameter drawingRangeHeight: 描画範囲縦幅
     ///
     ///  - returns: 生成した外枠のノード群
-    private class func createOuterFrameNodes(frameWidth: CGFloat,
+    fileprivate class func createOuterFrameNodes(_ frameWidth: CGFloat,
                                              frameHeight: CGFloat,
                                              drawingRangeWidth: CGFloat,
                                              drawingRangeHeight: CGFloat) -> [SKShapeNode]
     {
-        var horizonalPoints = [CGPointMake(0.0, 0.0), CGPointMake(frameWidth, 0)]
-        var verticalPoints  = [CGPointMake(0.0, 0.0), CGPointMake(0, frameHeight)]
+        var horizonalPoints = [CGPoint(x: 0.0, y: 0.0), CGPoint(x: frameWidth, y: 0)]
+        var verticalPoints  = [CGPoint(x: 0.0, y: 0.0), CGPoint(x: 0, y: frameHeight)]
 
         // 画面の縦横の長さと，フレーム枠の太さから，枠のテンプレートを作成
         let horizonalLine   = SKShapeNode(points: &horizonalPoints, count: horizonalPoints.count)
         horizonalLine.lineWidth = drawingRangeHeight * 2
-        horizonalLine.strokeColor = UIColor.blackColor()
+        horizonalLine.strokeColor = UIColor.black
         horizonalLine.zPosition = zPositionTable.FLAME
         let verticalLine = SKShapeNode(points: &verticalPoints, count: verticalPoints.count)
         verticalLine.lineWidth = drawingRangeWidth * 2
-        verticalLine.strokeColor = UIColor.blackColor()
+        verticalLine.strokeColor = UIColor.black
         verticalLine.zPosition = zPositionTable.FLAME
 
         // 上下左右のフレーム枠の生成
         let underLine = horizonalLine.copy() as! SKShapeNode
-        underLine.position = CGPointMake(0, 0)
+        underLine.position = CGPoint(x: 0, y: 0)
         let upperLine = horizonalLine.copy() as! SKShapeNode
-        upperLine.position = CGPointMake(0, frameHeight)
+        upperLine.position = CGPoint(x: 0, y: frameHeight)
         let leftLine = verticalLine.copy() as! SKShapeNode
-        leftLine.position = CGPointMake(0, 0)
+        leftLine.position = CGPoint(x: 0, y: 0)
         let rightLine = verticalLine.copy() as! SKShapeNode
-        rightLine.position = CGPointMake(frameWidth, 0)
+        rightLine.position = CGPoint(x: frameWidth, y: 0)
 
         return [underLine, upperLine, leftLine, rightLine]
     }
@@ -213,7 +237,7 @@ public class TileSheet {
     ///  - parameter position: 画面上の座標
     ///
     ///  - returns: 乗っていれば true, そうでなければ false
-    func isOnFrame(position: CGPoint) -> Bool {
+    func isOnFrame(_ position: CGPoint) -> Bool {
         if (position.x <= self.drawingRangeWidth
             || position.x >= self.drawingRangeWidth + CGFloat(self.drawingTileRows) * Tile.TILE_SIZE
             || position.y <= self.drawingRangeHeight
@@ -228,7 +252,7 @@ public class TileSheet {
     ///  シーンにタイルシートを子ノードとして持たせる
     ///
     ///  - parameter scene: タイルシートを追加するシーン
-    func addTo(scene: SKScene) {
+    func addTo(_ scene: SKScene) {
         scene.addChild(self.sheetNode)
         for line in self.outerFrame {
             scene.addChild(line)
@@ -238,7 +262,7 @@ public class TileSheet {
     ///  タイルシートにオブジェクトを追加する
     ///
     ///  - parameter object: 追加するオブジェクト
-    func addObjectToSheet(object: Object) {
+    func addObjectToSheet(_ object: Object) {
         object.addTo(self.sheetNode)
     }
 
@@ -247,17 +271,17 @@ public class TileSheet {
     ///  - parameter name: 対象オブジェクト名
     ///
     ///  - returns: オブジェクトの現在位置
-    func getObjectPositionByName(name: String) -> CGPoint? {
-        return self.sheetNode.childNodeWithName(name)?.position
+    func getObjectPositionByName(_ name: String) -> CGPoint? {
+        return self.sheetNode.childNode(withName: name)?.position
     }
 
     ///  タイルシートにアクションを実行させる
     ///
     ///  - parameter actions:  実行させるアクション群
     ///  - parameter callback: コールバック
-    func runAction(actions: Array<SKAction>, callback: () -> Void) {
+    func runAction(_ actions: Array<SKAction>, callback: @escaping () -> Void) {
         let sequence: SKAction = SKAction.sequence(actions)
-        self.sheetNode.runAction(sequence, completion: { callback() })
+        self.sheetNode.run(sequence, completion: { callback() })
     }
 
     func getSheetPosition() -> CGPoint {

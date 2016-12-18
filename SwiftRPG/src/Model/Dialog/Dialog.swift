@@ -9,6 +9,30 @@
 import Foundation
 import SpriteKit
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class Dialog {
     let FONT_SIZE: CGFloat          = 14.0
@@ -34,14 +58,14 @@ class Dialog {
     var rowNum: CGFloat!
     var colNum: CGFloat!
 
-    private let frameWidth: CGFloat!
-    private let frameHeight: CGFloat!
+    fileprivate let frameWidth: CGFloat!
+    fileprivate let frameHeight: CGFloat!
 
     var characterIcon: SKSpriteNode!
     let CHAR_ICON_SIZE: CGFloat = 150.0
     let ICON_MARGIN: CGFloat = 10.0
 
-    private let CHAR_LABEL_NAME = "text"
+    fileprivate let CHAR_LABEL_NAME = "text"
     
     static let NEWLINE_CHAR: Character = "嬲"
     
@@ -81,26 +105,26 @@ class Dialog {
         boxHeight = textRegionHeight + PADDING_HEIGHT * 2 + BUTTON_SIZE
 
         // テキストボックスサイズを求める
-        let box_shape = CGRectMake(0, 0, boxWidth, boxHeight)
+        let box_shape = CGRect(x: 0, y: 0, width: boxWidth, height: boxHeight)
         textBox = SKShapeNode(rect: box_shape, cornerRadius: 10)
-        textBox.fillColor = SKColor.blackColor()
-        textBox.strokeColor = SKColor.whiteColor()
+        textBox.fillColor = SKColor.black
+        textBox.strokeColor = SKColor.white
         textBox.lineWidth = 2.0
         textBox.zPosition = zPositionTable.DIALOG
-        textBox.position = CGPointMake(frame_width / 2 - boxWidth / 2,
-                                        frame_height / 2 - boxHeight / 2)
+        textBox.position = CGPoint(x: frame_width / 2 - boxWidth / 2,
+                                        y: frame_height / 2 - boxHeight / 2)
 
         // ページ送りボタンの設置
         nextButton = SKSpriteNode(
-            color: UIColor.whiteColor(),
+            color: UIColor.white,
             size: CGSize(width: BUTTON_SIZE, height: BUTTON_SIZE))
-        nextButton.position = CGPointMake(
-            PADDING_WIDTH + textRegionWidth,
-            PADDING_HEIGHT)
-        let fadeout = SKAction.fadeAlphaTo(0.0, duration: 0.0)
-        let fadein = SKAction.fadeAlphaTo(1.0, duration: 0.0)
-        let delay = SKAction.waitForDuration(NSTimeInterval(0.5))
-        buttonLoop = SKAction.repeatActionForever(
+        nextButton.position = CGPoint(
+            x: PADDING_WIDTH + textRegionWidth,
+            y: PADDING_HEIGHT)
+        let fadeout = SKAction.fadeAlpha(to: 0.0, duration: 0.0)
+        let fadein = SKAction.fadeAlpha(to: 1.0, duration: 0.0)
+        let delay = SKAction.wait(forDuration: TimeInterval(0.5))
+        buttonLoop = SKAction.repeatForever(
             SKAction.sequence([fadein, delay, fadeout, delay]))
         nextButton.alpha = 0.0
         nextButton.position.y = PADDING_HEIGHT
@@ -108,12 +132,12 @@ class Dialog {
 
         // キャラクター画像表示
         characterIcon = SKSpriteNode()
-        characterIcon.anchorPoint = CGPointMake(0.0, 0.0)
-        characterIcon.size = CGSizeMake(
-            CHAR_ICON_SIZE - ICON_MARGIN * 2,
-            boxHeight - ICON_MARGIN * 2)
+        characterIcon.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        characterIcon.size = CGSize(
+            width: CHAR_ICON_SIZE - ICON_MARGIN * 2,
+            height: boxHeight - ICON_MARGIN * 2)
         characterIcon.zPosition = zPositionTable.DIALOG_ICON
-        characterIcon.color = UIColor.whiteColor()
+        characterIcon.color = UIColor.white
         characterIcon.position.y = PADDING_HEIGHT // FONT_SIZE + ICON_MARGIN
         textBox.addChild(characterIcon)
     }
@@ -121,7 +145,7 @@ class Dialog {
     ///  ダイアログを描画する上下位置を設定する
     ///
     ///  - parameter position: 描画する場所
-    func setPositionY(upDownPosition: POSITION) {
+    func setPositionY(_ upDownPosition: POSITION) {
         switch upDownPosition {
         case .top:    textBox.position.y = frameHeight - boxHeight - 3
         case .middle: textBox.position.y = frameHeight / 2 - boxHeight / 2
@@ -133,7 +157,7 @@ class Dialog {
     ///  テキストの anchor point が左上ではなくて真上なので FONT_SIZE/2 を足す
     ///
     ///  - parameter sidePosition: キャラクターの描画位置
-    func setPositionX(sidePosition: TALK_SIDE) {
+    func setPositionX(_ sidePosition: TALK_SIDE) {
         self.textBox.position.x = frameWidth / 2 - boxWidth / 2
         
         switch sidePosition {
@@ -142,18 +166,18 @@ class Dialog {
             textRegionWidth          = rowNum * charRegionWidth
             nextButton.position.x    = frameWidth - PADDING_WIDTH * 3 / 2
             characterIcon.position.x = ICON_MARGIN
-            characterIcon.hidden     = false
+            characterIcon.isHidden     = false
         case .right:
             rowNum                   = ceil((frameWidth - PADDING_WIDTH - CHAR_ICON_SIZE) / charRegionWidth)
             textRegionWidth          = rowNum * charRegionWidth
             nextButton.position.x    = frameWidth - CHAR_ICON_SIZE - PADDING_WIDTH * 3 / 2
             characterIcon.position.x = textRegionWidth + ICON_MARGIN // + PADDING_WIDTH 
-            characterIcon.hidden     = false
+            characterIcon.isHidden     = false
         case .middle:
             rowNum                   = ceil((frameWidth - PADDING_WIDTH * 2) / charRegionWidth)
             textRegionWidth          = rowNum * charRegionWidth
             nextButton.position.x    = frameWidth - PADDING_WIDTH * 3 / 2
-            characterIcon.hidden     = true
+            characterIcon.isHidden     = true
         }
     }
 
@@ -162,42 +186,42 @@ class Dialog {
     ///  - parameter sidePosition: テキスト領域の位置
     ///
     ///  - returns: anchor point
-    private func getAnchorPositionOfTextRegion(sidePosition: TALK_SIDE) -> CGPoint {
+    fileprivate func getAnchorPositionOfTextRegion(_ sidePosition: TALK_SIDE) -> CGPoint {
         switch sidePosition {
         case .left:
-            return CGPointMake(FONT_SIZE / 2 + frameWidth - PADDING_WIDTH - textRegionWidth, boxHeight - FONT_SIZE - PADDING_HEIGHT)
+            return CGPoint(x: FONT_SIZE / 2 + frameWidth - PADDING_WIDTH - textRegionWidth, y: boxHeight - FONT_SIZE - PADDING_HEIGHT)
         case .right:
-            return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight - FONT_SIZE - PADDING_HEIGHT)
+            return CGPoint(x: FONT_SIZE / 2 + PADDING_WIDTH, y: boxHeight - FONT_SIZE - PADDING_HEIGHT)
         case .middle:
-            return CGPointMake(FONT_SIZE / 2 + PADDING_WIDTH, boxHeight - FONT_SIZE - PADDING_HEIGHT)
+            return CGPoint(x: FONT_SIZE / 2 + PADDING_WIDTH, y: boxHeight - FONT_SIZE - PADDING_HEIGHT)
         }
     }
 
     ///  シーンにテキストボックスを追加する
     ///
     ///  - parameter scene: テキストボックスを追加するシーン
-    func addTo(scene: SKScene) {
+    func addTo(_ scene: SKScene) {
         scene.addChild(textBox)
     }
 
     ///  テキストボックスを非表示にする
     func hide() {
-        textBox.hidden = true
+        textBox.isHidden = true
     }
 
     ///  テキストボックスを表示する
     ///
     ///  - parameter position: 表示位置
-    func show(position: POSITION? = nil) {
+    func show(_ position: POSITION? = nil) {
         self.setPositionY(position!)
-        textBox.hidden = false
+        textBox.isHidden = false
     }
 
     ///  テキストを描画する
     ///
     ///  - parameter text:     描画するテキスト
     ///  - parameter talkSide: テキスト描画位置
-    func drawText(talkerImageName: String?, body: String, side: TALK_SIDE) {
+    func drawText(_ talkerImageName: String?, body: String, side: TALK_SIDE) {
         var iDrawingFont: CGFloat = 0     // 描画位置を決める
         var nDrawingFont: CGFloat = 0     // 描画している文字が何番目か決める
 
@@ -225,20 +249,20 @@ class Dialog {
 
             // 何行目の何文字目を描画するか(0〜)
             var nLine = floor(iDrawingFont / rowNum)
-            var nChar = floor(iDrawingFont % rowNum)
+            var nChar = floor(iDrawingFont.truncatingRemainder(dividingBy: rowNum))
 
             if iDrawingFont / rowNum + 1 > colNum {
                 // 行数が超えていたら次ページ
                 // TODO: 一行ずつ文字送りするなど，もっと良いやり方がありそう
-                textBox.enumerateChildNodesWithName(CHAR_LABEL_NAME, usingBlock: {
+                textBox.enumerateChildNodes(withName: CHAR_LABEL_NAME, using: {
                     node, sotp in
 
-                    let delay = SKAction.waitForDuration(
-                    NSTimeInterval(self.VIEW_TEXT_TIME * nDrawingFont)
+                    let delay = SKAction.wait(
+                    forDuration: TimeInterval(self.VIEW_TEXT_TIME * nDrawingFont)
                     )
-                    let fadeout = SKAction.fadeAlphaTo(0.0, duration: 0.0)
+                    let fadeout = SKAction.fadeAlpha(to: 0.0, duration: 0.0)
                     let seq = SKAction.sequence([delay, fadeout])
-                    node.runAction(seq)
+                    node.run(seq)
                 })
                 nDrawingFont += 1
                 iDrawingFont = 0
@@ -249,29 +273,29 @@ class Dialog {
             let char = SKLabelNode(text: String(character))
             char.fontSize = FONT_SIZE
             char.name = CHAR_LABEL_NAME
-            char.position = CGPointMake(anchor.x + nChar * charRegionWidth,
-                                        anchor.y - nLine * charRegionHeight)
+            char.position = CGPoint(x: anchor.x + nChar * charRegionWidth,
+                                        y: anchor.y - nLine * charRegionHeight)
             char.alpha = 0.0
             textBox.addChild(char)
 
-            let delay = SKAction.waitForDuration(NSTimeInterval(VIEW_TEXT_TIME * nDrawingFont))
-            let fadein = SKAction.fadeAlphaBy(1.0, duration: 0.0)
+            let delay = SKAction.wait(forDuration: TimeInterval(VIEW_TEXT_TIME * nDrawingFont))
+            let fadein = SKAction.fadeAlpha(by: 1.0, duration: 0.0)
             let seq = SKAction.sequence([delay, fadein])
-            char.runAction(seq)
+            char.run(seq)
 
             iDrawingFont += 1
             nDrawingFont += 1
         }
 
         // 先送りボタン表示
-        let delay = SKAction.waitForDuration(NSTimeInterval(VIEW_TEXT_TIME * nDrawingFont))
-        nextButton.runAction(SKAction.sequence([delay, buttonLoop]))
+        let delay = SKAction.wait(forDuration: TimeInterval(VIEW_TEXT_TIME * nDrawingFont))
+        nextButton.run(SKAction.sequence([delay, buttonLoop]))
     }
 
     ///  描画したテキストを削除する
     func clearText() {
         var allNode: [SKNode] = []
-        textBox.enumerateChildNodesWithName(CHAR_LABEL_NAME, usingBlock: { node, sotp in allNode.append(node) })
-        textBox.removeChildrenInArray(allNode)
+        textBox.enumerateChildNodes(withName: CHAR_LABEL_NAME, using: { node, sotp in allNode.append(node) })
+        textBox.removeChildren(in: allNode)
     }
 }

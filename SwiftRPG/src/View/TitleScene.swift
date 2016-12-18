@@ -21,7 +21,7 @@ class TitleScene: UIView {
     @IBOutlet var titleScene: UIView!
     @IBOutlet weak var startBtn: SpringButton!
     
-    @IBAction func startBtnPressed(sender: AnyObject) {
+    @IBAction func startBtnPressed(_ sender: AnyObject) {
         startBtn.animation = "pop"
         startBtn.force = 1.5
         startBtn.duration = 1
@@ -33,13 +33,13 @@ class TitleScene: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        NSBundle.mainBundle().loadNibNamed("TitleScene", owner: self, options: nil)
+        Bundle.main.loadNibNamed("TitleScene", owner: self, options: nil)
         titleScene.frame = frame
         addSubview(titleScene)
         
-        titleScene.backgroundColor = UIColor.blackColor()
+        titleScene.backgroundColor = UIColor.black
         
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     required init?(coder aDecoder: NSCoder) {

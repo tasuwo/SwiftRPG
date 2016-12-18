@@ -34,7 +34,7 @@ class AStar {
     ///
     ///  - parameter departure:   出発するタイル座標
     ///  - parameter destination: 目的地のタイル座標
-    func initialize(departure: TileCoordinate, destination: TileCoordinate) {
+    func initialize(_ departure: TileCoordinate, destination: TileCoordinate) {
         self.departure = departure
         self.destination = destination
         nodeList = []
@@ -89,13 +89,13 @@ class AStar {
     ///  基準ノードのインデックスを選ぶ
     ///
     ///  - returns: 基準ノードのインデックス
-    private func chooseBaseNodeIndex() -> Int? {
+    fileprivate func chooseBaseNodeIndex() -> Int? {
         var min = -1
         var iMinNode: Int? = nil
 
         // Open なノードを選ぶ
         for i in 0 ..< nodeList.count {
-            if nodeList[i].state == Node.STATE.Open {
+            if nodeList[i].state == Node.STATE.open {
                 // スコアが最小のものを選ぶ
                 if min == -1 {
                     min = nodeList[i].score
@@ -116,7 +116,7 @@ class AStar {
     ///  - parameter iBaseNode: 基準ノードのインデックス
     ///
     ///  - returns: open 可能なノードのインデックス
-    private func searchCanOpenNodeIndexes(iBaseNode: Int) -> [Int] {
+    fileprivate func searchCanOpenNodeIndexes(_ iBaseNode: Int) -> [Int] {
         var checkCoordinates: [TileCoordinate] = []
         var indexes: [Int] = []
         let baseX = nodeList[iBaseNode].coordinates.x
@@ -134,11 +134,11 @@ class AStar {
                 continue
             }
             // ノードリストにノードとして存在するか
-            let i_node = nodeList.indexOf() {
+            let i_node = nodeList.index() {
                 $0.coordinates == coordinate
             }
             if (i_node != nil) {
-                if (nodeList[i_node!].state == Node.STATE.None) {
+                if (nodeList[i_node!].state == Node.STATE.none) {
                     indexes.append(i_node!)
                 }
             } else {
@@ -155,11 +155,11 @@ class AStar {
     ///  探索結果を取得する
     ///
     ///  - returns: 移動経路を表すタイル座標の配列
-    private func getAStarResult() -> [TileCoordinate] {
+    fileprivate func getAStarResult() -> [TileCoordinate] {
         var result: [TileCoordinate] = []
         var node: Node
 
-        let index = nodeList.indexOf() {
+        let index = nodeList.index() {
             $0.coordinates == destination
         }
         node = nodeList[index!]
@@ -168,7 +168,7 @@ class AStar {
             node = node.parentNode!
         }
 
-        return result.reverse()
+        return result.reversed()
     }
 
     ///  タイルの通行判定
@@ -176,7 +176,7 @@ class AStar {
     ///  - parameter coordinate: タイルの座標
     ///
     ///  - returns: 通行可能なら true, そうでなければ false
-    private func canPass(coordinate: TileCoordinate) -> Bool {
+    fileprivate func canPass(_ coordinate: TileCoordinate) -> Bool {
         return self.map.canPass(coordinate)
     }
 }

@@ -9,13 +9,13 @@
 import Foundation
 import SwiftyJSON
 
-enum EventListenerError: ErrorType {
-    case IllegalArguementFormat(String)
-    case IllegalParamFormat(String)
-    case InvalidParam(String)
-    case ParamIsNil
+enum EventListenerError: Error {
+    case illegalArguementFormat(String)
+    case illegalParamFormat(String)
+    case invalidParam(String)
+    case paramIsNil
 
-    static func generateIllegalParamFormatErrorMessage(params: [String:AnyObject?], handler: EventListener.Type) -> String {
+    static func generateIllegalParamFormatErrorMessage(_ params: [String:AnyObject?], handler: EventListener.Type) -> String {
         var message = "Some params are missing at \(handler)."
         message += " Check "
         for param in params {
@@ -28,17 +28,17 @@ enum EventListenerError: ErrorType {
 }
 
 enum TriggerType {
-    case Touch
-    case Immediate
-    case Button
+    case touch
+    case immediate
+    case button
 }
 
 enum ExecutionType {
-    case Onece
-    case Loop
+    case onece
+    case loop
 }
 
-typealias EventMethod = (sender: AnyObject!, args: JSON!) throws -> ()
+typealias EventMethod = (_ sender: AnyObject?, _ args: JSON?) throws -> ()
 protocol EventHandler: class {
     var invoke: EventMethod! { get set }
     var triggerType: TriggerType { get }

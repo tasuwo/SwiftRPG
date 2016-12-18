@@ -13,7 +13,7 @@ import SpriteKit
 
 protocol MenuSceneDelegate {
     func didPressBackButton()
-    func didSelectedItem(indexPath: NSIndexPath)
+    func didSelectedItem(_ indexPath: IndexPath)
 }
 
 class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
@@ -24,8 +24,8 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
             self.dialog.text = self.model!.defaultMessage
         }
     }
-    private static let SELECTED_ALPHA: CGFloat = 1.0
-    private static let DESELECTED_ALPHA: CGFloat = 0.5
+    fileprivate static let SELECTED_ALPHA: CGFloat = 1.0
+    fileprivate static let DESELECTED_ALPHA: CGFloat = 0.5
     
     @IBOutlet var menuView: SKView!
     @IBOutlet weak var imageView: UIImageView!
@@ -33,23 +33,23 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var dialog: UILabel!
     @IBOutlet weak var contentsView: UICollectionView!
-    @IBAction func didPressBackButton(sender: AnyObject) {
+    @IBAction func didPressBackButton(_ sender: AnyObject) {
         self.menuSceneDelegate?.didPressBackButton()
     }
     
     override init(size: CGSize) {
         super.init(size: size)
 
-        NSBundle.mainBundle().loadNibNamed("MenuScene", owner: self, options: nil)
+        Bundle.main.loadNibNamed("MenuScene", owner: self, options: nil)
         self.view?.addSubview(menuView)
 
         contentsView.delegate = self
-        contentsView.registerClass(ItemCell.self, forCellWithReuseIdentifier: "cell")
+        contentsView.register(ItemCell.self, forCellWithReuseIdentifier: "cell")
         
         // DEBUG:
-        imageView.backgroundColor = UIColor.whiteColor()
+        imageView.backgroundColor = UIColor.white
 
-        dialog.layer.borderColor = UIColor.whiteColor().CGColor
+        dialog.layer.borderColor = UIColor.white.cgColor
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,10 +59,10 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
     // MARK: MenuSceneModelDelegate
 
     func updateItemSelect() {
-        let selectedCell = self.contentsView.cellForItemAtIndexPath(self.model.selectedIndexPath!) as! ItemCell
+        let selectedCell = self.contentsView.cellForItem(at: self.model.selectedIndexPath!) as! ItemCell
 
         // 選択されたセル以外の全てのセルを非選択にする
-        for cell in self.contentsView.visibleCells() as! [ItemCell] {
+        for cell in self.contentsView.visibleCells as! [ItemCell] {
             if cell == selectedCell { continue }
             cell.imageView.alpha = MenuScene.DESELECTED_ALPHA
         }
@@ -83,13 +83,13 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
 
     // MARK: UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.menuSceneDelegate?.didSelectedItem(indexPath)
     }
 
     // MARK: UICollectionViewDelegateFlowLayout
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(40, 40)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 40, height: 40)
     }
 }

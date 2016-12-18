@@ -27,6 +27,6 @@ class TitleViewController: UIViewController, TitleSceneDelegate {
     
     func newGameTouched() {
         let gameViewController: UIViewController = GameViewController()
-        self.presentViewController(gameViewController, animated: false, completion: nil)
+        self.present(gameViewController, animated: false, completion: nil)
     }
 }

@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum MapObjectError: ErrorType {
-    case FailedToGenerate(String)
+enum MapObjectError: Error {
+    case failedToGenerate(String)
 }
 
 protocol MapObject {

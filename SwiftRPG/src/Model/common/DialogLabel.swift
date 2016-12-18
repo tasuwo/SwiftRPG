@@ -13,13 +13,13 @@ class DialogLabel: UILabel {
     
     let padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
-    override func drawTextInRect(rect: CGRect) {
+    override func drawText(in rect: CGRect) {
         let newRect = UIEdgeInsetsInsetRect(rect, padding)
-        super.drawTextInRect(newRect)
+        super.drawText(in: newRect)
     }
     
-    override func intrinsicContentSize() -> CGSize {
-        var intrinsicContentSize = super.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        var intrinsicContentSize = super.intrinsicContentSize
         intrinsicContentSize.height += padding.top + padding.bottom
         intrinsicContentSize.width  += padding.left + padding.right
         return intrinsicContentSize

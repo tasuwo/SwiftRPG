@@ -18,27 +18,27 @@ class StartTalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    private let directionString: String
-    private let params: JSON
-    private let listeners: ListenerChain?
+    fileprivate let directionString: String
+    fileprivate let params: JSON
+    fileprivate let listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .Button
-        self.executionType = .Onece
+        self.triggerType = .button
+        self.executionType = .onece
 
         if params == nil {
-            throw EventListenerError.ParamIsNil
+            throw EventListenerError.paramIsNil
         }
 
         let maxIndex = params!.arrayObject?.count
         if maxIndex == nil {
-            throw EventListenerError.IllegalParamFormat("Cannot count the number of params at StartTalkEventListener")
+            throw EventListenerError.illegalParamFormat("Cannot count the number of params at StartTalkEventListener")
         }
 
         let directionString = params![maxIndex!-1]["direction"].string
         if directionString == nil {
-            throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["direction": directionString],
+            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                ["direction": directionString as Optional<AnyObject>],
                 handler: StartTalkEventListener.self)
             )
         }
@@ -51,14 +51,14 @@ class StartTalkEventListener: EventListener {
         self.listeners = listeners
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
             let map        = scene.map!
 
-            scene.actionButton.hidden = true
-            scene.menuButton.hidden = true
+            scene.actionButton.isHidden = true
+            scene.menuButton.isHidden = true
 
             let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
             if let playerDirection = DIRECTION.fromString(self.directionString) {
@@ -73,7 +73,7 @@ class StartTalkEventListener: EventListener {
             }
 
             do {
-                try nextTalkEventMethod(sender: sender, args: args)
+                try nextTalkEventMethod(_: sender, args)
             } catch {
                 throw error
             }
@@ -96,10 +96,10 @@ class TalkEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    private let params: JSON
-    private let listeners: ListenerChain?
-    private let index: Int
-    private let talkContentsMaxNum: Int
+    fileprivate let params: JSON
+    fileprivate let listeners: ListenerChain?
+    fileprivate let index: Int
+    fileprivate let talkContentsMaxNum: Int
 
     required convenience init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         do {
@@ -110,11 +110,11 @@ class TalkEventListener: EventListener {
     }
 
     init(params: JSON?, chainListeners listeners: ListenerChain?, index: Int) throws {
-        self.triggerType = .Touch
-        self.executionType = .Onece
+        self.triggerType = .touch
+        self.executionType = .onece
 
         if params == nil {
-            throw EventListenerError.ParamIsNil
+            throw EventListenerError.paramIsNil
         }
         self.params = params!
         self.listeners = listeners
@@ -122,12 +122,12 @@ class TalkEventListener: EventListener {
 
         let talkContentsMaxNum = params!.arrayObject?.count
         if talkContentsMaxNum == nil {
-            throw EventListenerError.IllegalParamFormat("Cannot count the number of params at StartTalkEventListener")
+            throw EventListenerError.illegalParamFormat("Cannot count the number of params at StartTalkEventListener")
         }
         self.talkContentsMaxNum = talkContentsMaxNum!
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
 
             let nextTalkEventMethod: EventMethod
             do {
@@ -137,7 +137,7 @@ class TalkEventListener: EventListener {
             }
 
             do {
-                try nextTalkEventMethod(sender: sender, args: args)
+                try nextTalkEventMethod(sender, args)
             } catch {
                 throw error
             }
@@ -157,13 +157,13 @@ class TalkEventListener: EventListener {
         }
     }
 
-    static func generateEventMethod(index: Int, params: JSON) throws -> EventMethod {
+    static func generateEventMethod(_ index: Int, params: JSON) throws -> EventMethod {
         let talker = params[index]["talker"].string
         let talkBody = params[index]["talk_body"].string
         let talkSideString = params[index]["talk_side"].string
         if talker == nil || talkBody == nil || talkSideString == nil {
-            throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["talker": talker, "talk_body": talkBody, "talk_side": talkSideString],
+            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                ["talker": talker as Optional<AnyObject>, "talk_body": talkBody as Optional<AnyObject>, "talk_side": talkSideString as Optional<AnyObject>],
                 handler: TalkEventListener.self)
             )
         }
@@ -173,12 +173,12 @@ class TalkEventListener: EventListener {
         case "L": talkSide = .left
         case "R": talkSide = .right
         default:
-            throw EventListenerError.InvalidParam("Param `talk_side`'s value is invalid at TalkEventListener")
+            throw EventListenerError.invalidParam("Param `talk_side`'s value is invalid at TalkEventListener")
         }
             
         let talkerImageName = TALKER_IMAGE[talker!]
         if talkerImageName == nil {
-            throw EventListenerError.InvalidParam("Talker image name specified at param `talker` is not declared in configuration file")
+            throw EventListenerError.invalidParam("Talker image name specified at param `talker` is not declared in configuration file")
         }
 
         return {
@@ -220,17 +220,17 @@ class EndTalkEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .Touch
-        self.executionType = .Onece
+        self.triggerType = .touch
+        self.executionType = .onece
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene      = skView.scene as! GameScene
 
             scene.textBox_.hide()
-            scene.menuButton.hidden = false
+            scene.menuButton.isHidden = false
 
             if listeners?.count == 0 || listeners == nil { return }
             let nextListener = listeners?.first?.listener

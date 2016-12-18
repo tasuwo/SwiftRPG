@@ -18,22 +18,22 @@ protocol MenuSceneModelDelegate {
 
 class MenuSceneModel: NSObject, UICollectionViewDataSource {
     var delegate: MenuSceneModelDelegate!
-    private(set) var selectedContents: JSON? = nil
+    fileprivate(set) var selectedContents: JSON? = nil
     let defaultMessage = "...。"
-    private(set) var deselectedIndexPath: NSIndexPath? = nil
-    private(set) var selectedIndexPath: NSIndexPath? = nil
-    private(set) var contents: [Item] = []
+    fileprivate(set) var deselectedIndexPath: IndexPath? = nil
+    fileprivate(set) var selectedIndexPath: IndexPath? = nil
+    fileprivate(set) var contents: [Item] = []
 
     func updateItems() {
         let realm = try! Realm()
-        let items = realm.objects(StoredItems)
+        let items = realm.objects(StoredItems.self)
         for item in items {
             contents.append(Item(key: item.key, name: item.name, description: item.text, image_name: item.image_name))
         }
         self.delegate.reloadTable()
     }
 
-    func selectItem(indexPath: NSIndexPath) {
+    func selectItem(_ indexPath: IndexPath) {
         self.deselectedIndexPath = self.selectedIndexPath
         self.selectedIndexPath = indexPath
         self.delegate.updateItemSelect()
@@ -41,16 +41,16 @@ class MenuSceneModel: NSObject, UICollectionViewDataSource {
     
     // MARK: UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.contents.count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! ItemCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ItemCell
         cell.imageView.image = UIImage(named: contents[indexPath.row].image_name)
         return cell
     }

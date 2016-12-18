@@ -29,7 +29,7 @@ class TileCoordinate: Hashable {
     ///  - parameter touchedPosition: タッチされた座標
     ///
     ///  - returns: タイルの中心の画面上の座標
-    class func getSheetCoordinateOfTouchedTile(sheetPosition: CGPoint, touchedPosition: CGPoint) -> CGPoint {
+    class func getSheetCoordinateOfTouchedTile(_ sheetPosition: CGPoint, touchedPosition: CGPoint) -> CGPoint {
         return TileCoordinate.getSheetCoordinateFromTileCoordinate(
             TileCoordinate.getTileCoordinateFromScreenCoordinate(sheetPosition, screenCoordinate: touchedPosition)
         )
@@ -41,7 +41,7 @@ class TileCoordinate: Hashable {
     ///  - parameter touchedPosition: タッチされた座標
     ///
     ///  - returns: 最も近いタイルのタイル座標
-    class func getTileCoordinateFromScreenCoordinate(sheetPosition: CGPoint, screenCoordinate: CGPoint) -> TileCoordinate {
+    class func getTileCoordinateFromScreenCoordinate(_ sheetPosition: CGPoint, screenCoordinate: CGPoint) -> TileCoordinate {
         return TileCoordinate(x: Int(floor((screenCoordinate.x - sheetPosition.x) / CGFloat(Tile.TILE_SIZE) + 1)),
                               y: Int(floor((screenCoordinate.y - sheetPosition.y) / CGFloat(Tile.TILE_SIZE) + 1)))
     }
@@ -51,13 +51,13 @@ class TileCoordinate: Hashable {
     ///  - parameter sheetPosition: シート座標
     ///
     ///  - returns: タイル座標
-    class func getTileCoordinateFromSheetCoordinate(sheetCoordinate: CGPoint) -> TileCoordinate {
+    class func getTileCoordinateFromSheetCoordinate(_ sheetCoordinate: CGPoint) -> TileCoordinate {
         return TileCoordinate(x: Int(floor(sheetCoordinate.x / CGFloat(Tile.TILE_SIZE) + 1)),
                               y: Int(floor(sheetCoordinate.y / CGFloat(Tile.TILE_SIZE) + 1)))
     }
 
-    class func getSheetCoordinateFromScreenCoordinate(sheetPosition: CGPoint, screenCoordinate: CGPoint) -> CGPoint {
-        return CGPointMake(screenCoordinate.x + sheetPosition.x, screenCoordinate.y + sheetPosition.y)
+    class func getSheetCoordinateFromScreenCoordinate(_ sheetPosition: CGPoint, screenCoordinate: CGPoint) -> CGPoint {
+        return CGPoint(x: screenCoordinate.x + sheetPosition.x, y: screenCoordinate.y + sheetPosition.y)
     }
 
     ///  タイル座標をシート座標に変換する
@@ -66,9 +66,9 @@ class TileCoordinate: Hashable {
     ///  - parameter coordinate: タイル座標
     ///
     ///  - returns: シート座標
-    class func getSheetCoordinateFromTileCoordinate(tileCoordinate: TileCoordinate) -> CGPoint {
-        return CGPointMake(CGFloat(tileCoordinate.x) * Tile.TILE_SIZE - Tile.TILE_SIZE / 2,
-                           CGFloat(tileCoordinate.y) * Tile.TILE_SIZE - Tile.TILE_SIZE / 2)
+    class func getSheetCoordinateFromTileCoordinate(_ tileCoordinate: TileCoordinate) -> CGPoint {
+        return CGPoint(x: CGFloat(tileCoordinate.x) * Tile.TILE_SIZE - Tile.TILE_SIZE / 2,
+                           y: CGFloat(tileCoordinate.y) * Tile.TILE_SIZE - Tile.TILE_SIZE / 2)
     }
 
     // MARK: - Hashable

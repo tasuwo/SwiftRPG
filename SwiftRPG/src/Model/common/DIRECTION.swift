@@ -9,44 +9,44 @@
 import Foundation
 
 enum DIRECTION {
-    case UP, DOWN, LEFT, RIGHT
+    case up, down, left, right
 
     var toString : String! {
         switch self {
-        case .UP:
+        case .up:
             return "UP"
-        case .DOWN:
+        case .down:
             return "DOWN"
-        case .LEFT:
+        case .left:
             return "LEFT"
-        case .RIGHT:
+        case .right:
             return "RIGHT"
         }
     }
 
     var reverse: DIRECTION {
         switch self {
-        case .UP:
-            return .DOWN
-        case .DOWN:
-            return .UP
-        case .LEFT:
-            return .RIGHT
-        case .RIGHT:
-            return .LEFT
+        case .up:
+            return .down
+        case .down:
+            return .up
+        case .left:
+            return .right
+        case .right:
+            return .left
         }
     }
 
-    static func fromString(direction: String) -> DIRECTION? {
+    static func fromString(_ direction: String) -> DIRECTION? {
         switch direction {
         case "UP":
-            return DIRECTION.UP
+            return DIRECTION.up
         case "DOWN":
-            return DIRECTION.DOWN
+            return DIRECTION.down
         case "RIGHT":
-            return DIRECTION.RIGHT
+            return DIRECTION.right
         case "LEFT":
-            return DIRECTION.LEFT
+            return DIRECTION.left
         default:
             return nil
         }

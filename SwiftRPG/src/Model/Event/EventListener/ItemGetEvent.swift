@@ -21,19 +21,19 @@ class ShowItemGetDialogEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    private let params: JSON
-    private let listeners: ListenerChain?
-    private let itemKey: String
-    private let itemName: String
-    private let itemText: String
-    private let itemImageName: String
+    fileprivate let params: JSON
+    fileprivate let listeners: ListenerChain?
+    fileprivate let itemKey: String
+    fileprivate let itemName: String
+    fileprivate let itemText: String
+    fileprivate let itemImageName: String
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .Immediate
-        self.executionType = .Onece
+        self.triggerType = .immediate
+        self.executionType = .onece
 
         if params == nil {
-            throw EventListenerError.ParamIsNil
+            throw EventListenerError.paramIsNil
         }
         self.params = params!
         self.listeners = listeners
@@ -43,8 +43,8 @@ class ShowItemGetDialogEventListener: EventListener {
         let itemText = params!["description"].string
         let itemImageName = params!["image_name"].string
         if itemKey == nil || itemName == nil || itemText == nil || itemImageName == nil {
-            throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["key": itemKey, "name": itemName, "description": itemText, "image_name": itemImageName],
+            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                ["key": itemKey as Optional<AnyObject>, "name": itemName as Optional<AnyObject>, "description": itemText as Optional<AnyObject>, "image_name": itemImageName as Optional<AnyObject>],
                 handler: ShowItemGetDialogEventListener.self)
             )
         }
@@ -54,16 +54,16 @@ class ShowItemGetDialogEventListener: EventListener {
         self.itemImageName = itemImageName!
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
 
-            scene.eventDialog.hidden = false
+            scene.eventDialog.isHidden = false
 
             let realm = try! Realm()
             try! realm.write {
-                var item = realm.objects(StoredItems).filter("key == \"\(self.itemKey)\"").first
+                var item = realm.objects(StoredItems.self).filter("key == \"\(self.itemKey)\"").first
                 if item != nil {
                     item!.num += 1
                 } else {
@@ -93,16 +93,16 @@ class CloseItemGetDialogEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) {
-        self.triggerType = .Touch
-        self.executionType = .Onece
+        self.triggerType = .touch
+        self.executionType = .onece
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene      = skView.scene as! GameScene
 
-            scene.eventDialog.hidden = true
+            scene.eventDialog.isHidden = true
 
             if listeners?.count == 0 || listeners == nil { return }
             let nextListener = listeners?.first?.listener

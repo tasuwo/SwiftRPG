@@ -15,8 +15,8 @@ class ItemCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        NSBundle.mainBundle().loadNibNamed("ItemCell", owner: self, options: nil)
-        imageView.backgroundColor = UIColor.blackColor()
+        Bundle.main.loadNibNamed("ItemCell", owner: self, options: nil)
+        imageView.backgroundColor = UIColor.black
         imageView.alpha = 0.5
         addSubview(imageView)
     }

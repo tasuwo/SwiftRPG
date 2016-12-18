@@ -11,21 +11,21 @@ import SwiftyJSON
 import UIKit
 
 protocol NotifiableFromListener {
-    func invoke(invoker: EventListener, listener: EventListener)
+    func invoke(_ invoker: EventListener, listener: EventListener)
 }
 
 class EventDispatcher : NotifiableFromListener {
     typealias ListenerType = EventListener
     typealias IdType = UInt64
 
-    private var listeners = Dictionary<IdType, ListenerType>()
-    private var uniqueId: UInt64 = 0
+    fileprivate var listeners = Dictionary<IdType, ListenerType>()
+    fileprivate var uniqueId: UInt64 = 0
 
     var delegate: NotifiableFromDispacher?
 
     init() {}
 
-    func add(listener: ListenerType) -> Bool {
+    func add(_ listener: ListenerType) -> Bool {
         if listener.id != nil { return false }
         let id = issueId()
         listener.delegate = self
@@ -34,9 +34,9 @@ class EventDispatcher : NotifiableFromListener {
         return true
     }
 
-    func remove(listener: ListenerType) -> Bool {
+    func remove(_ listener: ListenerType) -> Bool {
         if listener.id == nil { return false }
-        listeners.removeValueForKey(listener.id!)
+        listeners.removeValue(forKey: listener.id!)
         listener.id = nil
         return true
     }
@@ -45,13 +45,13 @@ class EventDispatcher : NotifiableFromListener {
         listeners.removeAll()
     }
 
-    func trigger(sender: AnyObject!, args: JSON!) throws {
+    func trigger(_ sender: AnyObject!, args: JSON!) throws {
         for listener in listeners.values {
-            do {
+            /*do {
                 try listener.invoke(sender: sender, args: args)
             } catch {
                 throw error
-            }
+            }*/
         }
     }
     
@@ -59,7 +59,7 @@ class EventDispatcher : NotifiableFromListener {
         return self.listeners.count > 0
     }
 
-    private func issueId() -> IdType {
+    fileprivate func issueId() -> IdType {
         repeat {
             uniqueId += 1
             if listeners[uniqueId] == nil {
@@ -70,7 +70,7 @@ class EventDispatcher : NotifiableFromListener {
 
     // MARK: NotifilableFromListener
 
-    func invoke(invoker: EventListener, listener nextListener: EventListener) {
+    func invoke(_ invoker: EventListener, listener nextListener: EventListener) {
         self.delegate?.invoke(invoker, listener: nextListener)
     }
 }

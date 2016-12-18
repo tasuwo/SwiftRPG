@@ -18,7 +18,7 @@ class ActivateButtonListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    private let text: String
+    fileprivate let text: String
 
     ///  コンストラクタ
     ///
@@ -28,30 +28,30 @@ class ActivateButtonListener: EventListener {
     ///
     ///  - returns: なし
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .Immediate
-        self.executionType = .Onece
+        self.triggerType = .immediate
+        self.executionType = .onece
 
         if params == nil {
-            throw EventListenerError.ParamIsNil
+            throw EventListenerError.paramIsNil
         }
 
         let text = params!["text"].string
         if text == nil {
-            throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["text": text],
+            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                ["text": text as Optional<AnyObject>],
                 handler: ActivateButtonListener.self)
             )
         }
         self.text = text!
 
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) -> () in
+            (sender: AnyObject?, args: JSON?) -> () in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
 
             scene.actionButton.titleLabel?.text = self.text
-            scene.actionButton.hidden = false
+            scene.actionButton.isHidden = false
 
             if listeners == nil || listeners?.count == 0 { return }
             let nextListener = listeners!.first!.listener

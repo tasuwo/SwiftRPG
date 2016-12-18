@@ -26,7 +26,7 @@ struct Item {
 }
 
 struct ItemTable {
-    static func get(key: String) -> Item? {
+    static func get(_ key: String) -> Item? {
         for item in ItemTable.items {
             if item.key == key {
                 return item

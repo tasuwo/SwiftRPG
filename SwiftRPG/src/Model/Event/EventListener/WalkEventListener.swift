@@ -20,20 +20,20 @@ class WalkEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) {
-        self.triggerType = .Touch
-        self.executionType = .Loop
+        self.triggerType = .touch
+        self.executionType = .loop
         self.invoke = {
-            (sender: AnyObject!, args: JSON!) in
+            (sender: AnyObject?, args: JSON?) in
             let controller = sender as! GameViewController
             let skView     = controller.view as! SKView
             let scene: GameScene = skView.scene as! GameScene
             let map        = scene.map!
             let sheet      = map.sheet!
 
-            let touchedPointString = args["touchedPoint"].string
+            let touchedPointString = args?["touchedPoint"].string
             if touchedPointString == nil {
-                throw EventListenerError.IllegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                    ["touchedPoint": touchedPointString],
+                throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
+                    ["touchedPoint": touchedPointString as Optional<AnyObject>],
                     handler: WalkEventListener.self)
                 )
             }
@@ -68,7 +68,7 @@ class WalkEventListener: EventListener {
             }
 
             // 画面をスクロールさせる
-            let delay = SKAction.waitForDuration(NSTimeInterval(Double(player.speed * CGFloat(path!.count))))
+            let delay = SKAction.wait(forDuration: TimeInterval(Double(player.speed * CGFloat(path!.count))))
             let scrollAction: SKAction? = sheet.scrollSheet(destination)
             var scrollActions: Array<SKAction> = []
             if scrollAction != nil {

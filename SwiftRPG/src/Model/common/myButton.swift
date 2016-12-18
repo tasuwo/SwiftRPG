@@ -12,12 +12,12 @@ import Foundation
 
 class myButton: UIButton, NSCopying {
 
-    func setTitle(title: String?) {
-        setTitle(title, forState: UIControlState.Normal)
-        setTitle(title, forState: UIControlState.Highlighted)
+    func setTitle(_ title: String?) {
+        setTitle(title, for: UIControlState())
+        setTitle(title, for: UIControlState.highlighted)
     }
 
-    func copyWithZone(zone: NSZone) -> AnyObject {
+    func copy(with zone: NSZone?) -> Any {
         let newInstance = myButton()
 
         newInstance.frame = self.frame
@@ -26,11 +26,11 @@ class myButton: UIButton, NSCopying {
         newInstance.layer.cornerRadius = self.layer.cornerRadius
         // 文字色
         newInstance.setTitleColor(
-        self.titleColorForState(UIControlState.Normal),
-        forState: UIControlState.Normal)
+        self.titleColor(for: UIControlState()),
+        for: UIControlState())
         newInstance.setTitleColor(
-        self.titleColorForState(UIControlState.Highlighted),
-        forState: UIControlState.Highlighted)
+        self.titleColor(for: UIControlState.highlighted),
+        for: UIControlState.highlighted)
 
         return newInstance
     }

@@ -14,15 +14,15 @@ struct IMAGE_SET {
     let RIGHT: [[String]]
     let LEFT: [[String]]
 
-    func get(direction: DIRECTION) -> [[String]] {
+    func get(_ direction: DIRECTION) -> [[String]] {
         switch direction {
-        case .UP:
+        case .up:
             return self.UP
-        case .DOWN:
+        case .down:
             return self.DOWN
-        case .LEFT:
+        case .left:
             return self.LEFT
-        case .RIGHT:
+        case .right:
             return self.RIGHT
         }
     }
