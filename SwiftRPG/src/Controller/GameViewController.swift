@@ -105,10 +105,9 @@ extension GameViewController: GameSceneDelegate {
         newScene.model = self.model
         self.model.updateItems()
 
-        //let view: SKView = self.view as! SKView
-        //let transition = SKTransition.fadeWithDuration(1)
-        //view.presentScene(newScene, transition: transition)
         self.view = newScene.menuView
+        let view: SKView = self.view as! SKView
+        view.presentScene(newScene)
     }
 
     func viewUpdated() {
@@ -144,10 +143,9 @@ extension GameViewController: MenuSceneDelegate {
         let newScene = GameScene(size: self.view.bounds.size)
         newScene.gameSceneDelegate = self
 
-        //let view: SKView = self.view as! SKView
-        //let transition = SKTransition.fadeWithDuration(1)
-        //view.presentScene(newScene, transition: transition)
         self.view = newScene.gameView
+        let view: SKView = self.view as! SKView
+        view.presentScene(newScene)
     }
     
     func didSelectedItem(_ indexPath: IndexPath) {
