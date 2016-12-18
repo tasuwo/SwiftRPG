@@ -15,7 +15,7 @@ import SwiftyJSON
 class WalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 

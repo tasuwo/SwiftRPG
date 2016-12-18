@@ -40,7 +40,7 @@ enum ExecutionType {
 
 typealias EventMethod = (_ sender: AnyObject?, _ args: JSON?) throws -> ()
 protocol EventHandler: class {
-    var invoke: EventMethod! { get set }
+    var invoke: EventMethod? { get set }
     var triggerType: TriggerType { get }
     var executionType: ExecutionType { get }
 }

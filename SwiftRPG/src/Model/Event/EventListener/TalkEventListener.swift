@@ -14,7 +14,7 @@ import SpriteKit
 class StartTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 
@@ -92,7 +92,7 @@ class StartTalkEventListener: EventListener {
 class TalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 
@@ -215,7 +215,7 @@ class TalkEventListener: EventListener {
 class EndTalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 

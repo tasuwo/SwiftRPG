@@ -17,7 +17,7 @@ import RealmSwift
 class ShowItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 
@@ -88,7 +88,7 @@ class ShowItemGetDialogEventListener: EventListener {
 class CloseItemGetDialogEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
-    var invoke: EventMethod!
+    var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
 

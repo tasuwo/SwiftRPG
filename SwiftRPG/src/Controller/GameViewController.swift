@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
             let scene = GameScene(size: self.view.bounds.size)
             scene.gameSceneDelegate = self
 
-            self.view = scene.gameView
+            //self.view = scene.gameView
             let view = self.view as! SKView
             view.presentScene(scene)
 
