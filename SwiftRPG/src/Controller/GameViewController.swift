@@ -98,16 +98,8 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func didPressMenuButton() {
-        let newScene = MenuScene(size: self.view.bounds.size)
-        newScene.menuSceneDelegate = self
-
-        self.model.delegate = newScene
-        newScene.model = self.model
-        self.model.updateItems()
-
-        self.view = newScene.menuView
-        let view: SKView = self.view as! SKView
-        view.presentScene(newScene)
+        let viewController = MenuViewController()
+        self.present(viewController, animated: true, completion: nil)
     }
 
     func viewUpdated() {
@@ -135,38 +127,5 @@ extension GameViewController: GameSceneDelegate {
         for event in events {
             self.eventManager.add(event)
         }
-    }
-}
-
-extension GameViewController: MenuSceneDelegate {
-    func didPressBackButton() {
-        let newScene = GameScene(size: self.view.bounds.size)
-        newScene.gameSceneDelegate = self
-
-        self.view = newScene.gameView
-        let view: SKView = self.view as! SKView
-        view.presentScene(newScene)
-    }
-    
-    func didSelectedItem(_ indexPath: IndexPath) {
-        self.model.selectItem(indexPath)
-    }
-}
-
-extension GameViewController: UIViewControllerTransitioningDelegate {
-    func animationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController,
-                             source: UIViewController) ->
-        UIViewControllerAnimatedTransitioning?
-    {
-        transition.originFrame = self.view.frame
-        transition.presenting = true
-        return transition
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.presenting = false
-        return transition
     }
 }

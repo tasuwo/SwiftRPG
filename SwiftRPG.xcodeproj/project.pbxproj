@@ -24,6 +24,7 @@
 		2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */; };
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
+		2C3673E01E0ABE570060E5EF /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */; };
 		2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */; };
 		2C556E811D50C11B00E03414 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E801D50C11B00E03414 /* EventManager.swift */; };
 		2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */; };
@@ -92,6 +93,7 @@
 		2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
+		2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkEventListener.swift; sourceTree = "<group>"; };
 		2C556E801D50C11B00E03414 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionToMenuAnimator.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 			children = (
 				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				D72319F11B5699F200D13BAA /* TitleViewController.swift */,
+				2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */,
 				2C2143341D53308D006D3C50 /* ItemTable.swift in Sources */,
 				2C2D31971D530F35000D8A2B /* DIRECTION.swift in Sources */,
+				2C3673E01E0ABE570060E5EF /* MenuViewController.swift in Sources */,
 				A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
