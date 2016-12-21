@@ -22,17 +22,19 @@ protocol GameSceneDelegate: class {
 /// ゲーム画面
 class GameScene: Scene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
-
-    @IBOutlet weak var actionButton: UIButton!
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var eventDialog: DialogLabel!
     @IBAction func didPressMenuButton(_ sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
 
-    /* ゲーム画面の各構成要素 */
+    // MARK: GameSceneProtocol Properties
+
+    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var eventDialog: DialogLabel!
     var map: Map?
     var textBox: Dialog!
+
+    // MARK: ---
 
     override init(size: CGSize) {
         super.init(size: size)
@@ -85,7 +87,8 @@ class GameScene: Scene, GameSceneProtocol {
         self.gameSceneDelegate?.viewUpdated()
     }
 
-    // MARK: EventListener
+
+    // MARK: GameSceneProtocol Methods
 
     func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
         self.textBox.hide()
@@ -103,5 +106,7 @@ class GameScene: Scene, GameSceneProtocol {
             self.map?.updateObjectPlacement(player!)
         })
     }
+
+    // MARK: ---
 }
 
