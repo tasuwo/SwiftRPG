@@ -16,7 +16,7 @@ protocol MenuSceneDelegate {
     func didSelectedItem(_ indexPath: IndexPath)
 }
 
-class MenuScene: Scene, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
+class MenuScene: Scene {
     var menuSceneDelegate: MenuSceneDelegate?
     var model: MenuSceneModel! {
         didSet {
@@ -54,9 +54,9 @@ class MenuScene: Scene, UICollectionViewDelegate, UICollectionViewDelegateFlowLa
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: MenuSceneModelDelegate
+}
 
+extension MenuScene: MenuSceneModelDelegate {
     func updateItemSelect() {
         let selectedCell = self.contentsView.cellForItem(at: self.model.selectedIndexPath!) as! ItemCell
 
@@ -79,6 +79,9 @@ class MenuScene: Scene, UICollectionViewDelegate, UICollectionViewDelegateFlowLa
     func reloadTable() {
         self.contentsView.reloadData()
     }
+}
+
+extension MenuScene: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     // MARK: UICollectionViewDelegate
     
