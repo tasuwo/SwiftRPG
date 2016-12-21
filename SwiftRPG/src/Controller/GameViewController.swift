@@ -40,19 +40,6 @@ class GameViewController: UIViewController {
             self.viewInitiated = true
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
-
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return UIInterfaceOrientationMask.allButUpsideDown
-        } else {
-            return UIInterfaceOrientationMask.all
-        }
-    }
 }
 
 extension GameViewController: GameSceneDelegate {
