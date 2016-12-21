@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import SwiftyJSON
 
 class GameViewController: UIViewController {
     var viewInitiated: Bool = false
@@ -60,7 +61,9 @@ extension GameViewController: GameSceneDelegate {
     func gameSceneTouched(_ location: CGPoint) {
         let args = JSON(["touchedPoint": NSStringFromCGPoint(location)])
         do {
-            try self.eventManager.touchEventDispacher.trigger(self, args: args)
+            let skView = self.view as! SKView
+            let gameScene = skView.scene as! GameScene
+            try self.eventManager.touchEventDispacher.trigger(gameScene, args: args)
         } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
         } catch EventListenerError.illegalParamFormat(let string) {
@@ -76,7 +79,9 @@ extension GameViewController: GameSceneDelegate {
 
     func actionButtonTouched() {
         do {
-            try self.eventManager.actionButtonEventDispacher.trigger(self, args: nil)
+            let skView = self.view as! SKView
+            let gameScene = skView.scene as! GameScene
+            try self.eventManager.actionButtonEventDispacher.trigger(gameScene, args: nil)
         } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
         } catch EventListenerError.illegalParamFormat(let string) {
@@ -97,7 +102,9 @@ extension GameViewController: GameSceneDelegate {
 
     func viewUpdated() {
         do {
-            try self.eventManager.cyclicEventDispacher.trigger(self, args: nil)
+            let skView = self.view as! SKView
+            let gameScene = skView.scene as! GameScene
+            try self.eventManager.cyclicEventDispacher.trigger(gameScene, args: nil)
         } catch EventListenerError.illegalArguementFormat(let string) {
             print(string)
             self.eventManager.cyclicEventDispacher.removeAll()

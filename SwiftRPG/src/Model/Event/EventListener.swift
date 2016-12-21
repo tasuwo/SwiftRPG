@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import SpriteKit
 
 enum EventListenerError: Error {
     case illegalArguementFormat(String)
@@ -38,7 +39,17 @@ enum ExecutionType {
     case loop
 }
 
-typealias EventMethod = (_ sender: AnyObject?, _ args: JSON?) throws -> ()
+protocol GameSceneProtocol {
+    var actionButton: UIButton! { get set }
+    var menuButton: UIButton! { get set }
+    var eventDialog: DialogLabel! { get set }
+    var map: Map? { get set }
+    var textBox: Dialog! { get set }
+
+    func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction])
+}
+
+typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
 protocol EventHandler: class {
     var invoke: EventMethod? { get set }
     var triggerType: TriggerType { get }

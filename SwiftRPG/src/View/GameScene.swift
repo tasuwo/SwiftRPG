@@ -20,23 +20,20 @@ protocol GameSceneDelegate: class {
 }
 
 /// ゲーム画面
-class GameScene: SKScene {
+class GameScene: SKScene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
 
-    @IBOutlet var gameView: SKView!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var eventDialog: DialogLabel!
+    @IBOutlet var gameView: SKView!
     @IBAction func didPressMenuButton(_ sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
-    @IBOutlet weak var eventDialog: DialogLabel!
 
     /* ゲーム画面の各構成要素 */
     var map: Map?
-    var textBox_: Dialog!
-    var actionButton_: UIButton!
-
-    private var spinnyNode : SKShapeNode?
+    var textBox: Dialog!
 
     override init(size: CGSize) {
         super.init(size: size)
@@ -48,6 +45,7 @@ class GameScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
+        /* 地形の読み込み */
         if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
             self.map = map
             self.map!.addSheetTo(self)
@@ -57,16 +55,16 @@ class GameScene: SKScene {
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
         actionButton.isHidden = true
 
-        menuButton.layer.borderColor = UIColor.white.cgColor
-
-        textBox_ = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
-        textBox_.hide()
-        textBox_.setPositionY(Dialog.POSITION.top)
-        textBox_.addTo(self)
+        textBox = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
+        textBox.hide()
+        textBox.setPositionY(Dialog.POSITION.top)
+        textBox.addTo(self)
 
         eventDialog.isHidden = true
         eventDialog.layer.backgroundColor = UIColor.black.cgColor
         eventDialog.layer.borderColor = UIColor.white.cgColor
+        
+        menuButton.layer.borderColor = UIColor.white.cgColor
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -91,7 +89,7 @@ class GameScene: SKScene {
     // MARK: EventListener
 
     func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
-        self.textBox_.hide()
+        self.textBox.hide()
         self.actionButton.isHidden = true
 
         let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
@@ -107,3 +105,4 @@ class GameScene: SKScene {
         })
     }
 }
+

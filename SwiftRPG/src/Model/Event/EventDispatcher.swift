@@ -45,7 +45,7 @@ class EventDispatcher : NotifiableFromListener {
         listeners.removeAll()
     }
 
-    func trigger(_ sender: AnyObject!, args: JSON!) throws {
+    func trigger(_ sender: GameSceneProtocol!, args: JSON!) throws {
         for listener in listeners.values {
             do {
                 try listener.invoke!(sender, args)

@@ -41,6 +41,7 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
         super.init(size: size)
 
         Bundle.main.loadNibNamed("MenuScene", owner: self, options: nil)
+        menuView.backgroundColor = .black
         self.view?.addSubview(menuView)
 
         contentsView.delegate = self

@@ -45,13 +45,9 @@ class ActivateButtonListener: EventListener {
         self.text = text!
 
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene: GameScene = skView.scene as! GameScene
-
-            scene.actionButton.titleLabel?.text = self.text
-            scene.actionButton.isHidden = false
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.actionButton.titleLabel?.text = self.text
+            sender!.actionButton.isHidden = false
 
             if listeners == nil || listeners?.count == 0 { return }
             let nextListener = listeners!.first!.listener

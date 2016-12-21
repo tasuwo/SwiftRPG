@@ -23,12 +23,9 @@ class WalkEventListener: EventListener {
         self.triggerType = .touch
         self.executionType = .loop
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene: GameScene = skView.scene as! GameScene
-            let map        = scene.map!
-            let sheet      = map.sheet!
+            (sender: GameSceneProtocol?, args: JSON?) in
+            let map   = sender!.map!
+            let sheet = map.sheet!
 
             let touchedPointString = args?["touchedPoint"].string
             if touchedPointString == nil {
@@ -76,7 +73,11 @@ class WalkEventListener: EventListener {
                 scrollActions.append(scrollAction!)
             }
             
-            scene.movePlayer(playerActions, destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination), events: events, screenActions: scrollActions)
+            sender!.movePlayer(
+                playerActions,
+                destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination),
+                events: events,
+                screenActions: scrollActions)
         }
     }
 }

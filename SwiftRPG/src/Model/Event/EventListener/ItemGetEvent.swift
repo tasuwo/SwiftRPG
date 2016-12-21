@@ -54,12 +54,8 @@ class ShowItemGetDialogEventListener: EventListener {
         self.itemImageName = itemImageName!
 
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene: GameScene = skView.scene as! GameScene
-
-            scene.eventDialog.isHidden = false
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.eventDialog.isHidden = false
 
             let realm = try! Realm()
             try! realm.write {
@@ -76,7 +72,7 @@ class ShowItemGetDialogEventListener: EventListener {
                 realm.add(item!, update: true)
             }
 
-            scene.eventDialog.text = "\(self.itemName) を手に入れた．"
+            sender!.eventDialog.text = "\(self.itemName) を手に入れた．"
 
             self.delegate?.invoke(self, listener: CloseItemGetDialogEventListener(params: self.params, chainListeners: self.listeners))
         }
@@ -97,12 +93,8 @@ class CloseItemGetDialogEventListener: EventListener {
         self.executionType = .onece
 
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene      = skView.scene as! GameScene
-
-            scene.eventDialog.isHidden = true
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.eventDialog.isHidden = true
 
             if listeners?.count == 0 || listeners == nil { return }
             let nextListener = listeners?.first?.listener

@@ -50,15 +50,11 @@ class StartTalkEventListener: EventListener {
         self.params = JSON(array!)
         self.listeners = listeners
 
-        self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene: GameScene = skView.scene as! GameScene
-            let map        = scene.map!
+        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+            let map = sender!.map!
 
-            scene.actionButton.isHidden = true
-            scene.menuButton.isHidden = true
+            sender!.actionButton.isHidden = true
+            sender!.menuButton.isHidden = true
 
             let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
             if let playerDirection = DIRECTION.fromString(self.directionString) {
@@ -127,7 +123,7 @@ class TalkEventListener: EventListener {
         self.talkContentsMaxNum = talkContentsMaxNum!
 
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
 
             let nextTalkEventMethod: EventMethod
             do {
@@ -183,11 +179,8 @@ class TalkEventListener: EventListener {
 
         return {
             sender, args in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene      = skView.scene as! GameScene
-            let map        = scene.map!
-            let sheet      = map.sheet
+            let map   = sender!.map!
+            let sheet = map.sheet
 
             // 画面上のプレイヤーの位置を取得
             let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
@@ -197,16 +190,16 @@ class TalkEventListener: EventListener {
             )
 
             // キャラクターとかぶらないように，テキストボックスの位置を調整
-            var DialogPosition: Dialog.POSITION
-            if playerPosition.y <= scene.frame.height / 2 {
+            var DialogPosition: Dialog.POSITION = .bottom
+            /*if playerPosition.y <= scene.frame.height / 2 {
                 DialogPosition = Dialog.POSITION.top
             } else {
                 DialogPosition = Dialog.POSITION.bottom
-            }
-            scene.textBox_.show(DialogPosition)
+            }*/
+            sender!.textBox.show(DialogPosition)
 
             // テキスト描画
-            scene.textBox_.drawText(talkerImageName!, body: talkBody!, side: talkSide)
+            sender!.textBox.drawText(talkerImageName!, body: talkBody!, side: talkSide)
         }
     }
 }
@@ -224,13 +217,9 @@ class EndTalkEventListener: EventListener {
         self.executionType = .onece
 
         self.invoke = {
-            (sender: AnyObject?, args: JSON?) -> () in
-            let controller = sender as! GameViewController
-            let skView     = controller.view as! SKView
-            let scene      = skView.scene as! GameScene
-
-            scene.textBox_.hide()
-            scene.menuButton.isHidden = false
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.textBox.hide()
+            sender!.menuButton.isHidden = false
 
             if listeners?.count == 0 || listeners == nil { return }
             let nextListener = listeners?.first?.listener
