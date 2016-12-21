@@ -20,28 +20,15 @@
             <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-1K-Vqa" customClass="SpringButton" customModule="Spring">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-1K-Vqa">
                     <rect key="frame" x="229" y="271" width="209" height="69"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="69" id="9pu-ba-0I8"/>
                         <constraint firstAttribute="width" constant="209" id="muJ-Lc-bFa"/>
                     </constraints>
                     <state key="normal" backgroundImage="start"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="animation" value="flash"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="repeatCount">
-                            <real key="value" value="9999"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="force">
-                            <real key="value" value="0.0"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="startBtnPressed:" destination="-1" eventType="touchUpInside" id="D47-bN-NjY"/>
+                        <action selector="startBtnPressed:" destination="-1" eventType="touchUpInside" id="lLD-4L-65h"/>
                     </connections>
                 </button>
             </subviews>

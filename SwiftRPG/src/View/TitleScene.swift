@@ -9,7 +9,6 @@
 import UIKit
 import SpriteKit
 import Foundation
-import Spring
 
 protocol TitleSceneDelegate: class {
     func newGameTouched()
@@ -19,14 +18,9 @@ class TitleScene: UIView {
     var titleSceneDelegate: TitleSceneDelegate?
 
     @IBOutlet var titleScene: UIView!
-    @IBOutlet weak var startBtn: SpringButton!
+    @IBOutlet weak var startBtn: UIButton!
     
     @IBAction func startBtnPressed(_ sender: AnyObject) {
-        startBtn.animation = "pop"
-        startBtn.force = 1.5
-        startBtn.duration = 1
-        startBtn.repeatCount = 1
-        startBtn.animate()
         self.titleSceneDelegate?.newGameTouched()
     }
     
