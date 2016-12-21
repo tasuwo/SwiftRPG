@@ -49,6 +49,14 @@ class EventDispatcher : NotifiableFromListener {
         for listener in listeners.values {
             do {
                 try listener.invoke!(sender, args)
+            } catch EventListenerError.illegalArguementFormat(let string) {
+                print(string)
+            } catch EventListenerError.illegalParamFormat(let string) {
+                print(string)
+            } catch EventListenerError.invalidParam(let string) {
+                print(string)
+            } catch EventListenerError.paramIsNil {
+                print("Required param is nil")
             } catch {
                 throw error
             }

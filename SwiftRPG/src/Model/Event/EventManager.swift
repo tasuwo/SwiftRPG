@@ -23,6 +23,7 @@ class EventManager: NotifiableFromDispacher {
         self.actionButtonEventDispacher = EventDispatcher()
         self.objectEventDispacher = EventDispatcher()
         self.cyclicEventDispacher = EventDispatcher()
+
         self.touchEventDispacher.delegate = self
         self.actionButtonEventDispacher.delegate = self
         self.objectEventDispacher.delegate = self

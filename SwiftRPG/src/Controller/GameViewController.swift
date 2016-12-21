@@ -47,36 +47,22 @@ extension GameViewController: GameSceneDelegate {
 
     func gameSceneTouched(_ location: CGPoint) {
         let args = JSON(["touchedPoint": NSStringFromCGPoint(location)])
+        let skView = self.view as! SKView
+        let gameScene = skView.scene as! GameScene
+
         do {
-            let skView = self.view as! SKView
-            let gameScene = skView.scene as! GameScene
             try self.eventManager.touchEventDispacher.trigger(gameScene, args: args)
-        } catch EventListenerError.illegalArguementFormat(let string) {
-            print(string)
-        } catch EventListenerError.illegalParamFormat(let string) {
-            print(string)
-        } catch EventListenerError.invalidParam(let string) {
-            print(string)
-        } catch EventListenerError.paramIsNil {
-            print("Required param is nil")
         } catch {
             print("Unexpected error occured")
         }
     }
 
     func actionButtonTouched() {
+        let skView = self.view as! SKView
+        let gameScene = skView.scene as! GameScene
+
         do {
-            let skView = self.view as! SKView
-            let gameScene = skView.scene as! GameScene
             try self.eventManager.actionButtonEventDispacher.trigger(gameScene, args: nil)
-        } catch EventListenerError.illegalArguementFormat(let string) {
-            print(string)
-        } catch EventListenerError.illegalParamFormat(let string) {
-            print(string)
-        } catch EventListenerError.invalidParam(let string) {
-            print(string)
-        } catch EventListenerError.paramIsNil {
-            print("Required param is nil")
         } catch {
             print("Unexpected error occured")
         }
@@ -88,22 +74,11 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func viewUpdated() {
+        let skView = self.view as! SKView
+        let gameScene = skView.scene as! GameScene
+
         do {
-            let skView = self.view as! SKView
-            let gameScene = skView.scene as! GameScene
             try self.eventManager.cyclicEventDispacher.trigger(gameScene, args: nil)
-        } catch EventListenerError.illegalArguementFormat(let string) {
-            print(string)
-            self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.illegalParamFormat(let string) {
-            print(string)
-            self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.invalidParam(let string) {
-            print(string)
-            self.eventManager.cyclicEventDispacher.removeAll()
-        } catch EventListenerError.paramIsNil {
-            print("Required param is nil")
-            self.eventManager.cyclicEventDispacher.removeAll()
         } catch {
             print("Unexpected error occured")
             self.eventManager.cyclicEventDispacher.removeAll()

@@ -11,8 +11,8 @@ import SpriteKit
 
 class MenuViewController: UIViewController {
     var viewInitiated: Bool = false
-    let transition = TransitionBetweenGameAndMenuSceneAnimator()
     fileprivate var model: MenuSceneModel!
+    let transition = TransitionBetweenGameAndMenuSceneAnimator()
 
     override func loadView() {
         self.view = SKView()
