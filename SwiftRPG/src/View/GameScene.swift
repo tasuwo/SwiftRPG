@@ -35,38 +35,6 @@ class GameScene: Scene, GameSceneProtocol {
     var textBox: Dialog!
 
     // MARK: ---
-
-    override init(size: CGSize) {
-        super.init(size: size)
-        Bundle.main.loadNibNamed("GameScene", owner: self, options: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func didMove(to view: SKView) {
-        /* 地形の読み込み */
-        if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
-            self.map = map
-            self.map!.addSheetTo(self)
-        }
-
-        actionButton.layer.borderColor = UIColor.white.cgColor
-        actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
-        actionButton.isHidden = true
-
-        textBox = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
-        textBox.hide()
-        textBox.setPositionY(Dialog.POSITION.top)
-        textBox.addTo(self)
-
-        eventDialog.isHidden = true
-        eventDialog.layer.backgroundColor = UIColor.black.cgColor
-        eventDialog.layer.borderColor = UIColor.white.cgColor
-        
-        menuButton.layer.borderColor = UIColor.white.cgColor
-    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if map == nil { return }
@@ -86,7 +54,6 @@ class GameScene: Scene, GameSceneProtocol {
         map?.updateObjectsZPosition()
         self.gameSceneDelegate?.viewUpdated()
     }
-
 
     // MARK: GameSceneProtocol Methods
 

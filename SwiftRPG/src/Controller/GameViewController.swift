@@ -20,7 +20,7 @@ class GameViewController: SceneController {
     }
 
     override func initializeScene() {
-        let scene = GameScene(size: self.view.bounds.size)
+        let scene = myGameScene(size: self.view.bounds.size)
         scene.gameSceneDelegate = self
         self.scene = scene
     }
