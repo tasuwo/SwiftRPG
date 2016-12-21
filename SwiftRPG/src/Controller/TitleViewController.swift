@@ -9,8 +9,7 @@
 import UIKit
 import SpriteKit
 
-class TitleViewController: UIViewController, TitleSceneDelegate {
-
+class TitleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let view = TitleScene(frame: self.view.frame)
@@ -22,9 +21,9 @@ class TitleViewController: UIViewController, TitleSceneDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+}
 
-    // MARK: - TitleSceneDelegate
-    
+extension TitleViewController: TitleSceneDelegate {
     func newGameTouched() {
         let gameViewController: UIViewController = GameViewController()
         self.present(gameViewController, animated: false, completion: nil)

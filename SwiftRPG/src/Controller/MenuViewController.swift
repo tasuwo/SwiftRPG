@@ -74,13 +74,13 @@ extension MenuViewController: UIViewControllerTransitioningDelegate {
         source: UIViewController
         ) -> UIViewControllerAnimatedTransitioning?
     {
-        transition.originFrame = self.view.frame
-        transition.presenting = true
-        return transition
+        self.transition.originFrame = self.view.frame
+        self.transition.presenting = true
+        return self.transition
     }
 
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.presenting = false
-        return transition
+        self.transition.presenting = false
+        return self.transition
     }
 }

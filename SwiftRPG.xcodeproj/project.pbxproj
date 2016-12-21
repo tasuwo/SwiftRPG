@@ -346,8 +346,8 @@
 		D7BFE53F1B5218F800AB0D3A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				D72319F11B5699F200D13BAA /* TitleViewController.swift */,
+				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */,
 			);
 			path = Controller;

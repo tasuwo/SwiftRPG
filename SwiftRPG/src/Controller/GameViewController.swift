@@ -8,14 +8,10 @@
 
 import UIKit
 import SpriteKit
-import AVFoundation
-import SwiftyJSON
 
 class GameViewController: UIViewController {
     var viewInitiated: Bool = false
     var eventManager: EventManager!
-    let transition = TransitionBetweenGameAndMenuSceneAnimator()
-    fileprivate var model: MenuSceneModel!
 
     override func loadView() {
         self.view = SKView()
@@ -37,11 +33,8 @@ class GameViewController: UIViewController {
             scene.gameSceneDelegate = self
 
             self.view = scene.gameView
-
             let view = self.view as! SKView
             view.presentScene(scene)
-
-            self.model = MenuSceneModel()
 
             self.viewInitiated = true
         }
