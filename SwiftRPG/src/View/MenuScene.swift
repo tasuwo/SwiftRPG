@@ -16,7 +16,7 @@ protocol MenuSceneDelegate {
     func didSelectedItem(_ indexPath: IndexPath)
 }
 
-class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
+class MenuScene: Scene, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MenuSceneModelDelegate {
     var menuSceneDelegate: MenuSceneDelegate?
     var model: MenuSceneModel! {
         didSet {
@@ -27,7 +27,6 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
     fileprivate static let SELECTED_ALPHA: CGFloat = 1.0
     fileprivate static let DESELECTED_ALPHA: CGFloat = 0.5
     
-    @IBOutlet var menuView: SKView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var menuListView: UIView!
     @IBOutlet weak var backButton: UIButton!
@@ -41,8 +40,7 @@ class MenuScene: SKScene, UICollectionViewDelegate, UICollectionViewDelegateFlow
         super.init(size: size)
 
         Bundle.main.loadNibNamed("MenuScene", owner: self, options: nil)
-        menuView.backgroundColor = .black
-        self.view?.addSubview(menuView)
+        self.view?.addSubview(sceneView)
 
         contentsView.delegate = self
         contentsView.register(ItemCell.self, forCellWithReuseIdentifier: "cell")

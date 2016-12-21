@@ -30,6 +30,8 @@
 		2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */; };
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
 		2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */; };
+		2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE41E0ADC12008AEB77 /* SceneController.swift */; };
+		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
 		528D0F387D1749B21DA59F9A /* Pods_SwiftRPGTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C5E95AB68BFE3E0EF1C522 /* Pods_SwiftRPGTests.framework */; };
 		8D8D934E84EF094D932DB0A7 /* Pods_SwiftRPG.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC1B93E6CDE1090FED475B3 /* Pods_SwiftRPG.framework */; };
 		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
@@ -99,6 +101,8 @@
 		2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionToMenuAnimator.swift; sourceTree = "<group>"; };
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
 		2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateButtonListener.swift; sourceTree = "<group>"; };
+		2CC39CE41E0ADC12008AEB77 /* SceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
+		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		403FA2E28BB935711065C147 /* Pods-SwiftRPGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPGTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPGTests/Pods-SwiftRPGTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DC1B93E6CDE1090FED475B3 /* Pods_SwiftRPG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftRPG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64046AF34C25E6078A9B7693 /* Pods-SwiftRPG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPG.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPG/Pods-SwiftRPG.release.xcconfig"; sourceTree = "<group>"; };
@@ -349,6 +353,7 @@
 				D72319F11B5699F200D13BAA /* TitleViewController.swift */,
 				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */,
+				2CC39CE41E0ADC12008AEB77 /* SceneController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 		D7BFE5401B5218FE00AB0D3A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2CC39CE61E0AE0BA008AEB77 /* Scene.swift */,
 				2C59EF321D641B6C00DCCCA5 /* animation */,
 				2C0564961D4B034C00A2F527 /* components */,
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
@@ -685,6 +691,7 @@
 				D7C157A61B3E9CD400C13909 /* GameViewController.swift in Sources */,
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
+				2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */,
 				2C0564981D4B062300A2F527 /* myButton.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
 				2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */,
@@ -697,6 +704,7 @@
 				2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */,
 				A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */,
 				A06593D21C721A1000148D2B /* MapObject.swift in Sources */,
+				2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */,
 				2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */,
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
 				A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */,

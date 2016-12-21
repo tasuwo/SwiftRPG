@@ -10,35 +10,19 @@ import UIKit
 import SpriteKit
 import SwiftyJSON
 
-class GameViewController: UIViewController {
-    var viewInitiated: Bool = false
+class GameViewController: SceneController {
     var eventManager: EventManager!
-
-    override func loadView() {
-        self.view = SKView()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.isMultipleTouchEnabled = false
-
         self.eventManager = EventManager()
         eventManager.add(WalkEventListener(params: nil, chainListeners: nil))
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        if (!viewInitiated) {
-            let scene = GameScene(size: self.view.bounds.size)
-            scene.gameSceneDelegate = self
-
-            self.view = scene.gameView
-            let view = self.view as! SKView
-            view.presentScene(scene)
-
-            self.viewInitiated = true
-        }
+    override func initializeScene() {
+        let scene = GameScene(size: self.view.bounds.size)
+        scene.gameSceneDelegate = self
+        self.scene = scene
     }
 }
 

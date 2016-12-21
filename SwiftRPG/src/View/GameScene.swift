@@ -20,13 +20,12 @@ protocol GameSceneDelegate: class {
 }
 
 /// ゲーム画面
-class GameScene: SKScene, GameSceneProtocol {
+class GameScene: Scene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
 
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var eventDialog: DialogLabel!
-    @IBOutlet var gameView: SKView!
     @IBAction func didPressMenuButton(_ sender: AnyObject) {
         self.gameSceneDelegate?.didPressMenuButton()
     }
