@@ -27,6 +27,13 @@ class myGameScene: GameScene {
             self.map!.addSheetTo(self)
         }
 
+        // 主人公の作成
+        let player = Object(name: objectNameTable.PLAYER_NAME,
+                            imageName: objectNameTable.PLAYER_IMAGE_DOWN,
+                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 10, y: 10)),
+                            images: objectNameTable.PLAYER_IMAGE_SET)
+        self.map!.setObject(player)
+
         actionButton.layer.borderColor = UIColor.white.cgColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
         actionButton.isHidden = true

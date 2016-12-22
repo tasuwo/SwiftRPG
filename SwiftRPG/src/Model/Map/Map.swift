@@ -76,18 +76,6 @@ open class Map {
             return nil
         }
 
-        // 主人公の作成
-        let playerPosition = TileCoordinate(x: 10, y: 10)
-        let player = Object(name: objectNameTable.PLAYER_NAME,
-                            imageName: objectNameTable.PLAYER_IMAGE_DOWN,
-                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(playerPosition),
-                            images: objectNameTable.PLAYER_IMAGE_SET)
-        if objects[playerPosition] == nil {
-            objects[playerPosition] = [player]
-        } else {
-            objects[playerPosition]!.append(player)
-        }
-
         let sheet = TileSheet(parser: parser,
                               frameWidth: frameWidth,
                               frameHeight: frameHeight,
@@ -137,6 +125,19 @@ open class Map {
             }
         }
         return nil
+    }
+
+    func setObject(_ object: Object) {
+        let coordinate = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.position)
+
+        if objects[coordinate] == nil {
+            objects[coordinate] = [object]
+        } else {
+            objects[coordinate]!.append(object)
+        }
+        placement[coordinate]!.append(object)
+
+        self.sheet?.addObjectToSheet(object)
     }
 
     ///  配置されたオブジェクトを取得する
