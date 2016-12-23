@@ -74,6 +74,18 @@ class GameScene: Scene, GameSceneProtocol {
         })
     }
 
+    func hideAllButtons() {
+        self.textBox.hide()
+        self.eventDialog.isHidden = true
+        self.menuButton.isHidden = true
+        actionButton.isHidden = true
+    }
+
+    func showOnlyDefaultButtons() {
+        self.hideAllButtons()
+        self.menuButton.isHidden = false
+    }
+
     // MARK: ---
 }
 

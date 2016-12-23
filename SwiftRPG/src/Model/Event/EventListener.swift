@@ -35,6 +35,8 @@ protocol GameSceneProtocol {
     var textBox: Dialog! { get set }
 
     func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction])
+    func hideAllButtons()
+    func showOnlyDefaultButtons()
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
