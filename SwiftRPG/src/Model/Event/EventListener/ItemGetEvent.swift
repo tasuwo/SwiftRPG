@@ -39,7 +39,7 @@ class ShowItemGetDialogEventListener: EventListener {
                 "description": ["type": "string"],
                 "image_name": ["type": "string"],
             ],
-            "required": ["talker", "talk_body", "talk_side"],
+            "required": ["key", "name", "description", "image_name"],
         ])
         let result = schema.validate(params?.rawValue ?? [])
         if result.valid == false {
