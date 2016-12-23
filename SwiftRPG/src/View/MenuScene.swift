@@ -27,6 +27,7 @@ class MenuScene: Scene {
     fileprivate static let SELECTED_ALPHA: CGFloat = 1.0
     fileprivate static let DESELECTED_ALPHA: CGFloat = 0.5
     
+    @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var dialog: UILabel!
     @IBOutlet weak var contentsView: UICollectionView!

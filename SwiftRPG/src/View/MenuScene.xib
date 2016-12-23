@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuScene" customModule="SwiftRPG" customModuleProvider="target">
             <connections>
                 <outlet property="backButton" destination="cHS-g3-7er" id="av2-e7-rTp"/>
+                <outlet property="baseView" destination="mbw-hU-E5c" id="wh4-mc-xQO"/>
                 <outlet property="contentsView" destination="UTw-z4-1Mx" id="bDO-Bt-huA"/>
                 <outlet property="dialog" destination="VuO-jg-d9W" id="eqM-dI-uhr"/>
                 <outlet property="sceneView" destination="iN0-l3-epB" id="5lj-cn-0fp"/>
@@ -22,6 +23,10 @@
             <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbw-hU-E5c">
+                    <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cHS-g3-7er">
                     <rect key="frame" x="8" y="327" width="60" height="40"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -34,7 +39,7 @@
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="30"/>
+                            <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                             <integer key="value" value="2"/>
@@ -46,6 +51,7 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VuO-jg-d9W" customClass="DialogLabel" customModule="SwiftRPG" customModuleProvider="target">
                     <rect key="frame" x="25" y="20" width="617" height="81"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="81" id="Nxd-7s-Hm8" userLabel="height = 80"/>
                     </constraints>
@@ -63,7 +69,7 @@
                 </label>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UTw-z4-1Mx">
                     <rect key="frame" x="25" y="124" width="617" height="170"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="170" id="MUU-kA-Jm7"/>
                     </constraints>
@@ -75,14 +81,17 @@
                     </collectionViewFlowLayout>
                 </collectionView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="UTw-z4-1Mx" firstAttribute="top" secondItem="VuO-jg-d9W" secondAttribute="bottom" constant="23" id="38N-l3-e3f"/>
+                <constraint firstItem="mbw-hU-E5c" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="468-x9-TJH"/>
                 <constraint firstAttribute="bottom" secondItem="cHS-g3-7er" secondAttribute="bottom" constant="8" id="6df-aI-YwW"/>
                 <constraint firstItem="UTw-z4-1Mx" firstAttribute="leading" secondItem="VuO-jg-d9W" secondAttribute="leading" id="NyY-ON-ihR"/>
                 <constraint firstItem="VuO-jg-d9W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="U0i-It-ahp"/>
                 <constraint firstItem="UTw-z4-1Mx" firstAttribute="width" secondItem="VuO-jg-d9W" secondAttribute="width" id="cpD-5d-ZAm"/>
+                <constraint firstItem="mbw-hU-E5c" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ePK-Ad-JKW"/>
+                <constraint firstItem="mbw-hU-E5c" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fs4-RU-clp"/>
                 <constraint firstAttribute="trailing" secondItem="VuO-jg-d9W" secondAttribute="trailing" constant="25" id="mSP-rt-bcy"/>
+                <constraint firstItem="mbw-hU-E5c" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="mYj-x0-twl"/>
                 <constraint firstItem="VuO-jg-d9W" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="s8c-OP-8VL"/>
                 <constraint firstItem="cHS-g3-7er" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="w4m-GR-kCg"/>
             </constraints>

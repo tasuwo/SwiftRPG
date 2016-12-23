@@ -47,7 +47,8 @@ class ActivateButtonListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.actionButton.titleLabel?.text = self.text
+            // FIXME: タイトル変更前にボタンが表示されてしまう
+            sender!.actionButton.setTitle(self.text, for: UIControlState.normal)
             sender!.actionButton.isHidden = false
 
             do {
