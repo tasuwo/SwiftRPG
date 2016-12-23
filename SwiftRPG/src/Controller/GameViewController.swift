@@ -53,7 +53,7 @@ extension GameViewController: GameSceneDelegate {
         }
     }
 
-    func didPressMenuButton() {
+    func menuButtonTouched() {
         let viewController = MenuViewController()
         self.present(viewController, animated: true, completion: nil)
     }

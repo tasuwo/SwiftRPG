@@ -14,7 +14,7 @@ protocol GameSceneDelegate: class {
     func frameTouched(_ location: CGPoint)
     func gameSceneTouched(_ location: CGPoint)
     func actionButtonTouched()
-    func didPressMenuButton()
+    func menuButtonTouched()
     func viewUpdated()
     func addEvent(_ events: [EventListener])
 }
@@ -23,7 +23,7 @@ protocol GameSceneDelegate: class {
 class GameScene: Scene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
     @IBAction func didPressMenuButton(_ sender: AnyObject) {
-        self.gameSceneDelegate?.didPressMenuButton()
+        self.gameSceneDelegate?.menuButtonTouched()
     }
 
     // MARK: GameSceneProtocol Properties
