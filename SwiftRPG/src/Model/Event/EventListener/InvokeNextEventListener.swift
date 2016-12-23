@@ -27,7 +27,7 @@ class InvokeNextEventListener: EventListener {
                 // 次のリスナーが登録されていなければ終了
                 if listeners == nil || listeners?.count == 0 { return }
 
-                // 次のリスナーが登録されているなら，新たに incoke する
+                // 次のリスナーが登録されているなら，新たに invoke する
                 let nextListener = listeners!.first!.listener
                 let nextListenerChain: ListenerChain? = listeners!.count == 1 ? nil : Array(listeners!.dropFirst())
                 let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
