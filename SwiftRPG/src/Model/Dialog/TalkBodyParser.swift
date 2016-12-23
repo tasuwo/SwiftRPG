@@ -14,9 +14,9 @@ class TalkBodyParser {
     
     init?(talkFileName: String) {
         if let path: String = Bundle.main.path(forResource: talkFileName, ofType: nil),
-           let fileHandle: FileHandle = FileHandle(forReadingAtPath: path),
-           let data: Data = fileHandle.readDataToEndOfFile()
+           let fileHandle: FileHandle = FileHandle(forReadingAtPath: path)
         {
+            let data: Data = fileHandle.readDataToEndOfFile()
             self.body = NSString(data:data, encoding:String.Encoding.utf8.rawValue) as! String
         } else {
             self.body = nil
