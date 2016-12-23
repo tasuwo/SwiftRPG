@@ -30,9 +30,13 @@ class EventManager: NotifiableFromDispacher {
         self.cyclicEventDispacher.delegate = self
     }
 
-    func add(_ listener: EventListener) {
+    func add(_ listener: EventListener) -> Bool {
         let dispacher = self.getDispacherOf(listener)
-        dispacher.add(listener)
+        if dispacher.add(listener) == false {
+            return false
+        } else {
+            return true
+        }
     }
 
     fileprivate func getDispacherOf(_ listener: EventListener) -> EventDispatcher {
@@ -48,12 +52,16 @@ class EventManager: NotifiableFromDispacher {
 
     // MARK: - NotifiableFromDispacher
 
+    // TODO: remove, add が失敗した場合の処理の追加
     func invoke(_ invoker: EventListener, listener: EventListener) {
         let invokerDispacher = self.getDispacherOf(invoker)
         let nextListenersDispacher = self.getDispacherOf(listener)
-        invokerDispacher.remove(invoker)
+
+        // 呼び出し元の EventListener 自身を Dispacher から削除する
+        if invokerDispacher.remove(invoker) == false {}
+
         // TODO: うまく排他制御する
         nextListenersDispacher.removeAll()
-        nextListenersDispacher.add(listener)
+        if nextListenersDispacher.add(listener) == false { return }
     }
 }

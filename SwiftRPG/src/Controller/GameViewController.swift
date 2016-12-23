@@ -16,7 +16,8 @@ class GameViewController: SceneController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.eventManager = EventManager()
-        eventManager.add(WalkEventListener(params: nil, chainListeners: nil))
+        // TODO: 追加失敗時の処理
+        if eventManager.add(WalkEventListener(params: nil, chainListeners: nil)) == false {}
     }
 
     override func initializeScene() {
@@ -71,7 +72,10 @@ extension GameViewController: GameSceneDelegate {
 
     func addEvent(_ events: [EventListener]) {
         for event in events {
-            self.eventManager.add(event)
+            // TODO: 追加失敗時の処理
+            if self.eventManager.add(event) == false {
+                return
+            }
         }
     }
 }
