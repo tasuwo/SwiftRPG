@@ -76,38 +76,7 @@ class ShowItemGetDialogEventListener: EventListener {
             sender!.eventDialog.isHidden = false
             sender!.eventDialog.text = "\(self.itemName) を手に入れた．"
 
-            self.delegate?.invoke(self, listener: CloseItemGetDialogEventListener(params: self.params, chainListeners: self.listeners))
-        }
-    }
-}
-
-/// アイテムゲット終了のリスナ
-/// - アイテムゲットのダイアログを閉じる
-class CloseItemGetDialogEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
-        self.triggerType = .touch
-        self.executionType = .onece
-
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.eventDialog.isHidden = true
-
-            if listeners?.count == 0 || listeners == nil { return }
-            let nextListener = listeners?.first?.listener
-            let nextChainListeners = Array(listeners!.dropFirst())
-            let nextListenerInstance: EventListener
-            do {
-                nextListenerInstance = try nextListener!.init(params: listeners?.first?.params, chainListeners: nextChainListeners)
-            } catch {
-                throw error
-            }
-            self.delegate?.invoke(self, listener: nextListenerInstance)
+            self.delegate?.invoke(self, listener: InvokeNextEventListener(params: self.params, chainListeners: self.listeners))
         }
     }
 }

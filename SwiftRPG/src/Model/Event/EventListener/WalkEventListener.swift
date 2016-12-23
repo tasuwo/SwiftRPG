@@ -79,7 +79,8 @@ class WalkEventListener: EventListener {
                 scrollActions.append(delay)
                 scrollActions.append(scrollAction!)
             }
-            
+
+            // 移動
             sender!.movePlayer(
                 playerActions,
                 destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination),

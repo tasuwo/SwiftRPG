@@ -181,58 +181,10 @@ class TalkEventListener: EventListener {
 
         return {
             sender, args in
-            let map   = sender!.map!
-            let sheet = map.sheet
-
-            // 画面上のプレイヤーの位置を取得
-            let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
-            let playerPosition = TileCoordinate.getSheetCoordinateFromScreenCoordinate(
-                sheet!.getSheetPosition(),
-                screenCoordinate: player!.getRealTimePosition()
-            )
-
-            // キャラクターとかぶらないように，テキストボックスの位置を調整
-            var DialogPosition: Dialog.POSITION = .bottom
-            /*if playerPosition.y <= scene.frame.height / 2 {
-                DialogPosition = Dialog.POSITION.top
-            } else {
-                DialogPosition = Dialog.POSITION.bottom
-            }*/
-            sender!.textBox.show(DialogPosition)
-
             // テキスト描画
-            sender!.textBox.drawText(talkerImageName!, body: talkBody!, side: talkSide)
-        }
-    }
-}
-
-/// 会話終了のリスナー
-class EndTalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .touch
-        self.executionType = .onece
-
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.textBox.hide()
-            sender!.menuButton.isHidden = false
-
-            if listeners?.count == 0 || listeners == nil { return }
-            let nextListener = listeners?.first?.listener
-            let nextListenerChain: ListenerChain? = listeners?.count == 1 ? nil : Array(listeners!.dropFirst())
-            let nextListenerInstance: EventListener
-            do {
-                nextListenerInstance = try nextListener!.init(params: listeners?.first?.params, chainListeners: nextListenerChain)
-            } catch {
-                throw error
-            }
-            self.delegate?.invoke(self, listener: nextListenerInstance)
+            // TODO: 描画位置を引数で変更する
+            sender!.textBox.show(.bottom)
+            sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
         }
     }
 }

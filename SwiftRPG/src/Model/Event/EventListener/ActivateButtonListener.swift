@@ -50,14 +50,18 @@ class ActivateButtonListener: EventListener {
             sender!.actionButton.titleLabel?.text = self.text
             sender!.actionButton.isHidden = false
 
-            if listeners == nil || listeners?.count == 0 { return }
-            let nextListener = listeners!.first!.listener
-            let nextListenerChain: ListenerChain? = listeners?.count == 1 ? nil : Array(listeners!.dropFirst())
-            let nextListenerInstance: EventListener
             do {
-                nextListenerInstance = try nextListener.init(params: listeners?.first?.params, chainListeners: nextListenerChain)
+                // 次のリスナーが登録されていなければ終了
+                if listeners == nil || listeners?.count == 0 { return }
+
+                // 次のリスナーが登録されているなら，新たに incoke する
+                let nextListener = listeners!.first!.listener
+                let nextListenerChain: ListenerChain? = listeners!.count == 1 ? nil : Array(listeners!.dropFirst())
+                let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
+                self.delegate?.invoke(self, listener: nextListenerInstance)
+            } catch {
+                throw error
             }
-            self.delegate!.invoke(self, listener: nextListenerInstance)
         }
     }
 }
