@@ -55,8 +55,6 @@ class EventDispatcher : NotifiableFromListener {
                 print(string)
             } catch EventListenerError.invalidParam(let string) {
                 print(string)
-            } catch EventListenerError.paramIsNil {
-                print("Required param is nil")
             } catch {
                 throw error
             }

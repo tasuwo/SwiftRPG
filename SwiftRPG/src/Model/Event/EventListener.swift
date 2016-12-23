@@ -12,20 +12,8 @@ import SpriteKit
 
 enum EventListenerError: Error {
     case illegalArguementFormat(String)
-    case illegalParamFormat(String)
+    case illegalParamFormat([String])
     case invalidParam(String)
-    case paramIsNil
-
-    static func generateIllegalParamFormatErrorMessage(_ params: [String:AnyObject?], handler: EventListener.Type) -> String {
-        var message = "Some params are missing at \(handler)."
-        message += " Check "
-        for param in params {
-            let key = param.0
-            let value = param.1
-            message += "`\(key)`(=\(value)), "
-        }
-        return message
-    }
 }
 
 enum TriggerType {

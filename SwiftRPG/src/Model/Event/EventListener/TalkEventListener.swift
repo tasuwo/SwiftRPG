@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import JSONSchema
 import SpriteKit
 
 /// 会話開始のリスナー．
@@ -23,30 +24,22 @@ class StartTalkEventListener: EventListener {
     fileprivate let listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .button
-        self.executionType = .onece
 
-        if params == nil {
-            throw EventListenerError.paramIsNil
-        }
+        // JSONSchema で判定したいが，JSONSchema は入れ子になっている JSON を扱えない
+        // これは，object の判定を NSDictionary へキャスト可能かどうかで判定しているため
+        if params == nil { throw EventListenerError.illegalParamFormat(["Parameter is nil"]) }
 
-        let maxIndex = params!.arrayObject?.count
-        if maxIndex == nil {
-            throw EventListenerError.illegalParamFormat("Cannot count the number of params at StartTalkEventListener")
-        }
+        let maxIndex = params?.arrayObject?.count
+        if maxIndex == nil { throw EventListenerError.illegalParamFormat(["No properties in json parameter"]) }
 
         let directionString = params![maxIndex!-1]["direction"].string
-        if directionString == nil {
-            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["direction": directionString as Optional<AnyObject>],
-                handler: StartTalkEventListener.self)
-            )
-        }
-        self.directionString = directionString!
-
         // "direction" を params から取り除く
         var array = params!.arrayObject as? [[String:String]]
         array?.removeLast()
+
+        self.directionString = directionString!
+        self.triggerType = .button
+        self.executionType = .onece
         self.params = JSON(array!)
         self.listeners = listeners
 
@@ -106,22 +99,26 @@ class TalkEventListener: EventListener {
     }
 
     init(params: JSON?, chainListeners listeners: ListenerChain?, index: Int) throws {
-        self.triggerType = .touch
-        self.executionType = .onece
 
-        if params == nil {
-            throw EventListenerError.paramIsNil
-        }
+        // JSONSchema で判定したいが，JSONSchema は入れ子になっている JSON を扱えない
+        // これは，object の判定を NSDictionary へキャスト可能かどうかで判定しているため
+        // let schema = Schema([
+        //   "type": "object",
+        //   "minProperties": 1,
+        // ])
+
+        if params == nil { throw EventListenerError.illegalParamFormat(["Parameter is nil"]) }
+
+        let maxIndex = params?.arrayObject?.count
+        if maxIndex == nil { throw EventListenerError.illegalParamFormat(["No properties in json parameter"]) }
+
         self.params = params!
         self.listeners = listeners
         self.index = index
-
-        let talkContentsMaxNum = params!.arrayObject?.count
-        if talkContentsMaxNum == nil {
-            throw EventListenerError.illegalParamFormat("Cannot count the number of params at StartTalkEventListener")
-        }
-        self.talkContentsMaxNum = talkContentsMaxNum!
-
+        self.triggerType = .touch
+        self.executionType = .onece
+        // 会話の回数をプロパティ数から判断している．明示的にすべき？
+        self.talkContentsMaxNum = (params?.arrayObject?.count)!
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
 
@@ -154,28 +151,33 @@ class TalkEventListener: EventListener {
     }
 
     static func generateEventMethod(_ index: Int, params: JSON) throws -> EventMethod {
-        let talker = params[index]["talker"].string
-        let talkBody = params[index]["talk_body"].string
-        let talkSideString = params[index]["talk_side"].string
-        if talker == nil || talkBody == nil || talkSideString == nil {
-            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["talker": talker as Optional<AnyObject>, "talk_body": talkBody as Optional<AnyObject>, "talk_side": talkSideString as Optional<AnyObject>],
-                handler: TalkEventListener.self)
-            )
+
+        let schema = Schema([
+            "type": "object",
+            "properties": [
+                "talker": ["type": "string"],
+                "talk_body": ["type": "string"],
+                "talk_side": [
+                    "type": "string",
+                    "enum": ["L", "R"]
+                ],
+            ],
+            "required": ["talker", "talk_body", "talk_side"],
+        ])
+        let result = schema.validate(params[index].rawValue)
+        if result.valid == false {
+            throw EventListenerError.illegalParamFormat(result.errors!)
         }
 
-        let talkSide: Dialog.TALK_SIDE
-        switch talkSideString! {
-        case "L": talkSide = .left
-        case "R": talkSide = .right
-        default:
-            throw EventListenerError.invalidParam("Param `talk_side`'s value is invalid at TalkEventListener")
-        }
-            
-        let talkerImageName = TALKER_IMAGE[talker!]
-        if talkerImageName == nil {
+        if TALKER_IMAGE.index(forKey: params[index]["talker"].string!) == nil {
             throw EventListenerError.invalidParam("Talker image name specified at param `talker` is not declared in configuration file")
         }
+
+        let talker = params[index]["talker"].string!
+        let talkBody = params[index]["talk_body"].string!
+        let talkSideString = params[index]["talk_side"].string!
+        let talkSide: Dialog.TALK_SIDE = talkSideString == "L" ? .left : .right
+        let talkerImageName = TALKER_IMAGE[talker]
 
         return {
             sender, args in

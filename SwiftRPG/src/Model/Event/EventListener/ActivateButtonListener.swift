@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import JSONSchema
 import SpriteKit
 
 /// アクションボタン表示のリスナー
@@ -23,27 +24,27 @@ class ActivateButtonListener: EventListener {
     ///  コンストラクタ
     ///
     ///  - parameter params:    JSON形式の引数．
-    ///    - text : action button に表示するテキスト
+    ///  - text : action button に表示するテキスト
     ///  - parameter listeners: 次に実行する event listener
     ///
     ///  - returns: なし
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        
+        let schema = Schema([
+            "type": "object",
+            "properties": [
+                "text": ["type": "string"],
+            ],
+            "required": ["text"],
+        ])
+        let result = schema.validate(params?.rawValue ?? [])
+        if result.valid == false {
+            throw EventListenerError.illegalParamFormat(result.errors!)
+        }
+
+        self.text = params!["text"].string!
         self.triggerType = .immediate
         self.executionType = .onece
-
-        if params == nil {
-            throw EventListenerError.paramIsNil
-        }
-
-        let text = params!["text"].string
-        if text == nil {
-            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["text": text as Optional<AnyObject>],
-                handler: ActivateButtonListener.self)
-            )
-        }
-        self.text = text!
-
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
             sender!.actionButton.titleLabel?.text = self.text

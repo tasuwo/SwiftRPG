@@ -181,12 +181,10 @@ open class Tile: MapObject {
                     event = try EventListenerGenerator.getListenerByID(eventType, directionToParent: nil, params: args)
                 } catch EventListenerError.illegalArguementFormat(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.illegalParamFormat(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                } catch EventListenerError.illegalParamFormat(let array) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + array.joined(separator: ","))
                 } catch EventListenerError.invalidParam(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.paramIsNil {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Required param is nil")
                 } catch EventGeneratorError.eventIdNotFound {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
                 } catch EventGeneratorError.invalidParams(let string) {

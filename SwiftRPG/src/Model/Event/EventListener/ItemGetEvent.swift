@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import JSONSchema
 import SpriteKit
 import RealmSwift
 
@@ -29,34 +30,33 @@ class ShowItemGetDialogEventListener: EventListener {
     fileprivate let itemImageName: String
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+
+        let schema = Schema([
+            "type": "object",
+            "properties": [
+                "key": ["type": "string"],
+                "name": ["type": "string"],
+                "description": ["type": "string"],
+                "image_name": ["type": "string"],
+            ],
+            "required": ["talker", "talk_body", "talk_side"],
+        ])
+        let result = schema.validate(params?.rawValue ?? [])
+        if result.valid == false {
+            throw EventListenerError.illegalParamFormat(result.errors!)
+        }
+        
         self.triggerType = .immediate
         self.executionType = .onece
-
-        if params == nil {
-            throw EventListenerError.paramIsNil
-        }
         self.params = params!
         self.listeners = listeners
-
-        let itemKey = params!["key"].string
-        let itemName = params!["name"].string
-        let itemText = params!["description"].string
-        let itemImageName = params!["image_name"].string
-        if itemKey == nil || itemName == nil || itemText == nil || itemImageName == nil {
-            throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                ["key": itemKey as Optional<AnyObject>, "name": itemName as Optional<AnyObject>, "description": itemText as Optional<AnyObject>, "image_name": itemImageName as Optional<AnyObject>],
-                handler: ShowItemGetDialogEventListener.self)
-            )
-        }
-        self.itemKey = itemKey!
-        self.itemName = itemName!
-        self.itemText = itemText!
-        self.itemImageName = itemImageName!
-
+        self.itemKey = params!["key"].string!
+        self.itemName = params!["name"].string!
+        self.itemText = params!["description"].string!
+        self.itemImageName = params!["image_name"].string!
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.eventDialog.isHidden = false
-
+            // アイテムをデータベースに登録
             let realm = try! Realm()
             try! realm.write {
                 var item = realm.objects(StoredItems.self).filter("key == \"\(self.itemKey)\"").first
@@ -72,6 +72,8 @@ class ShowItemGetDialogEventListener: EventListener {
                 realm.add(item!, update: true)
             }
 
+            // ダイアログ更新
+            sender!.eventDialog.isHidden = false
             sender!.eventDialog.text = "\(self.itemName) を手に入れた．"
 
             self.delegate?.invoke(self, listener: CloseItemGetDialogEventListener(params: self.params, chainListeners: self.listeners))

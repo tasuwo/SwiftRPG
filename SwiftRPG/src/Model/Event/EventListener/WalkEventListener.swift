@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SpriteKit
 import SwiftyJSON
+import JSONSchema
 
 /// プレイヤー移動のリスナー
 class WalkEventListener: EventListener {
@@ -24,20 +25,26 @@ class WalkEventListener: EventListener {
         self.executionType = .loop
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) in
+
+            let schema = Schema([
+                "type": "object",
+                "properties": [
+                    "touchedPoint": ["type": "string"],
+                ],
+                "required": ["touchedPoint"],
+                ])
+            let result = schema.validate(args?.rawValue ?? [])
+            if result.valid == false {
+                throw EventListenerError.illegalParamFormat(result.errors!)
+            }
+
             let map   = sender!.map!
             let sheet = map.sheet!
 
             let touchedPointString = args?["touchedPoint"].string
-            if touchedPointString == nil {
-                throw EventListenerError.illegalParamFormat(EventListenerError.generateIllegalParamFormatErrorMessage(
-                    ["touchedPoint": touchedPointString as Optional<AnyObject>],
-                    handler: WalkEventListener.self)
-                )
-            }
             let touchedPoint = CGPointFromString(touchedPointString!)
-
             let player = map.getObjectByName(objectNameTable.PLAYER_NAME)!
-            let departure   = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.position)
+            let departure = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.position)
             var destination = TileCoordinate.getTileCoordinateFromScreenCoordinate(sheet.getSheetPosition(), screenCoordinate: touchedPoint)
 
             // ルート探索

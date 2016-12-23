@@ -3,8 +3,8 @@ platform :ios, '8.0'
 use_frameworks!
 
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+pod 'JSONSchema', :git => 'https://github.com/kylef/JSONSchema.swift.git', :branch => 'master' 
 pod 'RealmSwift'
-pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
 
 target 'SwiftRPG' do
 

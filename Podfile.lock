@@ -1,38 +1,38 @@
 PODS:
+  - JSONSchema (0.4.0)
   - Realm (2.0.3):
     - Realm/Headers (= 2.0.3)
   - Realm/Headers (2.0.3)
   - RealmSwift (2.0.3):
     - Realm (= 2.0.3)
-  - Spring (1.0.3)
   - SwiftyJSON (3.1.1)
 
 DEPENDENCIES:
+  - JSONSchema (from `https://github.com/kylef/JSONSchema.swift.git`, branch `master`)
   - RealmSwift
-  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
 
 EXTERNAL SOURCES:
-  Spring:
-    :branch: swift3
-    :git: https://github.com/MengTo/Spring.git
+  JSONSchema:
+    :branch: master
+    :git: https://github.com/kylef/JSONSchema.swift.git
   SwiftyJSON:
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
-  Spring:
-    :commit: 3a9227c6e9157e7b47f5ac1ee5abab2a56b50002
-    :git: https://github.com/MengTo/Spring.git
+  JSONSchema:
+    :commit: 8f8440e6766fe0d34bf50833c1d5e70a71c999d1
+    :git: https://github.com/kylef/JSONSchema.swift.git
   SwiftyJSON:
     :commit: 1dc2ce0f913b27380cd5b803af8aa853745b9608
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
+  JSONSchema: 6983b7ba0b0711e9a92bcc789a4bfc16fc351ec7
   Realm: 5f008bfe3c8c47142eddfc30b8c1584cde22db24
   RealmSwift: 5afb451f65b682242f272dbb52d5c6f6e343c980
-  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
 
-PODFILE CHECKSUM: e9cc56624ca19d76558c43690bf0f2ae77bcec2a
+PODFILE CHECKSUM: 228fcac2521e7a711c369022900dca94f8af0d18
 
 COCOAPODS: 1.1.1
