@@ -45,7 +45,9 @@ class EventListenerGenerator {
             }
 
             do {
-                return try ShowItemGetDialogEventListener(params: item!.getJSON(), chainListeners: [(listener: WalkEventListener.self, params: nil)])
+                return try ShowItemGetDialogEventListener(params: item!.getJSON(), chainListeners: [
+                    (listener: WalkEventListener.self, params: nil)
+                ])
             } catch {
                 throw error
             }
