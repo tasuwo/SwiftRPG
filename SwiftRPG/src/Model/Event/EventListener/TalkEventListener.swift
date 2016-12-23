@@ -42,33 +42,23 @@ class StartTalkEventListener: EventListener {
         self.executionType = .onece
         self.params = JSON(array!)
         self.listeners = listeners
+        self.invoke = {
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.hideAllButtons()
 
-        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+            // プレイヤーの向きの変更
             let map = sender!.map!
-
-            sender!.actionButton.isHidden = true
-            sender!.menuButton.isHidden = true
-
             let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
             if let playerDirection = DIRECTION.fromString(self.directionString) {
                 player?.setDirection(playerDirection)
             }
 
-            let nextTalkEventMethod: EventMethod
             do {
-                nextTalkEventMethod = try TalkEventListener.generateEventMethod(0, params: self.params)
-            } catch {
-                throw error
-            }
+                // 会話を1つ進める
+                let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
+                try moveConversation(_: sender, args)
 
-            do {
-                try nextTalkEventMethod(_: sender, args)
-            } catch {
-                throw error
-            }
-
-            // TODO: index < 1 のときの処理
-            do {
+                // TODO: index < 1 のとき = ここで会話が終了する時
                 self.delegate?.invoke(self, listener: try TalkEventListener(params: self.params, chainListeners: self.listeners))
             } catch {
                 throw error
@@ -122,35 +112,26 @@ class TalkEventListener: EventListener {
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
 
-            let nextTalkEventMethod: EventMethod
             do {
-                nextTalkEventMethod = try TalkEventListener.generateEventMethod(self.index, params: self.params)
-            } catch {
-                throw error
-            }
+                let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index, params: self.params)
+                try moveConversation(sender, args)
 
-            do {
-                try nextTalkEventMethod(sender, args)
-            } catch {
-                throw error
-            }
-
-            let nextEventListener: EventListener
-            do {
+                // 会話の継続，終了に応じて次の EventListener を決定
+                let nextEventListener: EventListener
                 if index < self.talkContentsMaxNum - 1 {
                     nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners, index: self.index+1)
                 } else {
-                    nextEventListener = try EndTalkEventListener(params: self.params, chainListeners: self.listeners)
+                    nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 }
+                
+                self.delegate?.invoke(self, listener: nextEventListener)
             } catch {
                 throw error
             }
-
-            self.delegate?.invoke(self, listener: nextEventListener)
         }
     }
 
-    static func generateEventMethod(_ index: Int, params: JSON) throws -> EventMethod {
+    static func generateMoveConversationMethod(_ index: Int, params: JSON) throws -> EventMethod {
 
         let schema = Schema([
             "type": "object",
