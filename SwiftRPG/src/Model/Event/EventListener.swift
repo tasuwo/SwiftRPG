@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import SpriteKit
+import PromiseKit
 
 enum EventListenerError: Error {
     case illegalArguementFormat(String)
@@ -35,8 +36,8 @@ protocol GameSceneProtocol {
     var textBox: Dialog! { get set }
 
     func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction])
-    func hideAllButtons()
-    func showOnlyDefaultButtons()
+    func hideAllButtons() -> Promise<Void>
+    func showDefaultButtons() -> Promise<Void>
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()

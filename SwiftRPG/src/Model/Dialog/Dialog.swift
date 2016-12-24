@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import PromiseKit
 import UIKit
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
@@ -137,7 +138,7 @@ class Dialog {
             width: CHAR_ICON_SIZE - ICON_MARGIN * 2,
             height: boxHeight - ICON_MARGIN * 2)
         characterIcon.zPosition = zPositionTable.DIALOG_ICON
-        characterIcon.color = UIColor.white
+        characterIcon.color = UIColor.black
         characterIcon.position.y = PADDING_HEIGHT // FONT_SIZE + ICON_MARGIN
         textBox.addChild(characterIcon)
     }
@@ -212,9 +213,13 @@ class Dialog {
     ///  テキストボックスを表示する
     ///
     ///  - parameter position: 表示位置
-    func show(_ position: POSITION? = nil) {
-        self.setPositionY(position!)
-        textBox.isHidden = false
+    func show(_ position: POSITION? = nil, duration: Double) -> Promise<Void> {
+        return Promise { fulfill, reject in
+            self.setPositionY(position ?? .bottom)
+            textBox.alpha = 0.0
+            textBox.isHidden = false
+            textBox.run(SKAction.fadeAlpha(to: 1, duration: duration), completion: { fulfill() })
+        }
     }
 
     ///  テキストを描画する
@@ -297,5 +302,15 @@ class Dialog {
         var allNode: [SKNode] = []
         textBox.enumerateChildNodes(withName: CHAR_LABEL_NAME, using: { node, sotp in allNode.append(node) })
         textBox.removeChildren(in: allNode)
+    }
+
+    func clean() {
+        // キャラクター画像削除
+        characterIcon.texture = nil
+        // 先送りボタン非表示
+        nextButton.removeAllActions()
+        nextButton.alpha = 0.0
+        // 既に表示されている文字クリア
+        clearText()
     }
 }

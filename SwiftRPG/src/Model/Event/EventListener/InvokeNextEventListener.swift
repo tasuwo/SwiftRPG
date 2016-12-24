@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import PromiseKit
 
 class InvokeNextEventListener: EventListener {
     var id: UInt64!
@@ -21,7 +22,11 @@ class InvokeNextEventListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.showOnlyDefaultButtons()
+            _ = firstly {
+                sender!.hideAllButtons()
+            }.then { _ in
+                sender!.showDefaultButtons()
+            }
 
             do {
                 // 次のリスナーが登録されていなければ終了

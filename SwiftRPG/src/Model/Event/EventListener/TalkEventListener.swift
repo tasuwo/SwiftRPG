@@ -10,6 +10,7 @@ import Foundation
 import SwiftyJSON
 import JSONSchema
 import SpriteKit
+import PromiseKit
 
 /// 会話開始のリスナー．
 class StartTalkEventListener: EventListener {
@@ -44,7 +45,9 @@ class StartTalkEventListener: EventListener {
         self.listeners = listeners
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.hideAllButtons()
+
+            // ダイアログ初期化
+            sender!.textBox.clean()
 
             // プレイヤーの向きの変更
             let map = sender!.map!
@@ -53,15 +56,25 @@ class StartTalkEventListener: EventListener {
                 player?.setDirection(playerDirection)
             }
 
-            do {
-                // 会話を1つ進める
-                let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
-                try moveConversation(_: sender, args)
+            _ = firstly {
+                sender!.hideAllButtons()
+            }.then {
+                _ in
+                sender!.textBox.show(duration: 0.2)
+            }.always {
+                do {
+                    // 会話を1つ進める
+                    let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
+                    try moveConversation(_: sender, args)
 
-                // TODO: index < 1 のとき = ここで会話が終了する時
-                self.delegate?.invoke(self, listener: try TalkEventListener(params: self.params, chainListeners: self.listeners))
-            } catch {
-                throw error
+                    // TODO: index < 1 のとき = ここで会話が終了する時
+                    self.delegate?.invoke(self, listener: try TalkEventListener(params: self.params, chainListeners: self.listeners))
+                } catch {
+                    // throw error
+
+                    // TODO: 例外を外に投げたいがどうするか
+                    print(error)
+                }
             }
         }
     }
@@ -163,8 +176,6 @@ class TalkEventListener: EventListener {
         return {
             sender, args in
             // テキスト描画
-            // TODO: 描画位置を引数で変更する
-            sender!.textBox.show(.bottom)
             sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
         }
     }

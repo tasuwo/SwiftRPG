@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import PromiseKit
 import Foundation
 
 /// view controller に処理を delegate する
@@ -74,16 +75,40 @@ class GameScene: Scene, GameSceneProtocol {
         })
     }
 
-    func hideAllButtons() {
-        self.textBox.hide()
-        self.eventDialog.isHidden = true
-        self.menuButton.isHidden = true
-        actionButton.isHidden = true
+    func hideAllButtons() -> Promise<Void> {
+        return Promise { fulfill, reject in
+            UIView.animate(withDuration: 0.2, animations: {
+                self.menuButton.alpha = 0
+                self.eventDialog.alpha = 0
+                self.actionButton.alpha = 0
+                self.textBox.hide()
+            }, completion: {
+                _ in
+                self.menuButton.isHidden = true
+                self.eventDialog.isHidden = true
+                self.actionButton.isHidden = true
+                self.menuButton.alpha = 1
+                self.eventDialog.alpha = 1
+                self.actionButton.alpha = 1
+                fulfill()
+            })
+        }
     }
 
-    func showOnlyDefaultButtons() {
-        self.hideAllButtons()
-        self.menuButton.isHidden = false
+    func showDefaultButtons() -> Promise<Void> {
+        self.menuButton.alpha = 0
+
+        return Promise { fulfill, reject in
+            UIView.animate(
+                withDuration: 0.2,
+                delay: 0.0,
+                options: [.curveLinear],
+                animations: { () -> Void in
+                    self.menuButton.isHidden = false
+                    self.menuButton.alpha = 1
+                }
+            ) { (animationCompleted: Bool) -> Void in fulfill()}
+        }
     }
 
     // MARK: ---
