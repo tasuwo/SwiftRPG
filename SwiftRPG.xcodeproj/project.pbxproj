@@ -25,6 +25,7 @@
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
 		2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C363A531B7B20260042FA2D /* EventDispatcher.swift */; };
 		2C3673E01E0ABE570060E5EF /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */; };
+		2C3EF4CD1E0E063B0059840A /* UIButton+title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3EF4CC1E0E063B0059840A /* UIButton+title.swift */; };
 		2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */; };
 		2C556E811D50C11B00E03414 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E801D50C11B00E03414 /* EventManager.swift */; };
 		2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */; };
@@ -98,6 +99,7 @@
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		2C363A531B7B20260042FA2D /* EventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDispatcher.swift; sourceTree = "<group>"; };
 		2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		2C3EF4CC1E0E063B0059840A /* UIButton+title.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+title.swift"; sourceTree = "<group>"; };
 		2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkEventListener.swift; sourceTree = "<group>"; };
 		2C556E801D50C11B00E03414 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionToMenuAnimator.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				2C2D31941D52F39F000D8A2B /* String+subscript.swift */,
 				2C2D31961D530F35000D8A2B /* DIRECTION.swift */,
 				2C2D31981D530F67000D8A2B /* IMAGE_SET.swift */,
+				2C3EF4CC1E0E063B0059840A /* UIButton+title.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3EF4CD1E0E063B0059840A /* UIButton+title.swift in Sources */,
 				D7747D251B6E58F300793445 /* UIButtonAnimated.swift in Sources */,
 				2C2D31931D525F35000D8A2B /* EventListenerGenerator.swift in Sources */,
 				2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */,
