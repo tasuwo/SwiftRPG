@@ -91,3 +91,11 @@ class TileCoordinate: Hashable {
 func ==(lhs: TileCoordinate, rhs: TileCoordinate) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
+
+func -(lhs: TileCoordinate, rhs: TileCoordinate) -> TileCoordinate {
+    return TileCoordinate(x: lhs.x-rhs.x, y: lhs.y-rhs.y)
+}
+
+func +(lhs: TileCoordinate, rhs: TileCoordinate) -> TileCoordinate {
+    return TileCoordinate(x: lhs.x+rhs.x, y: lhs.y+rhs.y)
+}
