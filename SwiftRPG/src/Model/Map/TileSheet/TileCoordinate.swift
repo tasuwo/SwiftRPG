@@ -71,6 +71,23 @@ class TileCoordinate: Hashable {
                            y: CGFloat(tileCoordinate.y) * Tile.TILE_SIZE - Tile.TILE_SIZE / 2)
     }
 
+    /// 文字列を座標に変換する
+    class func parse(from coordinateString: String) -> TileCoordinate {
+        let coordinateValues = coordinateString
+            .replacingOccurrences(of: "(", with: "")
+            .replacingOccurrences(of: ")", with: "")
+            .components(separatedBy: ",")
+        let x: Int? = Int(coordinateValues[0])
+        let y: Int? = Int(coordinateValues[1])
+
+        if x == nil || y == nil {
+            print("Invalid params: \(coordinateString)")
+            return TileCoordinate(x: 0, y: 0)
+        }
+
+        return TileCoordinate(x: x!, y: y!)
+    }
+
     // MARK: - Hashable
 
     var hashValue : Int {
