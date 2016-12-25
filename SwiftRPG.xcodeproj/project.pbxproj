@@ -30,6 +30,7 @@
 		2C556E811D50C11B00E03414 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C556E801D50C11B00E03414 /* EventManager.swift */; };
 		2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */; };
 		2C86E2321E0D15B90053062C /* InvokeNextEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */; };
+		2CAC5E511E0ECE3900621F17 /* EventPropertyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC5E501E0ECE3900621F17 /* EventPropertyParser.swift */; };
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
 		2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */; };
 		2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE41E0ADC12008AEB77 /* SceneController.swift */; };
@@ -104,6 +105,7 @@
 		2C556E801D50C11B00E03414 /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionToMenuAnimator.swift; sourceTree = "<group>"; };
 		2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvokeNextEventListener.swift; sourceTree = "<group>"; };
+		2CAC5E501E0ECE3900621F17 /* EventPropertyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPropertyParser.swift; sourceTree = "<group>"; };
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
 		2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateButtonListener.swift; sourceTree = "<group>"; };
 		2CC39CE41E0ADC12008AEB77 /* SceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				D7D8A5AA1B70652600147A45 /* Object.swift */,
 				D7D97FFE1B6F05B1000704B0 /* Tile.swift */,
 				2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */,
+				2CAC5E501E0ECE3900621F17 /* EventPropertyParser.swift */,
 			);
 			path = MapObject;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
+				2CAC5E511E0ECE3900621F17 /* EventPropertyParser.swift in Sources */,
 				2C2D31A51D531F04000D8A2B /* ItemGetEvent.swift in Sources */,
 				2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */,
 				2C556E811D50C11B00E03414 /* EventManager.swift in Sources */,

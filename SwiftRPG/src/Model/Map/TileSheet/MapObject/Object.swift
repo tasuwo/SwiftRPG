@@ -30,6 +30,12 @@ open class Object: MapObject {
     /// 画面上の描画位置
     fileprivate(set) var position: CGPoint
 
+    var coordinate: TileCoordinate {
+        get {
+            return TileCoordinate.getTileCoordinateFromSheetCoordinate(position)
+        }
+    }
+
     /// 歩行のためのインデックス
     /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
     fileprivate var stepIndex: Int = 0
@@ -57,6 +63,8 @@ open class Object: MapObject {
             self.parent_ = newValue
         }
     }
+
+    var children: [MapObject] = []
 
     func setCollision() {
         self.hasCollision = true
@@ -282,24 +290,12 @@ open class Object: MapObject {
 
             // イベントの付加
             if let obj_action = property!["event"] {
-                let tmp = obj_action.components(separatedBy: ",")
-                let eventType = tmp[0]
-                let eventPlacedDirectionsFromParent = tmp[1]
-                let eventArgs = Array(tmp.dropFirst().dropFirst())
-
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
-                    if eventPlacedDirectionsFromParent[0] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .up)
-                    }
-                    if eventPlacedDirectionsFromParent[1] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .down)
-                    }
-                    if eventPlacedDirectionsFromParent[2] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .left)
-                    }
-                    if eventPlacedDirectionsFromParent[3] == "1" {
-                        try Object.addEventObject(&objects, id: eventType, args: eventArgs, coordinate: coordinate, directionFromParent: .right)
+                    let eventProperty = try EventPropertyParser.parse(from: obj_action)
+                    let eventObjects = try EventPropertyParser.generateEventObject(property: eventProperty, parent: object)
+                    for eventObject in eventObjects {
+                        objects[eventObject.coordinate]!.append(eventObject)
                     }
                 } catch EventListenerError.illegalArguementFormat(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
@@ -311,49 +307,14 @@ open class Object: MapObject {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
                 } catch EventGeneratorError.invalidParams(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                } catch EventParserError.invalidProperty(let string) {
+                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
                 }
             }
         }
         return objects
-    }
-
-    fileprivate class func addEventObject(
-        _ objects: inout Dictionary<TileCoordinate, [Object]>,
-              id: String, args: [String],
-              coordinate: TileCoordinate,
-              directionFromParent: DIRECTION
-    ) throws {
-        let eventPlacedTileCoordinate = Object.getTileCoordinateTo(directionFromParent, base: coordinate)
-        let eventPlacedSheetCoordinate = TileCoordinate.getSheetCoordinateFromTileCoordinate(eventPlacedTileCoordinate)
-        let event: EventListener
-        do {
-            event = try EventListenerGenerator.getListenerByID(id, directionToParent: directionFromParent.reverse, params: args)
-        } catch {
-            throw error
-        }
-        let object = Object(name: "", position: eventPlacedSheetCoordinate, images: nil)
-        object.events.append(event)
-
-        objects[eventPlacedTileCoordinate]!.append(object)
-    }
-
-    fileprivate class func getTileCoordinateTo(_ direction: DIRECTION, base: TileCoordinate) -> TileCoordinate {
-        let placementCoordinate: TileCoordinate
-
-        switch direction {
-        case .left:
-            placementCoordinate = TileCoordinate(x: base.x-1, y: base.y)
-        case .right:
-            placementCoordinate = TileCoordinate(x: base.x+1, y: base.y)
-        case .down:
-            placementCoordinate = TileCoordinate(x: base.x, y: base.y-1)
-        case .up:
-            placementCoordinate = TileCoordinate(x: base.x, y: base.y+1)
-        }
-
-        return placementCoordinate
     }
 
     // MARK: -
