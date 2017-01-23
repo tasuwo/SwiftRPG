@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,27 +20,27 @@
             <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swift RPG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rc-e6-Dsl">
+                    <rect key="frame" x="182.5" y="145.5" width="302" height="84"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="70"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02W-cn-duW">
-                    <rect key="frame" x="214" y="274" width="239" height="60"/>
+                    <rect key="frame" x="214" y="245" width="239" height="60"/>
                     <fontDescription key="fontDescription" type="system" pointSize="40"/>
                     <state key="normal" title="START GAME"/>
                     <connections>
                         <action selector="startBtnPressed:" destination="-1" eventType="touchUpInside" id="9rx-5h-6GR"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swift RPG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rc-e6-Dsl">
-                    <rect key="frame" x="182.5" y="130" width="302" height="84"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="70"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="0rc-e6-Dsl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="130" id="XuC-AZ-cNP"/>
-                <constraint firstItem="0rc-e6-Dsl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZGt-1X-qqL"/>
-                <constraint firstAttribute="bottom" secondItem="02W-cn-duW" secondAttribute="bottom" constant="41" id="f8N-Ex-HKH"/>
-                <constraint firstItem="02W-cn-duW" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="qiS-Oy-N9T"/>
+                <constraint firstItem="0rc-e6-Dsl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8Wg-Xw-fb8"/>
+                <constraint firstItem="02W-cn-duW" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IHY-hC-9mY"/>
+                <constraint firstItem="02W-cn-duW" firstAttribute="top" secondItem="0rc-e6-Dsl" secondAttribute="bottom" constant="15.5" id="OHA-w7-UqF"/>
+                <constraint firstItem="0rc-e6-Dsl" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="YMl-Vi-Cdg"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
