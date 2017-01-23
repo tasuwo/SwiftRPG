@@ -1,10 +1,7 @@
 # Swift RPG
 
-Swift で簡易的な RPG ゲームを作るための雛形です．
-
-## Motivation
-
-RPG をフルスクラッチで作ってみたくなったので，Swift 及び iOS の勉強がてらにちまちまと作成しています．
+Simple game written in swift with SpriteKit.
+*Work in progress*
 
 ## Screen Shot
 
@@ -12,7 +9,8 @@ RPG をフルスクラッチで作ってみたくなったので，Swift 及び 
 
 ## TODO
 
-- イベントの組み合わせ
-- ドキュメント作成
-- ゲーム中の画面遷移
-- サウンド再生
+- Document
+- Scene transition
+- Sound
+- Flag management
+- Battle
