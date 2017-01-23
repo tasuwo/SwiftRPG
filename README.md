@@ -9,6 +9,7 @@ Simple game written in swift with SpriteKit.
 
 ## TODO
 
+- Move objects
 - Document
 - Scene transition
 - Sound
