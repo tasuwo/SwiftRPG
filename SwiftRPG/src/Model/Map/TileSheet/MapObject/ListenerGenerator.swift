@@ -48,8 +48,14 @@ class ListenerGenerator {
                     params: params,
                     chainListeners: ListenerChain(listenerChain.dropFirst(1)) + ListenerContainer.getDefault())
                 listeners[coordinate] = listener
-            } catch {
-                // TODO
+            } catch EventListenerError.illegalArguementFormat(let string) {
+                throw ListenerGeneratorError.failed("Illegal arguement for listener: " + string)
+            } catch EventListenerError.illegalParamFormat(let array) {
+                throw ListenerGeneratorError.failed("Illegal parameter for listener: " + array.joined(separator: ","))
+            } catch EventListenerError.invalidParam(let string) {
+                throw ListenerGeneratorError.failed("Invalid parameter for listener: " + string)
+            } catch EventParserError.invalidProperty(let string) {
+                throw ListenerGeneratorError.failed("Invalid property for listener: " + string)
             }
         }
 

@@ -170,24 +170,24 @@ open class Tile: MapObject {
 
             // イベントを付与する
             if let action = tile.property["event"] {
-                let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
+                let listeners: Dictionary<TileCoordinate, EventListener>
                 do {
                     let properties = try EventPropertyParser.parse(from: action)
-                    let listeners = try ListenerGenerator.generate(properties: properties)
-
-                    if listeners.count > 1 {
-                        // TODO
-                    }
-                    if listeners.count == 1 && listeners.first?.key != TileCoordinate(x:0,y:0) {
-                        // TODO
-                    }
-
-                    tile.events.append(listeners.first!.value)
+                    listeners = try ListenerGenerator.generate(properties: properties)
                 } catch EventParserError.invalidProperty(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
+                    throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
+                } catch ListenerGeneratorError.failed(let string) {
+                    throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
                 }
+
+                if listeners.count > 1 {
+                    throw MapObjectError.failedToGenerate("Tile event should has only one relative coordinate")
+                }
+                if listeners.count == 1 && listeners.first?.key != TileCoordinate(x:0,y:0) {
+                    throw MapObjectError.failedToGenerate("Tile event should has (0,0) relative coordinate")
+                }
+
+                tile.events.append(listeners.first!.value)
             }
 
             tiles[coordinate] = tile

@@ -290,7 +290,6 @@ open class Object: MapObject {
 
             // イベントの付加
             if let obj_action = property!["event"] {
-                let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     let properties = try EventPropertyParser.parse(from: obj_action)
                     let listeners = try ListenerGenerator.generate(properties: properties)
@@ -317,16 +316,10 @@ open class Object: MapObject {
                     for eventObject in eventObjects {
                         objects[eventObject.coordinate]!.append(eventObject)
                     }
-                } catch EventListenerError.illegalArguementFormat(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.illegalParamFormat(let array) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + array.joined(separator: ","))
-                } catch EventListenerError.invalidParam(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch EventParserError.invalidProperty(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Unexpected error occured")
+                    throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
+                } catch ListenerGeneratorError.failed(let string) {
+                    throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
                 }
             }
         }
