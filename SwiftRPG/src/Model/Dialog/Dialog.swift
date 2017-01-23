@@ -222,6 +222,17 @@ class Dialog {
         }
     }
 
+    ///  テキストボックスを隠す
+    ///
+    ///  - parameter position: 表示位置
+    func hide(duration: Double) -> Promise<Void> {
+        return Promise { fulfill, reject in
+            textBox.alpha = 1.0
+            textBox.isHidden = true
+            textBox.run(SKAction.fadeAlpha(to: 0, duration: duration), completion: { fulfill() })
+        }
+    }
+
     ///  テキストを描画する
     ///
     ///  - parameter text:     描画するテキスト
