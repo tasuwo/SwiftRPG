@@ -113,6 +113,20 @@ class GameScene: Scene, GameSceneProtocol {
         }
     }
 
+    func showEventDialog() -> Promise<Void> {
+        return Promise { fulfill, reject in
+            UIView.animate(
+                withDuration: 0.2,
+                delay: 0.0,
+                options: [.curveLinear],
+                animations: { () -> Void in
+                    self.eventDialog.isHidden = false
+                    self.eventDialog.alpha = 1
+            }
+            ) { (animationCompleted: Bool) -> Void in fulfill()}
+        }
+    }
+
     // MARK: ---
 }
 
