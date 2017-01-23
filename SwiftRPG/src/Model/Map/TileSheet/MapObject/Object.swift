@@ -278,13 +278,11 @@ open class Object: MapObject {
                 position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
                 images: nil
             )
-            objects[coordinate]!.append(object)
 
             // 当たり判定の付加
-            // TODO: タイルではなくオブジェクトに当たり判定をつける
             if let hasCollision = property!["collision"] {
                 if hasCollision == "1" {
-                    tiles[coordinate]?.setCollision()
+                    object.setCollision()
                 }
             }
 
@@ -322,6 +320,8 @@ open class Object: MapObject {
                     throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
                 }
             }
+
+            objects[coordinate]!.append(object)
         }
         return objects
     }
