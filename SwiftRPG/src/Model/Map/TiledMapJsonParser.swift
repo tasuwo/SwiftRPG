@@ -63,8 +63,10 @@ class TiledMapJsonParser {
 
         var tileSetID = 1
         for tileSetJson in tileSetsJson! {
+            // パスからファイル名を抽出
+            let imageName = tileSetJson["image"].string!.components(separatedBy: "/").last!
             tileSets[tileSetID] = TileSet(id: tileSetID,
-                                          imageName: tileSetJson["image"].string!,
+                                          imageName: imageName,
                                           nTile: tileSetJson["tilecount"].int!,
                                           firstTileID: tileSetJson["firstgid"].int!,
                                           width: tileSetJson["imagewidth"].int!,
