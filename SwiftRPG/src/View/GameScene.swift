@@ -95,8 +95,10 @@ class GameScene: Scene, GameSceneProtocol {
         }
     }
 
+    // FIXME: フェードインさせようとすると，menu ボタンがチカチカしてしまう
     func showDefaultButtons() -> Promise<Void> {
-        self.menuButton.alpha = 0
+        //self.menuButton.alpha = 0
+        self.menuButton.isHidden = false
 
         return Promise { fulfill, reject in
             UIView.animate(
@@ -104,8 +106,8 @@ class GameScene: Scene, GameSceneProtocol {
                 delay: 0.0,
                 options: [.curveLinear],
                 animations: { () -> Void in
-                    self.menuButton.isHidden = false
-                    self.menuButton.alpha = 1
+                    // self.menuButton.alpha = 1
+                    // self.menuButton.isHidden = false
                 }
             ) { (animationCompleted: Bool) -> Void in fulfill()}
         }
