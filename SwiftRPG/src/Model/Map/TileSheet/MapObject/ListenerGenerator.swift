@@ -13,53 +13,6 @@ enum ListenerGeneratorError: Error {
 }
 
 class ListenerGenerator {
-    // TODO: Object と Tile のイベントパーサー用メソッドの共通部分を切り出したい
-    class func generateEventListenerForTile(properties: [EventProperty]) throws -> EventListener {
-        var listeners: Dictionary<TileCoordinate, EventListener> = [:]
-        do {
-            listeners = try ListenerGenerator.generate(properties: properties)
-        } catch {
-            // TODO
-        }
-
-        if listeners.count > 1 {
-            throw EventParserError.invalidProperty("Tile's event propaty has only one coordinate")
-        }
-        if listeners.count == 1 && listeners.first?.key != TileCoordinate(x:0,y:0) {
-            throw EventParserError.invalidProperty("Tile's event propaty has only (0,0)")
-        }
-
-        return listeners.first!.value
-    }
-
-    class func generateEventObject(properties: [EventProperty], parent: Object) throws -> [Object] {
-        var eventObjects: [Object] = []
-        var listeners: Dictionary<TileCoordinate, EventListener> = [:]
-
-        // イベントプロパティからイベントリスナーを生成する
-        do {
-            listeners = try ListenerGenerator.generate(properties: properties)
-        } catch {
-            // TODO
-        }
-
-        // eventObject は relativeCoordinate 毎に作成する
-        for (coordinate, listener) in listeners {
-            // TODO: 名前をどうするか
-            let eventObject: Object = Object(
-                name: "",
-                position: TileCoordinate.getSheetCoordinateFromTileCoordinate(parent.coordinate + coordinate),
-                images: nil)
-
-            eventObject.events.append(listener)
-            // TODO: parent に children を登録すべきでは？
-            eventObject.parent = parent
-            eventObjects.append(eventObject)
-        }
-        
-        return eventObjects
-    }
-
     class func generate(properties: [EventProperty]) throws -> Dictionary<TileCoordinate, EventListener> {
         var listenerChains: Dictionary<TileCoordinate, ListenerChain> = [:]
 

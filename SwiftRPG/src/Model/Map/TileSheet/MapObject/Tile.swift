@@ -172,16 +172,17 @@ open class Tile: MapObject {
             if let action = tile.property["event"] {
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
-                    // TODO: 複数のイベントをタイルにのせることができない
                     let properties = try EventPropertyParser.parse(from: action)
-                    let listener = try ListenerGenerator.generateEventListenerForTile(properties: properties)
-                    tile.events.append(listener)
-                } catch EventListenerError.illegalArguementFormat(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventListenerError.illegalParamFormat(let array) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + array.joined(separator: ","))
-                } catch EventListenerError.invalidParam(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
+                    let listeners = try ListenerGenerator.generate(properties: properties)
+
+                    if listeners.count > 1 {
+                        // TODO
+                    }
+                    if listeners.count == 1 && listeners.first?.key != TileCoordinate(x:0,y:0) {
+                        // TODO
+                    }
+
+                    tile.events.append(listeners.first!.value)
                 } catch EventParserError.invalidProperty(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch {

@@ -293,7 +293,27 @@ open class Object: MapObject {
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     let properties = try EventPropertyParser.parse(from: obj_action)
-                    let eventObjects = try ListenerGenerator.generateEventObject(properties: properties, parent: object)
+                    let listeners = try ListenerGenerator.generate(properties: properties)
+
+                    var eventObjects: [Object] = []
+                    let parent = object
+
+                    // Create event object for per coordinate
+                    for (coordinate, listener) in listeners {
+                        // TODO: Give a name
+                        let eventObject: Object = Object(
+                            name: "",
+                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(parent.coordinate + coordinate),
+                            images: nil)
+
+                        eventObject.events.append(listener)
+
+                        object.children.append(eventObject)
+                        eventObject.parent = parent
+                        eventObjects.append(eventObject)
+                    }
+
+                    // Placement event objects on object dict map
                     for eventObject in eventObjects {
                         objects[eventObject.coordinate]!.append(eventObject)
                     }
