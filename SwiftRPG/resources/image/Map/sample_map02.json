@@ -17,7 +17,7 @@
          "name":"collision",
          "opacity":0.430000007152557,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":20,
          "x":0,
          "y":0
@@ -35,24 +35,17 @@
         }],
  "nextobjectid":1,
  "orientation":"orthogonal",
- "properties":
-    {
-
-    },
  "renderorder":"right-up",
  "tileheight":32,
  "tilesets":[
         {
+         "columns":6,
          "firstgid":1,
-         "image":"collisions.png",
+         "image":"kanamonoMap.xcassets\/collisions.imageset\/collisions.png",
          "imageheight":64,
          "imagewidth":192,
          "margin":0,
          "name":"collisions",
-         "properties":
-            {
-
-            },
          "spacing":0,
          "tilecount":12,
          "tileheight":32,
@@ -71,19 +64,31 @@
                  "collision":"1"
                 }
             },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "collision":"string"
+                },
+             "1":
+                {
+                 "collision":"string"
+                },
+             "6":
+                {
+                 "collision":"string"
+                }
+            },
          "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":13,
-         "image":"kanamono_tile.png",
+         "image":"kanamonoMap.xcassets\/kanamono_tile.imageset\/kanamono_tile.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
          "name":"kanamono_tile",
-         "properties":
-            {
-
-            },
          "spacing":0,
          "tilecount":1,
          "tileheight":32,
@@ -94,19 +99,23 @@
                  "collision":"0"
                 }
             },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "collision":"string"
+                }
+            },
          "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":14,
-         "image":"mob.png",
+         "image":"..\/Character\/mob.xcassets\/mob.imageset\/mob.png",
          "imageheight":64,
          "imagewidth":32,
          "margin":0,
          "name":"mob",
-         "properties":
-            {
-
-            },
          "spacing":0,
          "tilecount":1,
          "tileheight":64,
@@ -115,7 +124,15 @@
              "0":
                 {
                  "collision":"1",
-                 "event":"talk,{(0,-1)},talk_01.txt"
+                 "event":"talk,{(0,-1)},talk_01.txt\nitem,{(0,-1)},test"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "collision":"string",
+                 "event":"string"
                 }
             },
          "tilewidth":32

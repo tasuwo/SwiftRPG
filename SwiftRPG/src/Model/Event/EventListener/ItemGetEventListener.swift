@@ -15,7 +15,7 @@ import RealmSwift
 /// アイテムゲットのリスナー
 /// - アイテムをDBに保存
 /// - アイテムゲットのダイアログを表示
-class ShowItemGetDialogEventListener: EventListener {
+class ItemGetEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
@@ -23,7 +23,7 @@ class ShowItemGetDialogEventListener: EventListener {
     let executionType: ExecutionType
 
     fileprivate let params: JSON
-    fileprivate let listeners: ListenerChain?
+    internal var listeners: ListenerChain?
     fileprivate let itemKey: String
     fileprivate let itemName: String
     fileprivate let itemText: String
@@ -72,11 +72,12 @@ class ShowItemGetDialogEventListener: EventListener {
                 realm.add(item!, update: true)
             }
 
-            // ダイアログ更新
-            sender!.eventDialog.isHidden = false
-            sender!.eventDialog.text = "\(self.itemName) を手に入れた．"
-
-            self.delegate?.invoke(self, listener: InvokeNextEventListener(params: self.params, chainListeners: self.listeners))
+            let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+            self.delegate?.invoke(self, listener: nextEventListener)
         }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
     }
 }

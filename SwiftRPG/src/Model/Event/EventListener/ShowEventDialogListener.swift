@@ -1,18 +1,18 @@
 //
-//  ActivateButtonListener.swift
+//  ActivateEventDialogListener.swift
 //  SwiftRPG
 //
-//  Created by tasuku tozawa on 2016/08/06.
-//  Copyright © 2016年 兎澤佑. All rights reserved.
+//  Created by tasuku tozawa on 2017/01/23.
+//  Copyright © 2017年 兎澤佑. All rights reserved.
 //
 
 import Foundation
 import SwiftyJSON
 import JSONSchema
 import SpriteKit
+import PromiseKit
 
-/// アクションボタン表示のリスナー
-class ActivateButtonListener: EventListener {
+class ShowEventDialogListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
@@ -29,14 +29,14 @@ class ActivateButtonListener: EventListener {
     ///
     ///  - returns: なし
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        
+
         let schema = Schema([
             "type": "object",
             "properties": [
                 "text": ["type": "string"],
             ],
             "required": ["text"],
-        ])
+            ])
         let result = schema.validate(params?.rawValue ?? [])
         if result.valid == false {
             throw EventListenerError.illegalParamFormat(result.errors!)
@@ -48,8 +48,37 @@ class ActivateButtonListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            sender!.actionButton.title = params!["text"].string!
-            sender!.actionButton.isHidden = false
+            sender!.eventDialog.text = params!["text"].string!
+            sender!.eventDialog.isHidden = false
+
+            let nextEventListener = HideEventDialogListener(params: self.params, chainListeners: self.listeners)
+            self.delegate?.invoke(self, listener: nextEventListener)
+        }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
+    }
+}
+
+class HideEventDialogListener: EventListener {
+    var id: UInt64!
+    var delegate: NotifiableFromListener?
+    var invoke: EventMethod?
+    var listensers: ListenerChain?
+    var params: JSON?
+    let triggerType: TriggerType
+    let executionType: ExecutionType
+    internal var listeners: ListenerChain?
+
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
+        self.triggerType = .touch
+        self.executionType = .onece
+        self.listeners = listeners
+        self.params = params
+        self.invoke = {
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender!.eventDialog.isHidden = true
 
             let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
             self.delegate?.invoke(self, listener: nextEventListener)

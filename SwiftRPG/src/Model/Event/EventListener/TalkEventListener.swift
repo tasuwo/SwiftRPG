@@ -22,7 +22,7 @@ class StartTalkEventListener: EventListener {
 
     fileprivate let directionString: String
     fileprivate let params: JSON
-    fileprivate let listeners: ListenerChain?
+    internal var listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
 
@@ -78,6 +78,10 @@ class StartTalkEventListener: EventListener {
             }
         }
     }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
+    }
 }
 
 /// 会話進行のリスナー
@@ -89,7 +93,7 @@ class TalkEventListener: EventListener {
     let executionType: ExecutionType
 
     fileprivate let params: JSON
-    fileprivate let listeners: ListenerChain?
+    internal var listeners: ListenerChain?
     fileprivate let index: Int
     fileprivate let talkContentsMaxNum: Int
 
@@ -134,7 +138,7 @@ class TalkEventListener: EventListener {
                 if index < self.talkContentsMaxNum - 1 {
                     nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners, index: self.index+1)
                 } else {
-                    nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    nextEventListener = try FinishTalkEventListener(params: self.params, chainListeners: self.listeners)
                 }
                 
                 self.delegate?.invoke(self, listener: nextEventListener)
@@ -178,5 +182,39 @@ class TalkEventListener: EventListener {
             // テキスト描画
             sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
         }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
+    }
+}
+
+class FinishTalkEventListener: EventListener {
+    var id: UInt64!
+    var delegate: NotifiableFromListener?
+    var invoke: EventMethod?
+    var listeners: ListenerChain?
+    var params: JSON?
+    let triggerType: TriggerType
+    let executionType: ExecutionType
+
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        self.params = params
+        self.listeners = listeners
+        self.triggerType = .touch
+        self.executionType = .onece
+        self.invoke = {
+            (sender: GameSceneProtocol?, args: JSON?) -> () in
+            _ = firstly {
+                sender!.textBox.hide(duration: 0)
+            }.always {
+                let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                self.delegate?.invoke(self, listener: nextEventListener)
+            }
+        }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
     }
 }

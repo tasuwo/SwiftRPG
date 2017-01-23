@@ -38,6 +38,7 @@ protocol GameSceneProtocol {
     func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction])
     func hideAllButtons() -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
+    func showEventDialog() -> Promise<Void>
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
@@ -51,5 +52,7 @@ typealias ListenerChain = [(listener: EventListener.Type, params: JSON?)]
 protocol EventListener: EventHandler {
     var id: UInt64! { get set }
     var delegate: NotifiableFromListener? { get set }
+    var listeners: ListenerChain? { get }
+    func chain(listeners: ListenerChain)
     init(params: JSON?, chainListeners: ListenerChain?) throws
 }

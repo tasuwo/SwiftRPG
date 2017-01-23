@@ -11,15 +11,18 @@
 		2C0564981D4B062300A2F527 /* myButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0564971D4B062300A2F527 /* myButton.swift */; };
 		2C2143341D53308D006D3C50 /* ItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143331D53308D006D3C50 /* ItemTable.swift */; };
 		2C2143371D5345A5006D3C50 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143361D5345A5006D3C50 /* DataModels.swift */; };
+		2C2941AC1E35DCAF0016A7E4 /* ListenerGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2941AB1E35DCAF0016A7E4 /* ListenerGenerator.swift */; };
+		2C2941B01E35FC470016A7E4 /* ShowEventDialogListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2941AF1E35FC470016A7E4 /* ShowEventDialogListener.swift */; };
+		2C2941B41E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2941B31E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift */; };
 		2C2D31901D5242E5000D8A2B /* TalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */; };
-		2C2D31931D525F35000D8A2B /* EventListenerGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */; };
+		2C2D31931D525F35000D8A2B /* ListenerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31921D525F35000D8A2B /* ListenerContainer.swift */; };
 		2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31941D52F39F000D8A2B /* String+subscript.swift */; };
 		2C2D31971D530F35000D8A2B /* DIRECTION.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31961D530F35000D8A2B /* DIRECTION.swift */; };
 		2C2D31991D530F67000D8A2B /* IMAGE_SET.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31981D530F67000D8A2B /* IMAGE_SET.swift */; };
 		2C2D319B1D531983000D8A2B /* player.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C2D319A1D531983000D8A2B /* player.xcassets */; };
 		2C2D319D1D531AA6000D8A2B /* mob.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C2D319C1D531AA6000D8A2B /* mob.xcassets */; };
 		2C2D31A31D531CD2000D8A2B /* kanamonoMap.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C2D31A21D531CD2000D8A2B /* kanamonoMap.xcassets */; };
-		2C2D31A51D531F04000D8A2B /* ItemGetEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31A41D531F04000D8A2B /* ItemGetEvent.swift */; };
+		2C2D31A51D531F04000D8A2B /* ItemGetEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D31A41D531F04000D8A2B /* ItemGetEventListener.swift */; };
 		2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C21B78DA2000B25B6E /* AStar.swift */; };
 		2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */; };
 		2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2E64CA1B78F15300B25B6E /* Dialog.swift */; };
@@ -86,15 +89,18 @@
 		2C0564971D4B062300A2F527 /* myButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myButton.swift; sourceTree = "<group>"; };
 		2C2143331D53308D006D3C50 /* ItemTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTable.swift; sourceTree = "<group>"; };
 		2C2143361D5345A5006D3C50 /* DataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
+		2C2941AB1E35DCAF0016A7E4 /* ListenerGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenerGenerator.swift; sourceTree = "<group>"; };
+		2C2941AF1E35FC470016A7E4 /* ShowEventDialogListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowEventDialogListener.swift; sourceTree = "<group>"; };
+		2C2941B31E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderDefaultViewEventListener.swift; sourceTree = "<group>"; };
 		2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkEventListener.swift; sourceTree = "<group>"; };
-		2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListenerGenerator.swift; sourceTree = "<group>"; };
+		2C2D31921D525F35000D8A2B /* ListenerContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenerContainer.swift; sourceTree = "<group>"; };
 		2C2D31941D52F39F000D8A2B /* String+subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+subscript.swift"; sourceTree = "<group>"; };
 		2C2D31961D530F35000D8A2B /* DIRECTION.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIRECTION.swift; sourceTree = "<group>"; };
 		2C2D31981D530F67000D8A2B /* IMAGE_SET.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAGE_SET.swift; sourceTree = "<group>"; };
 		2C2D319A1D531983000D8A2B /* player.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = player.xcassets; sourceTree = "<group>"; };
 		2C2D319C1D531AA6000D8A2B /* mob.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = mob.xcassets; sourceTree = "<group>"; };
 		2C2D31A21D531CD2000D8A2B /* kanamonoMap.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = kanamonoMap.xcassets; sourceTree = "<group>"; };
-		2C2D31A41D531F04000D8A2B /* ItemGetEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemGetEvent.swift; sourceTree = "<group>"; };
+		2C2D31A41D531F04000D8A2B /* ItemGetEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemGetEventListener.swift; sourceTree = "<group>"; };
 		2C2E64C21B78DA2000B25B6E /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
 		2C2E64C41B78DC7600B25B6E /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		2C2E64CA1B78F15300B25B6E /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
@@ -201,9 +207,11 @@
 			children = (
 				2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */,
 				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
-				2C2D31A41D531F04000D8A2B /* ItemGetEvent.swift */,
+				2C2D31A41D531F04000D8A2B /* ItemGetEventListener.swift */,
 				2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */,
+				2C2941AF1E35FC470016A7E4 /* ShowEventDialogListener.swift */,
 				2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */,
+				2C2941B31E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift */,
 			);
 			path = EventListener;
 			sourceTree = "<group>";
@@ -284,7 +292,8 @@
 				A06593D11C721A1000148D2B /* MapObject.swift */,
 				D7D8A5AA1B70652600147A45 /* Object.swift */,
 				D7D97FFE1B6F05B1000704B0 /* Tile.swift */,
-				2C2D31921D525F35000D8A2B /* EventListenerGenerator.swift */,
+				2C2D31921D525F35000D8A2B /* ListenerContainer.swift */,
+				2C2941AB1E35DCAF0016A7E4 /* ListenerGenerator.swift */,
 				2CAC5E501E0ECE3900621F17 /* EventPropertyParser.swift */,
 			);
 			path = MapObject;
@@ -697,7 +706,7 @@
 			files = (
 				2C3EF4CD1E0E063B0059840A /* UIButton+title.swift in Sources */,
 				D7747D251B6E58F300793445 /* UIButtonAnimated.swift in Sources */,
-				2C2D31931D525F35000D8A2B /* EventListenerGenerator.swift in Sources */,
+				2C2D31931D525F35000D8A2B /* ListenerContainer.swift in Sources */,
 				2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */,
 				D7A7CE161B761B1500E0557C /* Node.swift in Sources */,
 				A07DEBB01C9B9EBF00B787BA /* ItemCell.swift in Sources */,
@@ -722,16 +731,19 @@
 				2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */,
 				2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */,
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
+				2C2941B01E35FC470016A7E4 /* ShowEventDialogListener.swift in Sources */,
 				A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */,
 				A02DDEE21C7ACEAE007C5BC2 /* TileSet.swift in Sources */,
 				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
+				2C2941AC1E35DCAF0016A7E4 /* ListenerGenerator.swift in Sources */,
 				A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				2CAC5E511E0ECE3900621F17 /* EventPropertyParser.swift in Sources */,
-				2C2D31A51D531F04000D8A2B /* ItemGetEvent.swift in Sources */,
+				2C2D31A51D531F04000D8A2B /* ItemGetEventListener.swift in Sources */,
 				2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */,
+				2C2941B41E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift in Sources */,
 				2C556E811D50C11B00E03414 /* EventManager.swift in Sources */,
 				D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */,
 				2C2D31901D5242E5000D8A2B /* TalkEventListener.swift in Sources */,

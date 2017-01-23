@@ -17,6 +17,7 @@ class WalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var listeners: ListenerChain?
     let triggerType: TriggerType
     let executionType: ExecutionType
 
@@ -87,5 +88,9 @@ class WalkEventListener: EventListener {
                 events: events,
                 screenActions: scrollActions)
         }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
     }
 }

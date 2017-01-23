@@ -16,18 +16,13 @@ class InvokeNextEventListener: EventListener {
     var invoke: EventMethod?
     let triggerType: TriggerType
     let executionType: ExecutionType
+    internal var listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) {
-        self.triggerType = .touch
+        self.triggerType = .immediate
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
-            _ = firstly {
-                sender!.hideAllButtons()
-            }.then { _ in
-                sender!.showDefaultButtons()
-            }
-
             do {
                 // 次のリスナーが登録されていなければ終了
                 if listeners == nil || listeners?.count == 0 { return }
@@ -37,9 +32,11 @@ class InvokeNextEventListener: EventListener {
                 let nextListenerChain: ListenerChain? = listeners!.count == 1 ? nil : Array(listeners!.dropFirst())
                 let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
                 self.delegate?.invoke(self, listener: nextListenerInstance)
-            } catch {
-                throw error
             }
         }
+    }
+
+    internal func chain(listeners: ListenerChain) {
+        self.listeners = listeners
     }
 }
