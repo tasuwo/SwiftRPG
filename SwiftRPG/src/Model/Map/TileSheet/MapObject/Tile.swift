@@ -173,18 +173,14 @@ open class Tile: MapObject {
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
                     // TODO: 複数のイベントをタイルにのせることができない
-                    let eventProperty = try EventPropertyParser.parse(from: action)
-                    let eventListener = try EventPropertyParser.generateEventListenerForTile(property: eventProperty)
-                    tile.events.append(eventListener)
+                    let properties = try EventPropertyParser.parse(from: action)
+                    let listener = try ListenerGenerator.generateEventListenerForTile(properties: properties)
+                    tile.events.append(listener)
                 } catch EventListenerError.illegalArguementFormat(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch EventListenerError.illegalParamFormat(let array) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + array.joined(separator: ","))
                 } catch EventListenerError.invalidParam(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventGeneratorError.eventIdNotFound {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
-                } catch EventGeneratorError.invalidParams(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch EventParserError.invalidProperty(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)

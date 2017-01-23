@@ -292,8 +292,8 @@ open class Object: MapObject {
             if let obj_action = property!["event"] {
                 let eventListenerErrorMessage = "Error occured at the time of generating event listener: "
                 do {
-                    let eventProperty = try EventPropertyParser.parse(from: obj_action)
-                    let eventObjects = try EventPropertyParser.generateEventObject(property: eventProperty, parent: object)
+                    let properties = try EventPropertyParser.parse(from: obj_action)
+                    let eventObjects = try ListenerGenerator.generateEventObject(properties: properties, parent: object)
                     for eventObject in eventObjects {
                         objects[eventObject.coordinate]!.append(eventObject)
                     }
@@ -302,10 +302,6 @@ open class Object: MapObject {
                 } catch EventListenerError.illegalParamFormat(let array) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + array.joined(separator: ","))
                 } catch EventListenerError.invalidParam(let string) {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
-                } catch EventGeneratorError.eventIdNotFound {
-                    throw MapObjectError.failedToGenerate(eventListenerErrorMessage + "Specified event type is invalid. Check event method's arguement in json map file")
-                } catch EventGeneratorError.invalidParams(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
                 } catch EventParserError.invalidProperty(let string) {
                     throw MapObjectError.failedToGenerate(eventListenerErrorMessage + string)
