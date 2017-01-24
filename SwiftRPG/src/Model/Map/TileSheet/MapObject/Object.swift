@@ -199,6 +199,10 @@ open class Object: MapObject {
         self.node.zPosition = position
     }
 
+    func setSpeed(_ speed: CGFloat) {
+        self.speed = speed
+    }
+
     // MARK: - class method
 
     ///  オブジェクトを生成する
