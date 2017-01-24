@@ -73,7 +73,14 @@ class GameScene: Scene, GameSceneProtocol {
         UIApplication.shared.beginIgnoringInteractionEvents()
         self.map?.sheet!.runAction(screenActions, callback: {
             UIApplication.shared.endIgnoringInteractionEvents()
-            // self.map?.updateObjectPlacement(player!)
+        })
+    }
+
+    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate)  {
+        let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
+        let object = self.map?.getObjectByName(name)!
+        object?.runAction(actions, destination: destination, callback: {
+            self.map?.updateObjectPlacement(object!, departure: tileDeparture, destination: tileDestination)
         })
     }
 

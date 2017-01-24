@@ -170,12 +170,9 @@ open class Object: MapObject {
         let sequence: SKAction = SKAction.sequence(actions)
         self.node.run(
             sequence,
-            completion:
-            {
+            completion: {
                 UIApplication.shared.endIgnoringInteractionEvents()
                 callback()
-                // TODO: 現状，最終的な目的地にオブジェクトの位置情報を更新する．リアルタイムに更新できないか？
-                // self.position = destination
             }
         )
     }

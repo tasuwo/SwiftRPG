@@ -44,6 +44,11 @@ class ListenerContainer {
                 (listener: ItemGetEventListener.self, params: item!.getJSON() as JSON?),
                 (listener: ShowEventDialogListener.self, params: JSON(["text":"test"])),
             ]
+        case "move":
+            let objectName = params[0] as String
+            return [
+                (listener: MoveObjectEventListener.self, params: JSON(["name":objectName]) as JSON?)
+            ]
         default:
             throw ListenerContainerError.eventIdNotFound
         }
