@@ -269,11 +269,10 @@ open class Object: MapObject {
             if tileSetName == nil {
                 throw MapObjectError.failedToGenerate("tileSetName is not defined in objectID \(objectID.description)'s property(\(property?.description))")
             }
-            // 一意の名前
-            let name = tileSetName! + "_" + UUID().uuidString
 
+            // TODO: Resolve name duplication
             let object = Object(
-                name: name,
+                name: tileSetName!,
                 imageData: obj_image!,
                 position: TileCoordinate.getSheetCoordinateFromTileCoordinate(coordinate),
                 images: nil
