@@ -30,8 +30,9 @@ class myGameScene: GameScene {
         // 主人公の作成
         let player = Object(name: objectNameTable.PLAYER_NAME,
                             imageName: objectNameTable.PLAYER_IMAGE_DOWN,
-                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 10, y: 10)),
+                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 6, y: 6)),
                             images: objectNameTable.PLAYER_IMAGE_SET)
+        player.setCollision()
         self.map!.setObject(player)
 
         actionButton.layer.borderColor = UIColor.white.cgColor
