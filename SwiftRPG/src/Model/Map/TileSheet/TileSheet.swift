@@ -46,6 +46,10 @@ open class TileSheet {
     fileprivate let drawingRangeHeight: CGFloat!
     fileprivate let drawingTileRows: Int!
     fileprivate let drawingTileCols: Int!
+    fileprivate var objects: Dictionary<MapObjectId, Object> = [:]
+    fileprivate var tiles: Dictionary<MapObjectId, Tile> = [:]
+    fileprivate var objectsPlacement: Dictionary<TileCoordinate, [MapObjectId]> = [:]
+    fileprivate var tilesPlacement: Dictionary<TileCoordinate, MapObjectId> = [:]
 
     ///  コンストラクタ
     ///
@@ -63,7 +67,7 @@ open class TileSheet {
     ) {
         var hasError:Bool = false
         var errMessageStack:[String] = []
-        
+
         // 描画範囲のタイル数
         self.drawingTileRows = Int(frameWidth / Tile.TILE_SIZE)
         self.drawingTileCols = Int(frameHeight / Tile.TILE_SIZE)
@@ -101,14 +105,19 @@ open class TileSheet {
         self.node.anchorPoint = CGPoint(x: 0.0, y: 0.0)
         
         // タイルの追加
-        for tile in tiles.values {
+        for (coordinate, tile) in tiles {
             tile.addTo(self.node)
+            self.tiles[tile.id] = tile
+            self.tilesPlacement[coordinate] = tile.id
         }
         
         // オブジェクトの追加
-        for objectsOnTile in objects.values {
+        for (coordinate, objectsOnTile) in objects {
+            self.objectsPlacement[coordinate] = []
             for object in objectsOnTile {
                 object.addTo(self.node)
+                self.objects[object.id] = object
+                self.objectsPlacement[coordinate]?.append(object.id)
             }
         }
         
@@ -235,9 +244,6 @@ open class TileSheet {
         }
     }
 
-    ///  シーンにタイルシートを子ノードとして持たせる
-    ///
-    ///  - parameter scene: タイルシートを追加するシーン
     func addTo(_ scene: SKScene) {
         scene.addChild(self.node)
         for line in self.frame {
@@ -245,26 +251,14 @@ open class TileSheet {
         }
     }
 
-    ///  タイルシートにオブジェクトを追加する
-    ///
-    ///  - parameter object: 追加するオブジェクト
     func addObjectToSheet(_ object: Object) {
         object.addTo(self.node)
     }
 
-    ///  オブジェクト名から，対象オブジェクトの現在座標を取得する
-    ///
-    ///  - parameter name: 対象オブジェクト名
-    ///
-    ///  - returns: オブジェクトの現在位置
     func getObjectPositionByName(_ name: String) -> CGPoint? {
         return self.node.childNode(withName: name)?.position
     }
 
-    ///  タイルシートにアクションを実行させる
-    ///
-    ///  - parameter actions:  実行させるアクション群
-    ///  - parameter callback: コールバック
     func runAction(_ actions: Array<SKAction>, callback: @escaping () -> Void) {
         let sequence: SKAction = SKAction.sequence(actions)
         self.node.run(sequence, completion: { callback() })
@@ -272,5 +266,125 @@ open class TileSheet {
 
     func getSheetPosition() -> CGPoint {
         return self.node.position
+    }
+
+    // setter
+
+    func setObject(object: Object, coordinate: TileCoordinate) {
+        self.objects[object.id] = object
+        if (self.objectsPlacement[coordinate]?.isEmpty)! {
+            self.objectsPlacement[coordinate] = [object.id]
+        } else {
+            self.objectsPlacement[coordinate]?.append(object.id)
+        }
+        self.addObjectToSheet(object)
+    }
+
+    // getter for MapObjects
+
+    func getAllObjects() -> [Object] {
+        var objects: [Object] = []
+        for obj in self.objects.values {
+            objects.append(obj)
+        }
+        return objects
+    }
+
+    func getAllTiles() -> [Tile] {
+        var tiles: [Tile] = []
+        for tl in self.tiles.values {
+            tiles.append(tl)
+        }
+        return tiles
+    }
+
+    func getAllMapObjects() -> [MapObject] {
+        var mapObjects: [MapObject] = []
+        mapObjects = mapObjects + self.getAllObjects()
+        mapObjects = mapObjects + self.getAllTiles()
+        return mapObjects
+    }
+
+    // getter for MapObjects from TileCoordinate
+
+    func getObjectsOn(_ coordinate: TileCoordinate) -> [Object] {
+        var objects: [Object] = []
+        if let ids = self.objectsPlacement[coordinate] {
+            for id in ids {
+                objects.append(self.objects[id]!)
+            }
+        }
+        return objects
+    }
+
+    func getTileOn(_ coordinate: TileCoordinate) -> Tile? {
+        var tile: Tile? = nil
+        if let id = self.tilesPlacement[coordinate] {
+            tile = self.tiles[id]
+        }
+        return tile
+    }
+
+    func getMapObjectsOn(_ coordinate: TileCoordinate) -> [MapObject] {
+        var mapObjects: [MapObject] = []
+        mapObjects = mapObjects + self.getObjectsOn(coordinate)
+        if let tile = self.getTileOn(coordinate) {
+            mapObjects.append(tile)
+        }
+        return mapObjects
+    }
+
+    func getEventsOn(_ coordinate: TileCoordinate) -> [EventListener] {
+        var events: [EventListener] = []
+        let mapObjects = self.getMapObjectsOn(coordinate)
+        for mapObject in mapObjects {
+            for event in mapObject.events {
+                events.append(event)
+            }
+        }
+        return events
+    }
+
+    // other getter's
+
+    func getObjectByName(_ name: String) -> Object? {
+        for object in self.objects.values {
+            if object.name == name {
+                return object
+            }
+        }
+        return nil
+    }
+
+    func getObjectCoordinateByName(_ name: String) -> TileCoordinate? {
+        if let object = self.getObjectByName(name) {
+            let objectId = object.id
+            for placement in self.objectsPlacement {
+                for id in placement.value {
+                    if id == objectId {
+                        return placement.key
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
+    func replaceObject(_ id: MapObjectId, departure: TileCoordinate, destination: TileCoordinate) {
+        var arrayIndex: Int? = nil
+        let objects = self.getObjectsOn(departure)
+        for (index, object) in objects.enumerated() {
+            if object.id == id {
+                arrayIndex = index
+                break
+            }
+        }
+
+        if let i = arrayIndex {
+            self.objectsPlacement[departure]?.remove(at: i)
+            self.objectsPlacement[destination]?.append(id)
+        } else {
+            return
+        }
     }
 }

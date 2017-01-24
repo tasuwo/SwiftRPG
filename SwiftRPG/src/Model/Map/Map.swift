@@ -13,12 +13,6 @@ open class Map {
     /// タイルシート
     fileprivate(set) var sheet: TileSheet? = nil
     
-    /// マップオブジェクトの配置を保持しておくディクショナリ
-    fileprivate var placement: Dictionary<TileCoordinate, [MapObject]> = [:]
-    
-    /// オブジェクトのみ保持するディクショナリ
-    fileprivate var objects: Dictionary<TileCoordinate, [Object]> = [:]
-    
     ///  コンストラクタ
     ///
     ///  - parameter mapName:     マップである JSON ファイルの名前
@@ -82,145 +76,53 @@ open class Map {
                               tiles: tiles,
                               objects: objects)
         self.sheet = sheet!
-
-        for (coordinate, tile) in tiles {
-            self.placement[coordinate] = [tile]
-        }
-
-        for (coordinate, objectsOnTile) in objects {
-            for objectOnTile in objectsOnTile {
-                self.placement[coordinate]!.append(objectOnTile)
-            }
-        }
-
-        self.objects = objects
     }
 
     func addSheetTo(_ scene: SKScene) {
         self.sheet!.addTo(scene)
     }
 
-    ///  名前からオブジェクトを取得する
-    ///
-    ///  - parameter name: オブジェクト名
-    ///
-    ///  - returns: 取得したオブジェクト．存在しなければ nil
     func getObjectByName(_ name: String) -> Object? {
-        for (_, mapObjects) in placement {
-            for object in mapObjects {
-                if let obj = object as? Object {
-                    if obj.name == name { return obj }
-                }
-            }
-        }
-        return nil
+        return self.sheet?.getObjectByName(name)
     }
 
     func getObjectCoordinateByName(_ name: String) -> TileCoordinate? {
-        for (coordinate, mapObjects) in placement {
-            for object in mapObjects {
-                if let obj = object as? Object {
-                    if obj.name == name { return coordinate }
-                }
-            }
-        }
-        return nil
+        return self.sheet?.getObjectCoordinateByName(name)
     }
 
     func setObject(_ object: Object) {
         let coordinate = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.position)
-
-        if objects[coordinate] == nil {
-            objects[coordinate] = [object]
-        } else {
-            objects[coordinate]!.append(object)
-        }
-        placement[coordinate]!.append(object)
-
-        self.sheet?.addObjectToSheet(object)
+        self.sheet?.setObject(object: object, coordinate: coordinate)
     }
 
-    ///  配置されたオブジェクトを取得する
-    ///
-    ///  - parameter coordinate: タイル座標
-    ///
-    ///  - returns: 配置されたオブジェクト群
     func getMapObjectsOn(_ coordinate: TileCoordinate) -> [MapObject]? {
-        return self.placement[coordinate]
+        return self.sheet?.getMapObjectsOn(coordinate)
     }
 
-    ///  配置されたイベントを取得する
-    ///
-    ///  - parameter coordinate: イベントを取得するタイル座標
-    ///
-    ///  - returns: 取得したイベント群
     func getEventsOn(_ coordinate: TileCoordinate) -> [EventListener] {
-        var events: [EventListener] = []
-
-        if let mapObjects = self.placement[coordinate] {
-            for mapObject in mapObjects {
-                for event in mapObject.events {
-                    events.append(event)
-                }
-            }
-        }
-        
-        return events
+        return (self.sheet?.getEventsOn(coordinate))!
     }
 
-    ///  タイル座標の通行可否を判定する
-    ///
-    ///  - parameter coordinate: 判定対象のタイル座標
-    ///
-    ///  - returns: 通行可なら true, 通行不可なら false
     func canPass(_ coordinate: TileCoordinate) -> Bool {
-        if let objects = self.placement[coordinate] {
-            for object in objects {
-                if object.hasCollision { return false }
+        if let mapObjects = self.sheet?.getMapObjectsOn(coordinate) {
+            for mapObject in mapObjects {
+                if mapObject.hasCollision { return false }
             }
         }
         return true
     }
 
     func updateObjectPlacement(_ object: Object, departure: TileCoordinate, destination: TileCoordinate) {
-        var placementIndex: Int? = nil
-        let mapObjects = self.placement[departure]
-        for (index, mapObject) in mapObjects!.enumerated() {
-            if let obj = mapObject as? Object {
-                if obj.name == object.name {
-                    placementIndex = index
-                    break
-                }
-            }
-        }
-
-
-        self.placement[departure]!.remove(at: placementIndex!)
-        self.placement[destination]!.append(object)
-
-        var objectIndex: Int? = nil
-        let objects = self.objects[departure]
-        for (index, object_) in objects!.enumerated() {
-            if object_.name == object.name {
-                objectIndex = index
-                break
-            }
-        }
-
-        self.objects[departure]!.remove(at: objectIndex!)
-        self.objects[destination]!.append(object)
-
+        self.sheet?.replaceObject(object.id, departure: departure, destination: destination)
         print(destination.description)
     }
 
     ///  オブジェクトのZ方向の位置を更新する
     func updateObjectsZPosition() {
         var objects: [(Object, CGFloat)] = []
-        
-        for objectsOnTile in self.objects.values {
-            for object in objectsOnTile {
-                objects.append((object, object.getRealTimePosition().y))
-            }
+
+        for object in (self.sheet?.getAllObjects())! {
+            objects.append((object, object.position.y))
         }
         
         // Y座標に基づいてオブジェクトを並べ替え，zPosition を更新する
