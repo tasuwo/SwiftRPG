@@ -35,7 +35,7 @@ protocol GameSceneProtocol {
     var map: Map? { get set }
     var textBox: Dialog! { get set }
 
-    func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction])
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, events: [EventListener], screenActions: [SKAction])
     func hideAllButtons() -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
     func showEventDialog() -> Promise<Void>

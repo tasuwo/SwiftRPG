@@ -58,12 +58,14 @@ class GameScene: Scene, GameSceneProtocol {
 
     // MARK: GameSceneProtocol Methods
 
-    func movePlayer(_ playerActions: [SKAction], destination: CGPoint, events: [EventListener], screenActions: [SKAction]) {
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, events: [EventListener], screenActions: [SKAction]) {
+        let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
         self.textBox.hide()
         self.actionButton.isHidden = true
 
         let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
         player?.runAction(playerActions, destination: destination, callback: {
+            self.map!.updateObjectPlacement(player!, departure: tileDeparture, destination: tileDestination)
             self.gameSceneDelegate?.addEvent(events)
         })
 
@@ -71,7 +73,7 @@ class GameScene: Scene, GameSceneProtocol {
         UIApplication.shared.beginIgnoringInteractionEvents()
         self.map?.sheet!.runAction(screenActions, callback: {
             UIApplication.shared.endIgnoringInteractionEvents()
-            self.map?.updateObjectPlacement(player!)
+            // self.map?.updateObjectPlacement(player!)
         })
     }
 

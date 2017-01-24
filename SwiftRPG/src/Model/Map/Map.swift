@@ -182,27 +182,34 @@ open class Map {
         return true
     }
 
-    ///  オブジェクトの位置情報を，実際のSKSpriteNodeの位置から更新する
-    ///
-    ///  - parameter object:        更新対象のオブジェクト
-    func updateObjectPlacement(_ object: Object) {
-        let departure   = self.getObjectCoordinateByName(object.name)!
-        let destination = TileCoordinate.getTileCoordinateFromSheetCoordinate(object.getRealTimePosition())
-        
-        var objectIndex: Int? = nil
+    func updateObjectPlacement(_ object: Object, departure: TileCoordinate, destination: TileCoordinate) {
+        var placementIndex: Int? = nil
         let mapObjects = self.placement[departure]
         for (index, mapObject) in mapObjects!.enumerated() {
             if let obj = mapObject as? Object {
                 if obj.name == object.name {
-                    objectIndex = index
+                    placementIndex = index
                     break
                 }
             }
         }
-        
-        if objectIndex == nil { return }
-        self.placement[departure]!.remove(at: objectIndex!)
+
+
+        self.placement[departure]!.remove(at: placementIndex!)
         self.placement[destination]!.append(object)
+
+        var objectIndex: Int? = nil
+        let objects = self.objects[departure]
+        for (index, object_) in objects!.enumerated() {
+            if object_.name == object.name {
+                objectIndex = index
+                break
+            }
+        }
+
+        self.objects[departure]!.remove(at: objectIndex!)
+        self.objects[destination]!.append(object)
+
         print(destination.description)
     }
 
