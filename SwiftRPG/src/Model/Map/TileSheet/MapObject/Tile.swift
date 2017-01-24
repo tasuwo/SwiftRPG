@@ -16,25 +16,15 @@ typealias TileProperty = Dictionary<String, String>
 
 /// マップ上に敷かれる各タイルに対応した SKSpriteNode のラッパークラス
 open class Tile: MapObject {
-    /// タイルID
-    fileprivate let tileID: Int
-
-    /// ノード
-    fileprivate let tile: SKSpriteNode
-
-    /// サイズ
-    static var TILE_SIZE: CGFloat = 32.0
-
-    /// 座標
+    static var           TILE_SIZE: CGFloat = 32.0
+    fileprivate let      id: Int
+    fileprivate let      node: SKSpriteNode
     fileprivate(set) var coordinate: TileCoordinate
-
-    /// プロパティ
     fileprivate(set) var property: TileProperty
 
     // MARK: - MapObject
 
     fileprivate(set) var hasCollision: Bool
-
     fileprivate var events_: [EventListener] = []
     var events: [EventListener] {
         get {
@@ -44,7 +34,6 @@ open class Tile: MapObject {
             self.events_ = newValue
         }
     }
-
     fileprivate var parent_: MapObject?
     var parent: MapObject? {
         get {
@@ -54,7 +43,6 @@ open class Tile: MapObject {
             self.parent_ = newValue
         }
     }
-
     func setCollision() {
         self.hasCollision = true
     }
@@ -70,14 +58,14 @@ open class Tile: MapObject {
     init(id: TileID, coordinate: TileCoordinate, property: TileProperty) {
         let x = coordinate.x
         let y = coordinate.y
-        self.tileID = id
-        self.tile = SKSpriteNode()
-        self.tile.size = CGSize(width: CGFloat(Tile.TILE_SIZE),
-                                     height: CGFloat(Tile.TILE_SIZE))
-        self.tile.position = CGPoint(x: CGFloat(x - 1) * Tile.TILE_SIZE,
-                                          y: CGFloat(y - 1) * Tile.TILE_SIZE)
-        self.tile.anchorPoint = CGPoint(x: 0.0, y: 0.0)
-        self.tile.zPosition = zPositionTable.TILE
+        self.id = id
+        self.node = SKSpriteNode()
+        self.node.size = CGSize(width: CGFloat(Tile.TILE_SIZE),
+                                height: CGFloat(Tile.TILE_SIZE))
+        self.node.position = CGPoint(x: CGFloat(x - 1) * Tile.TILE_SIZE,
+                                     y: CGFloat(y - 1) * Tile.TILE_SIZE)
+        self.node.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        self.node.zPosition = zPositionTable.TILE
         self.coordinate = TileCoordinate(x: x, y: y)
         self.hasCollision = false
         self.property = property
@@ -87,21 +75,21 @@ open class Tile: MapObject {
     ///
     ///  - parameter imageName: 付加するテクスチャ画像名
     func setImageWithName(_ imageName: String) {
-        tile.texture = SKTexture(imageNamed: imageName)
+        node.texture = SKTexture(imageNamed: imageName)
     }
 
     ///  タイルにテクスチャ画像を付加する
     ///
     ///  - parameter image: 付加するテクスチャ画像
     func setImageWithUIImage(_ image: UIImage) {
-        tile.texture = SKTexture(image: image)
+        node.texture = SKTexture(image: image)
     }
 
     ///  タイルのノードに子ノードを追加する
     ///
     ///  - parameter node: 追加する子ノード
     func addTo(_ node: SKSpriteNode) {
-        node.addChild(self.tile)
+        node.addChild(self.node)
     }
 
     // MARK: - class method

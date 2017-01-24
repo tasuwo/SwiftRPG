@@ -12,38 +12,33 @@ import SpriteKit
 
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
 open class Object: MapObject {
-    /// オブジェクト名
-    fileprivate(set) var name: String!
-
-    /// オブジェクトの画像イメージ
-    fileprivate let images: IMAGE_SET?
-    
-    /// ノード
-    fileprivate let object: SKSpriteNode
-    
-    /// スピード
+    fileprivate let      images: IMAGE_SET?
     fileprivate(set) var speed: CGFloat
-    
-    /// 向き
     fileprivate(set) var direction: DIRECTION
-    
-    /// 画面上の描画位置
-    fileprivate(set) var position: CGPoint
-
-    var coordinate: TileCoordinate {
+    fileprivate let      node: SKSpriteNode
+    var name: String! {
         get {
-            return TileCoordinate.getTileCoordinateFromSheetCoordinate(position)
+            return self.node.name
         }
     }
-
-    /// 歩行のためのインデックス
-    /// 0 のときと 1 のときで左足を出すか右足を出すかかわる．0 と 1 の間で toggle する
+    var position: CGPoint {
+        get {
+            return self.node.position
+        }
+    }
+    var coordinate: TileCoordinate {
+        get {
+            return TileCoordinate.getTileCoordinateFromSheetCoordinate(self.position)
+        }
+    }
+    /// Index for animation
+    /// Whether the step animation is started from left or right leg is depends on whether this value is 1 or 0.
     fileprivate var stepIndex: Int = 0
+    var children: [MapObject] = []
 
     // MARK: - MapObject
 
     fileprivate(set) var hasCollision: Bool
-
     fileprivate var events_: [EventListener] = []
     var events: [EventListener] {
         get {
@@ -53,7 +48,6 @@ open class Object: MapObject {
             self.events_ = newValue
         }
     }
-
     fileprivate var parent_: MapObject?
     var parent: MapObject? {
         get {
@@ -63,9 +57,6 @@ open class Object: MapObject {
             self.parent_ = newValue
         }
     }
-
-    var children: [MapObject] = []
-
     func setCollision() {
         self.hasCollision = true
     }
@@ -73,37 +64,35 @@ open class Object: MapObject {
     // MARK: -
 
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
-        object = SKSpriteNode()
-        object.name = name
-        self.name = name
-        object.anchorPoint = CGPoint(x: 0.5, y: 0.0)
-        object.position = position
+        node = SKSpriteNode()
+        node.name = name
+        node.anchorPoint = CGPoint(x: 0.5, y: 0.0)
+        node.position = position
         speed = 0.2
         direction = DIRECTION.down
         self.hasCollision = false
         self.images = images
-        self.position = position
     }
 
     convenience init(name: String, imageName: String, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
-        object.texture = SKTexture(imageNamed: imageName)
-        object.size = CGSize(width: (object.texture?.size().width)!,
-                              height: (object.texture?.size().height)!)
+        node.texture = SKTexture(imageNamed: imageName)
+        node.size = CGSize(width: (node.texture?.size().width)!,
+                              height: (node.texture?.size().height)!)
     }
 
     convenience init(name: String, imageData: UIImage, position: CGPoint, images: IMAGE_SET?) {
         self.init(name: name, position: position, images: images)
-        object.texture = SKTexture(image: imageData)
-        object.size = CGSize(width: (object.texture?.size().width)!,
-                              height: (object.texture?.size().height)!)
+        node.texture = SKTexture(image: imageData)
+        node.size = CGSize(width: (node.texture?.size().width)!,
+                              height: (node.texture?.size().height)!)
     }
 
-    ///  オブジェクトを子ノードとして追加する
+    ///  Add object as a child
     ///
-    ///  - parameter node: オブジェクトを追加するノード
+    ///  - parameter node: Object which is added
     func addTo(_ node: SKSpriteNode) {
-        node.addChild(self.object)
+        node.addChild(self.node)
     }
 
     ///  オブジェクトが対象座標へ直線移動するためのアニメーションを返す
@@ -116,41 +105,17 @@ open class Object: MapObject {
     func getActionTo(_ departure: CGPoint, destination: CGPoint) -> Array<SKAction> {
         var actions: Array<SKAction> = []
         let diff = CGPoint(x: destination.x - departure.x,
-                               y: destination.y - departure.y)
+                           y: destination.y - departure.y)
         var nextTextures: [SKTexture] = []
 
         if let images = self.images {
-            if (diff.x > 0 && diff.y == 0) {
-                self.direction = DIRECTION.right
-                nextTextures = []
-                for image in images.RIGHT[self.stepIndex] {
-                    nextTextures.append(SKTexture(imageNamed: image))
-                    self.stepIndex = abs(self.stepIndex-1)
-                }
-            } else if (diff.x < 0 && diff.y == 0) {
-                self.direction = DIRECTION.left
-                nextTextures = []
-                for image in images.LEFT[self.stepIndex] {
-                    nextTextures.append(SKTexture(imageNamed: image))
-                    self.stepIndex = abs(self.stepIndex-1)
-                }
-            } else if (diff.x == 0 && diff.y > 0) {
-                self.direction = DIRECTION.up
-                nextTextures = []
-                for image in images.UP[self.stepIndex] {
-                    nextTextures.append(SKTexture(imageNamed: image))
-                    self.stepIndex = abs(self.stepIndex-1)
-                }
-            } else if (diff.x == 0 && diff.y < 0) {
-                self.direction = DIRECTION.down
-                nextTextures = []
-                for image in images.DOWN[self.stepIndex] {
-                    nextTextures.append(SKTexture(imageNamed: image))
-                    self.stepIndex = abs(self.stepIndex-1)
-                }
+            let direction = self.calcDirection(departure: departure, destination: destination)
+            for image in images.get(direction)[self.stepIndex] {
+                nextTextures.append(SKTexture(imageNamed: image))
+                self.stepIndex = abs(self.stepIndex-1)
             }
         } else {
-            nextTextures = [self.object.texture!]
+            nextTextures = [self.node.texture!]
         }
 
         let walkAction: SKAction = SKAction.animate(with: nextTextures, timePerFrame: TimeInterval(self.speed/2))
@@ -158,6 +123,32 @@ open class Object: MapObject {
         actions = [SKAction.group([walkAction, moveAction])]
 
         return actions
+    }
+
+    fileprivate func calcDirection(departure: CGPoint, destination: CGPoint) -> DIRECTION {
+        let diff = CGPoint(x: destination.x - departure.x,
+                           y: destination.y - departure.y)
+        // There are a little deviation between tile coordinate's position and SKSpriteNode position.
+        // So the difference of position between object on tile and the tile isn't be 0 sometime e.g. 0.000015...
+        // This value is used for resolve this deviation.
+        let t: CGFloat = 0.1
+        let inThreshold = {
+            (v: CGFloat, t: CGFloat) -> Bool in
+            return (-1 * t <= v && v <= t)
+        }
+
+        if (diff.x > 0 && inThreshold(diff.y, t)) {
+            return .right
+        } else if (diff.x < 0 && inThreshold(diff.y, t)) {
+            return .left
+        } else if (inThreshold(diff.x, t) && diff.y > 0) {
+            return .up
+        } else if (inThreshold(diff.x, t) && diff.y < 0) {
+            return .down
+        } else {
+            // TODO: Shold throw exception?
+            return .down
+        }
     }
 
     ///  連続したアクションを実行する
@@ -170,14 +161,14 @@ open class Object: MapObject {
     func runAction(_ actions: Array<SKAction>, destination: CGPoint, callback: @escaping () -> Void) {
         UIApplication.shared.beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)
-        self.object.run(
+        self.node.run(
             sequence,
             completion:
             {
                 UIApplication.shared.endIgnoringInteractionEvents()
                 callback()
                 // TODO: 現状，最終的な目的地にオブジェクトの位置情報を更新する．リアルタイムに更新できないか？
-                self.position = destination
+                // self.position = destination
             }
         )
     }
@@ -190,23 +181,15 @@ open class Object: MapObject {
         self.direction = direction
         if let images = self.images {
             let imageNames = images.get(direction)
-            self.object.texture = SKTexture(imageNamed: imageNames[0][1])
+            self.node.texture = SKTexture(imageNamed: imageNames[0][1])
         }
-    }
-
-    ///  オブジェクト(SKNode)の現在位置を取得する．
-    ///  座標と同期して管理される Object との位置とは違い，画面上の現在位置を取得する．
-    ///
-    ///  - returns: SKNode の画面上の位置
-    func getRealTimePosition() -> CGPoint {
-        return self.object.position
     }
 
     ///  オブジェクトの Z 軸方向の位置を指定する．
     ///
     ///  - parameter position: z軸方向の位置
     func setZPosition(_ position: CGFloat) {
-        self.object.zPosition = position
+        self.node.zPosition = position
     }
 
     // MARK: - class method
