@@ -38,28 +38,13 @@ fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 /// TiledMapEditor で作成したマップを読み込み，クラスとして保持する
 open class TileSheet {
-    /// タイルシートのノード
-    fileprivate let sheetNode: SKSpriteNode!
-
-    /// 描画範囲外を塗りつぶすノード群
-    fileprivate let outerFrame: [SKShapeNode]!
-
-    /// 敷き詰めるタイルの行数
-    fileprivate let sheetTileRows: Int
-
-    /// 敷き詰めるタイルの列数
-    fileprivate let sheetTileCols: Int
-
-    /// 描画範囲の横幅
+    fileprivate let node: SKSpriteNode!
+    fileprivate let frame: [SKShapeNode]!
+    fileprivate let tileRowNum: Int
+    fileprivate let tileColNum: Int
     fileprivate let drawingRangeWidth: CGFloat!
-
-    /// 描画範囲の縦幅
     fileprivate let drawingRangeHeight: CGFloat!
-
-    /// 描画範囲内に描画されるタイル行数
     fileprivate let drawingTileRows: Int!
-
-    /// 描画範囲内に描画されるタイルの列数
     fileprivate let drawingTileCols: Int!
 
     ///  コンストラクタ
@@ -84,7 +69,7 @@ open class TileSheet {
         self.drawingTileCols = Int(frameHeight / Tile.TILE_SIZE)
         self.drawingRangeWidth  = (frameWidth  - CGFloat(drawingTileRows * Int(Tile.TILE_SIZE))) / 2
         self.drawingRangeHeight = (frameHeight - CGFloat(drawingTileCols * Int(Tile.TILE_SIZE))) / 2
-        self.outerFrame = TileSheet.createOuterFrameNodes(
+        self.frame = TileSheet.createOuterFrameNodes(
             frameWidth,
             frameHeight: frameHeight,
             drawingRangeWidth: drawingRangeWidth,
@@ -96,34 +81,34 @@ open class TileSheet {
         var rows: Int
         do {
             (cols, rows) = try parser.getLayerSize()
-            self.sheetTileCols = cols
-            self.sheetTileRows = rows
+            self.tileColNum = cols
+            self.tileRowNum = rows
         } catch {
-            self.sheetTileCols = -1
-            self.sheetTileRows = -1
+            self.tileColNum = -1
+            self.tileRowNum = -1
             errMessageStack.append("タイル数取得失敗")
             hasError = true
         }
         
         // タイルシートの生成
-        self.sheetNode = SKSpriteNode(
+        self.node = SKSpriteNode(
             color: UIColor.white,
-            size: CGSize(width: CGFloat(sheetTileRows) * Tile.TILE_SIZE,
-            height: CGFloat(sheetTileCols) * Tile.TILE_SIZE)
+            size: CGSize(width: CGFloat(tileRowNum) * Tile.TILE_SIZE,
+            height: CGFloat(tileColNum) * Tile.TILE_SIZE)
         )
-        self.sheetNode.position = CGPoint(x: drawingRangeWidth, y: drawingRangeHeight)
+        self.node.position = CGPoint(x: drawingRangeWidth, y: drawingRangeHeight)
         // 左下が基準
-        self.sheetNode.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        self.node.anchorPoint = CGPoint(x: 0.0, y: 0.0)
         
         // タイルの追加
         for tile in tiles.values {
-            tile.addTo(self.sheetNode)
+            tile.addTo(self.node)
         }
         
         // オブジェクトの追加
         for objectsOnTile in objects.values {
             for object in objectsOnTile {
-                object.addTo(self.sheetNode)
+                object.addTo(self.node)
             }
         }
         
@@ -144,7 +129,7 @@ open class TileSheet {
         // 原点沿いのタイル
         // WARNING: 補正値 +1
         let sheetOrigin = TileCoordinate.getTileCoordinateFromScreenCoordinate(
-            self.sheetNode.position,
+            self.node.position,
             screenCoordinate: CGPoint(x: self.drawingRangeWidth + 1, y: self.drawingRangeHeight + 1)
         )
         // 原点から見て画面端のタイル
@@ -254,8 +239,8 @@ open class TileSheet {
     ///
     ///  - parameter scene: タイルシートを追加するシーン
     func addTo(_ scene: SKScene) {
-        scene.addChild(self.sheetNode)
-        for line in self.outerFrame {
+        scene.addChild(self.node)
+        for line in self.frame {
             scene.addChild(line)
         }
     }
@@ -264,7 +249,7 @@ open class TileSheet {
     ///
     ///  - parameter object: 追加するオブジェクト
     func addObjectToSheet(_ object: Object) {
-        object.addTo(self.sheetNode)
+        object.addTo(self.node)
     }
 
     ///  オブジェクト名から，対象オブジェクトの現在座標を取得する
@@ -273,7 +258,7 @@ open class TileSheet {
     ///
     ///  - returns: オブジェクトの現在位置
     func getObjectPositionByName(_ name: String) -> CGPoint? {
-        return self.sheetNode.childNode(withName: name)?.position
+        return self.node.childNode(withName: name)?.position
     }
 
     ///  タイルシートにアクションを実行させる
@@ -282,10 +267,10 @@ open class TileSheet {
     ///  - parameter callback: コールバック
     func runAction(_ actions: Array<SKAction>, callback: @escaping () -> Void) {
         let sequence: SKAction = SKAction.sequence(actions)
-        self.sheetNode.run(sequence, completion: { callback() })
+        self.node.run(sequence, completion: { callback() })
     }
 
     func getSheetPosition() -> CGPoint {
-        return self.sheetNode.position
+        return self.node.position
     }
 }
