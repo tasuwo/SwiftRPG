@@ -12,7 +12,10 @@ enum MapObjectError: Error {
     case failedToGenerate(String)
 }
 
+typealias MapObjectId = Int
 protocol MapObject {
+    var id: MapObjectId { get }
+
     var hasCollision: Bool { get }
 
     var events: [EventListener] { get set }
@@ -20,4 +23,8 @@ protocol MapObject {
     var parent: MapObject? { get set }
 
     func setCollision()
+
+    static var nextId: MapObjectId { get }
+
+    static func generateId() -> MapObjectId
 }

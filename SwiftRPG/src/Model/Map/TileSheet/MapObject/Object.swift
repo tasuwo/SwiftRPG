@@ -38,6 +38,7 @@ open class Object: MapObject {
 
     // MARK: - MapObject
 
+    fileprivate(set) var id: MapObjectId
     fileprivate(set) var hasCollision: Bool
     fileprivate var events_: [EventListener] = []
     var events: [EventListener] {
@@ -60,10 +61,16 @@ open class Object: MapObject {
     func setCollision() {
         self.hasCollision = true
     }
+    static var nextId = 0
+    static func generateId() -> MapObjectId {
+        nextId += 1
+        return nextId
+    }
 
     // MARK: -
 
     init(name: String, position: CGPoint, images: IMAGE_SET?) {
+        self.id = Object.generateId()
         node = SKSpriteNode()
         node.name = name
         node.anchorPoint = CGPoint(x: 0.5, y: 0.0)

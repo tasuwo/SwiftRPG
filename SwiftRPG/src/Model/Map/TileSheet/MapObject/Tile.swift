@@ -17,13 +17,14 @@ typealias TileProperty = Dictionary<String, String>
 /// マップ上に敷かれる各タイルに対応した SKSpriteNode のラッパークラス
 open class Tile: MapObject {
     static var           TILE_SIZE: CGFloat = 32.0
-    fileprivate let      id: Int
+    fileprivate let      tileId: Int
     fileprivate let      node: SKSpriteNode
     fileprivate(set) var coordinate: TileCoordinate
     fileprivate(set) var property: TileProperty
 
     // MARK: - MapObject
 
+    fileprivate(set) var id: MapObjectId
     fileprivate(set) var hasCollision: Bool
     fileprivate var events_: [EventListener] = []
     var events: [EventListener] {
@@ -46,6 +47,11 @@ open class Tile: MapObject {
     func setCollision() {
         self.hasCollision = true
     }
+    static var nextId = 0
+    static func generateId() -> MapObjectId {
+        nextId += 1
+        return nextId
+    }
 
     // MARK: -
 
@@ -56,9 +62,10 @@ open class Tile: MapObject {
     ///
     ///  - returns: なし
     init(id: TileID, coordinate: TileCoordinate, property: TileProperty) {
+        self.id = Tile.generateId()
         let x = coordinate.x
         let y = coordinate.y
-        self.id = id
+        self.tileId = id
         self.node = SKSpriteNode()
         self.node.size = CGSize(width: CGFloat(Tile.TILE_SIZE),
                                 height: CGFloat(Tile.TILE_SIZE))
