@@ -78,4 +78,13 @@ extension GameViewController: GameSceneDelegate {
             }
         }
     }
+
+    func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
+        for behavior in behaviors.values {
+            if self.eventManager.add(behavior) == false {
+                // TODO: 追加失敗時の処理
+                return
+            }
+        }
+    }
 }

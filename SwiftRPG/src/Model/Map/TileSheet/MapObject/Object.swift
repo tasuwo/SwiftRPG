@@ -35,6 +35,7 @@ open class Object: MapObject {
     /// Whether the step animation is started from left or right leg is depends on whether this value is 1 or 0.
     fileprivate var stepIndex: Int = 0
     var children: [MapObject] = []
+    fileprivate(set) var behavior: EventListener? = nil
 
     // MARK: - MapObject
 
@@ -271,6 +272,16 @@ open class Object: MapObject {
             if let hasCollision = property!["collision"] {
                 if hasCollision == "1" {
                     object.setCollision()
+                }
+            }
+
+            // Add behavior
+            if let obj_behavior = property!["behavior"] {
+                do {
+                    let listener = try BehaviorPropertyParser.parse(from: obj_behavior)
+                    object.behavior = listener
+                } catch ListenerGeneratorError.failed(let string) {
+                    throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
                 }
             }
 

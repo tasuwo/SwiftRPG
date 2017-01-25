@@ -34,6 +34,7 @@ class myGameScene: GameScene {
                             images: objectNameTable.PLAYER_IMAGE_SET)
         player.setCollision()
         self.map!.setObject(player)
+        self.registerBehaviors()
 
         actionButton.layer.borderColor = UIColor.white.cgColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)

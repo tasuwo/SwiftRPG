@@ -18,6 +18,7 @@ protocol GameSceneDelegate: class {
     func menuButtonTouched()
     func viewUpdated()
     func addEvent(_ events: [EventListener])
+    func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
 }
 
 /// ゲーム画面
@@ -137,5 +138,14 @@ class GameScene: Scene, GameSceneProtocol {
     }
 
     // MARK: ---
+
+    func registerBehaviors() {
+        var behaviors: Dictionary<MapObjectId, EventListener> = [:]
+        let objects = self.map?.getAllObjects()
+        for object in objects! {
+            behaviors[object.id] = object.behavior
+        }
+        self.gameSceneDelegate?.registerBehaviors(behaviors)
+    }
 }
 
