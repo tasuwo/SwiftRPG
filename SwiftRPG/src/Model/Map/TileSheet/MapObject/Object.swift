@@ -166,12 +166,10 @@ open class Object: MapObject {
     ///  - parameter destination: 最終目的地
     ///  - parameter callback:    実行終了時に呼ばれるコールバック関数ß
     func runAction(_ actions: Array<SKAction>, destination: CGPoint, callback: @escaping () -> Void) {
-        UIApplication.shared.beginIgnoringInteractionEvents()
         let sequence: SKAction = SKAction.sequence(actions)
         self.node.run(
             sequence,
             completion: {
-                UIApplication.shared.endIgnoringInteractionEvents()
                 callback()
             }
         )
