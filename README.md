@@ -13,7 +13,9 @@ Simple game written in swift with SpriteKit.
 
 ## TODO
 
-- Move objects
+- ~~Move objects~~
+  - ~~Collision detection management~~
+  - Stop object's behavior when touch event occured
 - Document
 - Scene transition
 - Sound
