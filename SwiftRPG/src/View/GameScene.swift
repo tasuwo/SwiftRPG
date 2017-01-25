@@ -77,12 +77,15 @@ class GameScene: Scene, GameSceneProtocol {
         })
     }
 
-    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate)  {
+    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate) -> Promise<Void> {
         let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
         let object = self.map?.getObjectByName(name)!
-        object?.runAction(actions, destination: destination, callback: {
-            self.map?.updateObjectPlacement(object!, departure: tileDeparture, destination: tileDestination)
-        })
+        return Promise { fulfill, reject in
+            object?.runAction(actions, destination: destination, callback: {
+                self.map?.updateObjectPlacement(object!, departure: tileDeparture, destination: tileDestination)
+                fulfill()
+            })
+        }
     }
 
     func hideAllButtons() -> Promise<Void> {

@@ -39,7 +39,9 @@
 		2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE41E0ADC12008AEB77 /* SceneController.swift */; };
 		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
 		2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */; };
+		2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */; };
 		2CFD72F61E364BBF0039A6AC /* MoveObjectEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */; };
+		2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */; };
 		528D0F387D1749B21DA59F9A /* Pods_SwiftRPGTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C5E95AB68BFE3E0EF1C522 /* Pods_SwiftRPGTests.framework */; };
 		8D8D934E84EF094D932DB0A7 /* Pods_SwiftRPG.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC1B93E6CDE1090FED475B3 /* Pods_SwiftRPG.framework */; };
 		A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0112D8F1C7DB10700E225CC /* zPositionTable.swift */; };
@@ -118,7 +120,9 @@
 		2CC39CE41E0ADC12008AEB77 /* SceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
 		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myGameScene.swift; sourceTree = "<group>"; };
+		2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitEventListener.swift; sourceTree = "<group>"; };
 		2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveObjectEventListener.swift; sourceTree = "<group>"; };
+		2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorPropertyParser.swift; sourceTree = "<group>"; };
 		403FA2E28BB935711065C147 /* Pods-SwiftRPGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPGTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPGTests/Pods-SwiftRPGTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DC1B93E6CDE1090FED475B3 /* Pods_SwiftRPG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftRPG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64046AF34C25E6078A9B7693 /* Pods-SwiftRPG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPG.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPG/Pods-SwiftRPG.release.xcconfig"; sourceTree = "<group>"; };
@@ -215,6 +219,7 @@
 				2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */,
 				2C2941B31E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift */,
 				2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */,
+				2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */,
 			);
 			path = EventListener;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 				2C2D31921D525F35000D8A2B /* ListenerContainer.swift */,
 				2C2941AB1E35DCAF0016A7E4 /* ListenerGenerator.swift */,
 				2CAC5E501E0ECE3900621F17 /* EventPropertyParser.swift */,
+				2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */,
 			);
 			path = MapObject;
 			sourceTree = "<group>";
@@ -729,9 +735,11 @@
 				2C86E2321E0D15B90053062C /* InvokeNextEventListener.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
 				2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */,
+				2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */,
 				A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */,
 				A06593D21C721A1000148D2B /* MapObject.swift in Sources */,
 				2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */,
+				2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */,
 				2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */,
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
 				2C2941B01E35FC470016A7E4 /* ShowEventDialogListener.swift in Sources */,

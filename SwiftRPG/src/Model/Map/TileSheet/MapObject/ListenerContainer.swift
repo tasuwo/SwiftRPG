@@ -46,8 +46,23 @@ class ListenerContainer {
             ]
         case "move":
             let objectName = params[0] as String
+            let direction = params[1] as String
+            let step_num = params[2] as String
+            let speed = params[3] as String
+
             return [
-                (listener: MoveObjectEventListener.self, params: JSON(["name":objectName]) as JSON?)
+                (listener: MoveObjectEventListener.self,
+                 params: JSON([
+                    "name":objectName,
+                    "direction":direction,
+                    "step_num":step_num,
+                    "speed":speed
+                    ]) as JSON?)
+            ]
+        case "wait":
+            let time = params[0] as String
+            return [
+                (listener: WaitEventListener.self, params: JSON(["time":time]))
             ]
         default:
             throw ListenerContainerError.eventIdNotFound

@@ -78,6 +78,10 @@ open class Map {
         self.sheet = sheet!
     }
 
+    func wait(_ time: Int, callback: @escaping () -> Void) {
+        self.sheet?.runAction([SKAction.wait(forDuration: TimeInterval(time))], callback: callback)
+    }
+
     func addSheetTo(_ scene: SKScene) {
         self.sheet!.addTo(scene)
     }
@@ -88,6 +92,10 @@ open class Map {
 
     func getObjectCoordinateByName(_ name: String) -> TileCoordinate? {
         return self.sheet?.getObjectCoordinateByName(name)
+    }
+
+    func getAllObjects() -> [Object] {
+        return (self.sheet?.getAllObjects())!
     }
 
     func setObject(_ object: Object) {
