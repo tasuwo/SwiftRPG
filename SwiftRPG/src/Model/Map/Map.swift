@@ -94,6 +94,10 @@ open class Map {
         return self.sheet?.getObjectCoordinateByName(name)
     }
 
+    func removeObject(_ id: MapObjectId) {
+        self.sheet?.removeObject(id)
+    }
+
     func getAllObjects() -> [Object] {
         return (self.sheet?.getAllObjects())!
     }
@@ -103,12 +107,24 @@ open class Map {
         self.sheet?.setObject(object: object, coordinate: coordinate)
     }
 
+    func setEventsOf(_ objectId: MapObjectId, coordinate: TileCoordinate) {
+        self.sheet?.setEventsOf(objectId, coordinate: coordinate)
+    }
+
     func getMapObjectsOn(_ coordinate: TileCoordinate) -> [MapObject]? {
         return self.sheet?.getMapObjectsOn(coordinate)
     }
 
     func getEventsOn(_ coordinate: TileCoordinate) -> [EventListener] {
         return (self.sheet?.getEventsOn(coordinate))!
+    }
+
+    func setCollisionOn(coordinate: TileCoordinate) {
+        self.sheet?.getTileOn(coordinate)!.setCollision()
+    }
+
+    func removeCollisionOn(coordinate: TileCoordinate) {
+        self.sheet?.getTileOn(coordinate)!.removeCollision()
     }
 
     func canPass(_ coordinate: TileCoordinate) -> Bool {

@@ -83,6 +83,8 @@ class GameScene: Scene, GameSceneProtocol {
         return Promise { fulfill, reject in
             object?.runAction(actions, destination: destination, callback: {
                 self.map?.updateObjectPlacement(object!, departure: tileDeparture, destination: tileDestination)
+                // Enable Events
+                self.map?.setEventsOf(object!.id, coordinate: tileDestination)
                 fulfill()
             })
         }

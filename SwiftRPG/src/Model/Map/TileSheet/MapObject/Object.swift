@@ -31,10 +31,11 @@ open class Object: MapObject {
             return TileCoordinate.getTileCoordinateFromSheetCoordinate(self.position)
         }
     }
+    var relativeCoordinateFromParent: TileCoordinate? = nil
     /// Index for animation
     /// Whether the step animation is started from left or right leg is depends on whether this value is 1 or 0.
     fileprivate var stepIndex: Int = 0
-    var children: [MapObject] = []
+    var children: [MapObjectId] = []
     fileprivate(set) var behavior: EventListener? = nil
 
     // MARK: - MapObject
@@ -110,7 +111,7 @@ open class Object: MapObject {
     ///  - parameter destination: 目標地点
     ///
     ///  - returns: 目標地点へ移動するアニメーション
-    func getActionTo(_ departure: CGPoint, destination: CGPoint) -> Array<SKAction> {
+    func getActionTo(_ departure: CGPoint, destination: CGPoint, preCallback: (() -> Void)? = nil, postCallback: (() -> Void)? = nil) -> Array<SKAction> {
         var actions: Array<SKAction> = []
         let diff = CGPoint(x: destination.x - departure.x,
                            y: destination.y - departure.y)
@@ -126,9 +127,17 @@ open class Object: MapObject {
             nextTextures = [self.node.texture!]
         }
 
+        if let preCallback_ = preCallback {
+            let preCallbackAction: SKAction = SKAction.run(preCallback_)
+            actions.append(preCallbackAction)
+        }
         let walkAction: SKAction = SKAction.animate(with: nextTextures, timePerFrame: TimeInterval(self.speed/2))
         let moveAction: SKAction = SKAction.moveBy(x: diff.x, y: diff.y, duration: TimeInterval(self.speed))
-        actions = [SKAction.group([walkAction, moveAction])]
+        actions.append(SKAction.group([walkAction, moveAction]))
+        if let postCallback_ = postCallback {
+            let postCallbackAction: SKAction = SKAction.run(postCallback_)
+            actions.append(postCallbackAction)
+        }
 
         return actions
     }
@@ -197,6 +206,10 @@ open class Object: MapObject {
 
     func setSpeed(_ speed: CGFloat) {
         self.speed = speed
+    }
+
+    func getChildrenIds() -> [MapObjectId] {
+        return self.children
     }
 
     // MARK: - class method
@@ -296,22 +309,23 @@ open class Object: MapObject {
 
                     // Create event object for per coordinate
                     for (coordinate, listener) in listeners {
-                        // TODO: Give a name
-                        let eventObject: Object = Object(
-                            name: "",
-                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(parent.coordinate + coordinate),
-                            images: nil)
-
+                        // TODO: Implement EventObject: MapObject only for events
+                        let eventObject: Object = Object(name: "", position: CGPoint.init(x: 0, y: 0) , images: nil)
                         eventObject.events.append(listener)
+                        eventObject.relativeCoordinateFromParent = coordinate
 
-                        object.children.append(eventObject)
+                        object.children.append(eventObject.id)
                         eventObject.parent = parent
                         eventObjects.append(eventObject)
                     }
 
                     // Placement event objects on object dict map
                     for eventObject in eventObjects {
-                        objects[eventObject.coordinate]!.append(eventObject)
+                        if objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!] != nil {
+                            objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!]!.append(eventObject)
+                        } else {
+                            objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!] = [eventObject]
+                        }
                     }
                 } catch EventParserError.invalidProperty(let string) {
                     throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)

@@ -280,6 +280,39 @@ open class TileSheet {
         self.addObjectToSheet(object)
     }
 
+    // TODO: More efficiency
+    //       Need reference to tileCoordinate from mapObject
+    func removeObject(_ mapObjectId: MapObjectId) {
+        var target: (cor: TileCoordinate, i: Int)? = nil
+        for objectPlacement in self.objectsPlacement {
+            let ids = objectPlacement.value
+            for (index, id) in ids.enumerated() {
+                if id == mapObjectId {
+                    target = (cor: objectPlacement.key, i: index)
+                    break
+                }
+            }
+        }
+
+        if let t = target {
+            self.objectsPlacement[t.cor]?.remove(at: t.i)
+        }
+    }
+
+    func setEventsOf(_ objectId: MapObjectId, coordinate: TileCoordinate) {
+        let eventIds = self.objects[objectId]?.children
+        if eventIds == nil { return }
+        for eventId in eventIds! {
+            if let relativeCoordinate = self.objects[eventId]?.relativeCoordinateFromParent {
+                if self.objectsPlacement[coordinate + relativeCoordinate] != nil {
+                    self.objectsPlacement[coordinate + relativeCoordinate]?.append(eventId)
+                } else {
+                    self.objectsPlacement[coordinate + relativeCoordinate]? = [eventId]
+                }
+            }
+        }
+    }
+
     // getter for MapObjects
 
     func getAllObjects() -> [Object] {

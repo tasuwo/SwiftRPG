@@ -59,6 +59,13 @@ class MoveObjectEventListener: EventListener {
             object.setDirection(direction!)
             object.setSpeed(CGFloat(speed!))
 
+            // Disable events
+            // Remove all events related to object from map
+            let eventObjectIds = object.getChildrenIds()
+            for id in eventObjectIds {
+                map.removeObject(id)
+            }
+
             let departure = object.coordinate
             let destination = self.calcDestination(departure, direction: direction!, step_num: step_num!)
 
@@ -70,10 +77,23 @@ class MoveObjectEventListener: EventListener {
 
             // Define action for moving
             var objectActions: Array<SKAction> = []
+            var preStepCoordinate = object.coordinate
             var preStepPoint = object.position
-            for step: TileCoordinate in path! {
-                let nextStepPoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(step)
-                objectActions += object.getActionTo(preStepPoint, destination: nextStepPoint)
+            for nextStepCoordinate: TileCoordinate in path! {
+                let nextStepPoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(nextStepCoordinate)
+                objectActions += object.getActionTo(
+                    preStepPoint,
+                    destination: nextStepPoint,
+                    preCallback: {
+                        map.setCollisionOn(coordinate: nextStepCoordinate)
+                    },
+                    postCallback: {
+                        map.removeCollisionOn(coordinate: nextStepCoordinate)
+                        map.updateObjectPlacement(object, departure: preStepCoordinate, destination: nextStepCoordinate)
+                    }
+                )
+
+                preStepCoordinate = nextStepCoordinate
                 preStepPoint = nextStepPoint
             }
 

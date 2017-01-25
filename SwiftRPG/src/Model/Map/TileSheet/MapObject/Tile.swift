@@ -99,6 +99,10 @@ open class Tile: MapObject {
         node.addChild(self.node)
     }
 
+    func removeCollision() {
+        self.hasCollision = false
+    }
+
     // MARK: - class method
 
     ///  タイル群を生成する
