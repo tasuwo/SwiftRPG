@@ -14,6 +14,7 @@ class InvokeNextEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var isExecuting: Bool = false
     let triggerType: TriggerType
     let executionType: ExecutionType
     internal var listeners: ListenerChain?

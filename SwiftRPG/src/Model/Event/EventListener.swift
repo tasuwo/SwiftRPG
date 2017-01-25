@@ -54,6 +54,7 @@ protocol EventListener: EventHandler {
     var id: UInt64! { get set }
     var delegate: NotifiableFromListener? { get set }
     var listeners: ListenerChain? { get }
+    var isExecuting: Bool { get }
     func chain(listeners: ListenerChain)
     init(params: JSON?, chainListeners: ListenerChain?) throws
 }

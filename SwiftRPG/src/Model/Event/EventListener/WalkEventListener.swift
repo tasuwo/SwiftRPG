@@ -18,6 +18,7 @@ class WalkEventListener: EventListener {
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
     var listeners: ListenerChain?
+    var isExecuting: Bool = false
     let triggerType: TriggerType
     let executionType: ExecutionType
 

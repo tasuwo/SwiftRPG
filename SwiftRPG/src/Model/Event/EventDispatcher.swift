@@ -48,7 +48,9 @@ class EventDispatcher : NotifiableFromListener {
     func trigger(_ sender: GameSceneProtocol!, args: JSON!) throws {
         for listener in listeners.values {
             do {
-                try listener.invoke!(sender, args)
+                if !listener.isExecuting {
+                    try listener.invoke!(sender, args)
+                }
             } catch EventListenerError.illegalArguementFormat(let string) {
                 print(string)
             } catch EventListenerError.illegalParamFormat(let string) {

@@ -18,6 +18,7 @@ class ShowEventDialogListener: EventListener {
     var invoke: EventMethod?
     var listeners: ListenerChain?
     var params: JSON?
+    var isExecuting: Bool = false
     let triggerType: TriggerType
     let executionType: ExecutionType
 
@@ -67,6 +68,7 @@ class HideEventDialogListener: EventListener {
     var invoke: EventMethod?
     var listensers: ListenerChain?
     var params: JSON?
+    var isExecuting: Bool = false
     let triggerType: TriggerType
     let executionType: ExecutionType
     internal var listeners: ListenerChain?
