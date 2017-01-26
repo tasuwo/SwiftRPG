@@ -25,6 +25,10 @@ class myGameScene: GameScene {
         if let map = Map(mapName: "sample_map02", frameWidth: self.frame.width, frameHeight: self.frame.height) {
             self.map = map
             self.map!.addSheetTo(self)
+        } else {
+            // TODO: Alert to user and quit game
+            print("Failed to generate map!!")
+            return
         }
 
         // 主人公の作成
