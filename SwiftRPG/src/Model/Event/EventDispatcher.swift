@@ -29,6 +29,7 @@ class EventDispatcher : NotifiableFromListener {
 
     init() {}
 
+    @discardableResult
     func add(_ listener: ListenerType) -> Bool {
         if listener.id != nil { return false }
         let id = issueId()
@@ -38,6 +39,7 @@ class EventDispatcher : NotifiableFromListener {
         return true
     }
 
+    @discardableResult
     func remove(_ listener: ListenerType) -> Bool {
         if listener.id == nil { return false }
         listeners.removeValue(forKey: listener.id!)
