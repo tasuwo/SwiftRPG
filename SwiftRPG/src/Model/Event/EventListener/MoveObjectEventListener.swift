@@ -59,6 +59,20 @@ class MoveObjectEventListener: EventListener {
             object.setDirection(direction!)
             object.setSpeed(CGFloat(speed!))
 
+            let departure = object.coordinate
+            let destination = self.calcDestination(departure, direction: direction!, step_num: step_num!)
+
+            // Route search by A* algorithm
+            let aStar = AStar(map: map)
+            aStar.initialize(departure, destination: destination)
+            let route = aStar.main()
+            if route == nil {
+                // If there are no route to destination, finish this listener and invoke next listener
+                let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                self.delegate?.invoke(self, listener: nextEventListener)
+                return
+            }
+
             // Disable events
             // Remove all events related to object from map
             let eventObjectIds = object.getChildrenIds()
@@ -66,20 +80,11 @@ class MoveObjectEventListener: EventListener {
                 map.removeObject(id)
             }
 
-            let departure = object.coordinate
-            let destination = self.calcDestination(departure, direction: direction!, step_num: step_num!)
-
-            // Route search by A* algorithm
-            let aStar = AStar(map: map)
-            aStar.initialize(departure, destination: destination)
-            let path = aStar.main()
-            if path == nil { return }
-
             // Define action for moving
             var objectActions: Array<SKAction> = []
             var preStepCoordinate = object.coordinate
             var preStepPoint = object.position
-            for nextStepCoordinate: TileCoordinate in path! {
+            for nextStepCoordinate: TileCoordinate in route! {
                 let nextStepPoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(nextStepCoordinate)
                 objectActions += object.getActionTo(
                     preStepPoint,
