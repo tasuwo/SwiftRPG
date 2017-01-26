@@ -15,18 +15,15 @@ protocol NotifiableFromDispacher {
 class EventManager: NotifiableFromDispacher {
     fileprivate(set) var touchEventDispacher: EventDispatcher
     fileprivate(set) var actionButtonEventDispacher: EventDispatcher
-    fileprivate(set) var objectEventDispacher: EventDispatcher
     fileprivate(set) var cyclicEventDispacher: EventDispatcher
 
     init() {
         self.touchEventDispacher = EventDispatcher()
         self.actionButtonEventDispacher = EventDispatcher()
-        self.objectEventDispacher = EventDispatcher()
         self.cyclicEventDispacher = EventDispatcher()
 
         self.touchEventDispacher.delegate = self
         self.actionButtonEventDispacher.delegate = self
-        self.objectEventDispacher.delegate = self
         self.cyclicEventDispacher.delegate = self
     }
 
