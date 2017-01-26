@@ -72,9 +72,9 @@ extension GameViewController: GameSceneDelegate {
 
     func addEvent(_ events: [EventListener]) {
         for event in events {
-            // TODO: 追加失敗時の処理
             if self.eventManager.add(event) == false {
-                return
+                // TODO: Deal with failure
+                print("Failed to adding event")
             }
         }
     }
@@ -82,8 +82,8 @@ extension GameViewController: GameSceneDelegate {
     func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
         for behavior in behaviors.values {
             if self.eventManager.add(behavior) == false {
-                // TODO: 追加失敗時の処理
-                return
+                // TODO: Deal with failure
+                print("Failed to adding event")
             }
         }
     }
