@@ -340,10 +340,11 @@ open class TileSheet {
         if eventIds == nil { return }
         for eventId in eventIds! {
             if let relativeCoordinate = self.events[eventId]?.relativeCoordinateFromParent {
-                if self.eventsPlacement[coordinate + relativeCoordinate] != nil {
-                    self.eventsPlacement[coordinate + relativeCoordinate]?.append(eventId)
+                let cor = coordinate + relativeCoordinate
+                if (self.eventsPlacement[cor] != nil) {
+                    self.eventsPlacement[cor]!.append(eventId)
                 } else {
-                    self.eventsPlacement[coordinate + relativeCoordinate]? = [eventId]
+                    self.eventsPlacement[cor] = [eventId]
                 }
             }
         }
