@@ -20,6 +20,7 @@ class WalkOneStepEventListener: EventListener {
     var listeners: ListenerChain?
     var isExecuting: Bool = false
     var params: JSON?
+    var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
     let executionType: ExecutionType
 

@@ -19,6 +19,7 @@ class FinishTalkEventListener: EventListener {
     var listeners: ListenerChain?
     var params: JSON?
     var isExecuting: Bool = false
+    var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
     let executionType: ExecutionType
 

@@ -17,6 +17,7 @@ class TalkEventListener: EventListener {
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
     var isExecuting: Bool = false
+    var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
     let executionType: ExecutionType
 

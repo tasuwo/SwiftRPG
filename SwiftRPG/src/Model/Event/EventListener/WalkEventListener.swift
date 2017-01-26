@@ -19,6 +19,7 @@ class WalkEventListener: EventListener {
     var invoke: EventMethod?
     var listeners: ListenerChain?
     var isExecuting: Bool = false
+    var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
     let executionType: ExecutionType
 

@@ -52,6 +52,7 @@ open class EventObject: MapObject {
         self.id = EventObject.generateId()
         self.parent_ = parentId
         self.relativeCoordinateFromParent = relativeCoordinate
+        event.eventObjectId = self.id
         self.eventListener = event
         self.hasCollision = false
     }

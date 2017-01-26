@@ -17,6 +17,7 @@ class ActivateButtonListener: EventListener {
     var invoke: EventMethod?
     var listeners: ListenerChain?
     var params: JSON?
+    var eventObjectId: MapObjectId? = nil
     var isExecuting: Bool = false
     let triggerType: TriggerType
     let executionType: ExecutionType
