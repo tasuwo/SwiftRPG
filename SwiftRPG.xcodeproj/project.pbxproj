@@ -780,8 +780,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Talk Event</string>
 			<key>path</key>
 			<string>Talk Event</string>
 			<key>sourceTree</key>
@@ -836,8 +834,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Event Dialog</string>
 			<key>path</key>
 			<string>Event Dialog</string>
 			<key>sourceTree</key>
@@ -862,6 +858,24 @@ fi
 			<string>2CEDA5D21E39E33A00DB076A</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>2CEDA5D41E39F52C00DB076A</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>2C2D31921D525F35000D8A2B</string>
+				<string>2C2941AB1E35DCAF0016A7E4</string>
+				<string>2CAC5E501E0ECE3900621F17</string>
+				<string>2CFD72F71E379C5A0039A6AC</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>util</string>
+			<key>path</key>
+			<string>util</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>2CFD72F51E364BBF0039A6AC</key>
 		<dict>
@@ -1241,13 +1255,10 @@ fi
 		<dict>
 			<key>children</key>
 			<array>
+				<string>2CEDA5D41E39F52C00DB076A</string>
 				<string>A06593D11C721A1000148D2B</string>
 				<string>D7D8A5AA1B70652600147A45</string>
 				<string>D7D97FFE1B6F05B1000704B0</string>
-				<string>2C2D31921D525F35000D8A2B</string>
-				<string>2C2941AB1E35DCAF0016A7E4</string>
-				<string>2CAC5E501E0ECE3900621F17</string>
-				<string>2CFD72F71E379C5A0039A6AC</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
