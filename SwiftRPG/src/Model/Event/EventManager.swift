@@ -7,15 +7,20 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 protocol NotifiableFromDispacher {
     func invoke(_ invoker: EventListener, listener: EventListener)
 }
 
+enum EventManagerError: Error {
+    case FailedToTrigger(String)
+}
+
 class EventManager: NotifiableFromDispacher {
-    fileprivate(set) var touchEventDispacher: EventDispatcher
-    fileprivate(set) var actionButtonEventDispacher: EventDispatcher
-    fileprivate(set) var cyclicEventDispacher: EventDispatcher
+    fileprivate var touchEventDispacher: EventDispatcher
+    fileprivate var actionButtonEventDispacher: EventDispatcher
+    fileprivate var cyclicEventDispacher: EventDispatcher
 
     init() {
         self.touchEventDispacher = EventDispatcher()
@@ -28,7 +33,7 @@ class EventManager: NotifiableFromDispacher {
     }
 
     func add(_ listener: EventListener) -> Bool {
-        let dispacher = self.getDispacherOf(listener)
+        let dispacher = self.getDispacherOf(listener.triggerType)
         if dispacher.add(listener) == false {
             return false
         } else {
@@ -36,8 +41,24 @@ class EventManager: NotifiableFromDispacher {
         }
     }
 
-    fileprivate func getDispacherOf(_ listener: EventListener) -> EventDispatcher {
-        switch listener.triggerType {
+    func removeAllEvents(_ type: TriggerType) {
+        let dispacher = self.getDispacherOf(type)
+        dispacher.removeAll()
+    }
+
+    func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
+        let dispacher = self.getDispacherOf(type)
+        do {
+            try dispacher.trigger(sender, args: args)
+        } catch EventDispacherError.FiledToInvokeListener(let string) {
+            throw EventManagerError.FailedToTrigger(string)
+        }
+    }
+
+    // MARK: - Private methods
+
+    fileprivate func getDispacherOf(_ type: TriggerType) -> EventDispatcher {
+        switch type {
         case .touch:
             return self.touchEventDispacher
         case .button:
@@ -51,8 +72,8 @@ class EventManager: NotifiableFromDispacher {
 
     // TODO: remove, add が失敗した場合の処理の追加
     func invoke(_ invoker: EventListener, listener: EventListener) {
-        let invokerDispacher = self.getDispacherOf(invoker)
-        let nextListenersDispacher = self.getDispacherOf(listener)
+        let invokerDispacher = self.getDispacherOf(invoker.triggerType)
+        let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
         // 呼び出し元の EventListener 自身を Dispacher から削除する
         if invokerDispacher.remove(invoker) == false {}

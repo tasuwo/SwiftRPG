@@ -36,9 +36,11 @@ extension GameViewController: GameSceneDelegate {
         let gameScene = skView.scene as! GameScene
 
         do {
-            try self.eventManager.touchEventDispacher.trigger(gameScene, args: args)
+            try self.eventManager.trigger(.touch, sender: gameScene, args: args)
+        } catch EventManagerError.FailedToTrigger(let string) {
+            print("Failed to trigger touch event: " + string)
         } catch {
-            print("Unexpected error occured")
+            print("Unexpected error has occurred during triggering touch event")
         }
     }
 
@@ -47,9 +49,11 @@ extension GameViewController: GameSceneDelegate {
         let gameScene = skView.scene as! GameScene
 
         do {
-            try self.eventManager.actionButtonEventDispacher.trigger(gameScene, args: nil)
+            try self.eventManager.trigger(.button, sender: gameScene, args: nil)
+        } catch EventManagerError.FailedToTrigger(let string) {
+            print("Failed to trigger action event: " + string)
         } catch {
-            print("Unexpected error occured")
+            print("Unexpected error has occurred during triggering action event")
         }
     }
 
@@ -63,10 +67,16 @@ extension GameViewController: GameSceneDelegate {
         let gameScene = skView.scene as! GameScene
 
         do {
-            try self.eventManager.cyclicEventDispacher.trigger(gameScene, args: nil)
+            try self.eventManager.trigger(.immediate, sender: gameScene, args: nil)
+        } catch EventManagerError.FailedToTrigger(let string) {
+            print("Failed to trigger cyclic event: " + string)
         } catch {
-            print("Unexpected error occured")
-            self.eventManager.cyclicEventDispacher.removeAll()
+            print("Unexpected error has occurred during triggering cyclic event")
+
+            // If cyclic event couldn't execute, the game might be hang
+            // So when error has occurred, remove all cyclic events
+            // TODO: Remove only cyclic event which is cause of exception
+            self.eventManager.removeAllEvents(.immediate)
         }
     }
 
