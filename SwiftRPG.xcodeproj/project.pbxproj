@@ -44,6 +44,7 @@
 		2CEDA5D01E39DF0B00DB076A /* StartTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */; };
 		2CEDA5D31E39E33A00DB076A /* HideEventDialogListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5D21E39E33A00DB076A /* HideEventDialogListener.swift */; };
 		2CEDA5D61E39F5BE00DB076A /* EventObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5D51E39F5BE00DB076A /* EventObject.swift */; };
+		2CEDA5D91E3A23D800DB076A /* WalkOneStepEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5D81E3A23D800DB076A /* WalkOneStepEventListener.swift */; };
 		2CFD72F61E364BBF0039A6AC /* MoveObjectEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */; };
 		2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */; };
 		528D0F387D1749B21DA59F9A /* Pods_SwiftRPGTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C5E95AB68BFE3E0EF1C522 /* Pods_SwiftRPGTests.framework */; };
@@ -129,6 +130,7 @@
 		2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartTalkEventListener.swift; sourceTree = "<group>"; };
 		2CEDA5D21E39E33A00DB076A /* HideEventDialogListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideEventDialogListener.swift; sourceTree = "<group>"; };
 		2CEDA5D51E39F5BE00DB076A /* EventObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventObject.swift; sourceTree = "<group>"; };
+		2CEDA5D81E3A23D800DB076A /* WalkOneStepEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkOneStepEventListener.swift; sourceTree = "<group>"; };
 		2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveObjectEventListener.swift; sourceTree = "<group>"; };
 		2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorPropertyParser.swift; sourceTree = "<group>"; };
 		403FA2E28BB935711065C147 /* Pods-SwiftRPGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPGTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPGTests/Pods-SwiftRPGTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -219,9 +221,9 @@
 		2C2D31911D524717000D8A2B /* EventListener */ = {
 			isa = PBXGroup;
 			children = (
+				2CEDA5D71E3A238F00DB076A /* Walk Event */,
 				2CEDA5D11E39E32300DB076A /* Event Dialog */,
 				2CEDA5CC1E39DEC400DB076A /* Talk Event */,
-				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
 				2C2D31A41D531F04000D8A2B /* ItemGetEventListener.swift */,
 				2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */,
 				2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */,
@@ -287,6 +289,15 @@
 				2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		2CEDA5D71E3A238F00DB076A /* Walk Event */ = {
+			isa = PBXGroup;
+			children = (
+				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
+				2CEDA5D81E3A23D800DB076A /* WalkOneStepEventListener.swift */,
+			);
+			name = "Walk Event";
 			sourceTree = "<group>";
 		};
 		981DBCD92BFFE134BED803A5 /* Frameworks */ = {
@@ -757,6 +768,7 @@
 				A07DEBB01C9B9EBF00B787BA /* ItemCell.swift in Sources */,
 				D7C157A41B3E9CD400C13909 /* GameScene.swift in Sources */,
 				D7C157A61B3E9CD400C13909 /* GameViewController.swift in Sources */,
+				2CEDA5D91E3A23D800DB076A /* WalkOneStepEventListener.swift in Sources */,
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
 				2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */,

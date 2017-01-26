@@ -35,11 +35,12 @@ protocol GameSceneProtocol {
     var map: Map? { get set }
     var textBox: Dialog! { get set }
 
-    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, events: [EventListener], screenActions: [SKAction])
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction]) -> Promise<Void> 
     func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate) -> Promise<Void>
     func hideAllButtons() -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
     func showEventDialog() -> Promise<Void>
+    func registerEvent(listeners: [EventListener])
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()

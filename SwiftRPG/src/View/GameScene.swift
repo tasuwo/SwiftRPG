@@ -59,22 +59,27 @@ class GameScene: Scene, GameSceneProtocol {
 
     // MARK: GameSceneProtocol Methods
 
-    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, events: [EventListener], screenActions: [SKAction]) {
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction]) -> Promise<Void> {
         let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
         self.textBox.hide()
         self.actionButton.isHidden = true
 
-        let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
-        player?.runAction(playerActions, destination: destination, callback: {
-            self.map!.updateObjectPlacement(player!, departure: tileDeparture, destination: tileDestination)
-            self.gameSceneDelegate?.addEvent(events)
-        })
+        return Promise { fulfill, reject in
+            let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
+            player?.runAction(playerActions, destination: destination, callback: {
+                self.map!.updateObjectPlacement(player!, departure: tileDeparture, destination: tileDestination)
+                if screenActions.isEmpty {
+                    fulfill()
+                }
+            })
 
-        if screenActions.isEmpty { return }
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        self.map?.sheet!.runAction(screenActions, callback: {
-            UIApplication.shared.endIgnoringInteractionEvents()
-        })
+            if screenActions.isEmpty { return }
+            UIApplication.shared.beginIgnoringInteractionEvents()
+            self.map?.sheet!.runAction(screenActions, callback: {
+                UIApplication.shared.endIgnoringInteractionEvents()
+                fulfill()
+            })
+        }
     }
 
     func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate) -> Promise<Void> {
@@ -140,6 +145,10 @@ class GameScene: Scene, GameSceneProtocol {
             }
             ) { (animationCompleted: Bool) -> Void in fulfill()}
         }
+    }
+
+    func registerEvent(listeners: [EventListener]) {
+        self.gameSceneDelegate?.addEvent(listeners)
     }
 
     // MARK: ---

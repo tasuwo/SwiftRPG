@@ -24,7 +24,7 @@ class WalkEventListener: EventListener {
 
     required init(params: JSON?, chainListeners: ListenerChain?) {
         self.triggerType   = .touch
-        self.executionType = .loop
+        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
             let schema = Schema([
                 "type": "object",
@@ -48,7 +48,7 @@ class WalkEventListener: EventListener {
             let touchedPoint = CGPointFromString((args?["touchedPoint"].string)!)
             let player       = map.getObjectByName(objectNameTable.PLAYER_NAME)!
             let departure    = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.position)
-            var destination  = TileCoordinate.getTileCoordinateFromScreenCoordinate(
+            let destination  = TileCoordinate.getTileCoordinateFromScreenCoordinate(
                 sheet.getSheetPosition(),
                 screenCoordinate: touchedPoint
             )
@@ -57,42 +57,30 @@ class WalkEventListener: EventListener {
             let aStar = AStar(map: map)
             aStar.initialize(departure, destination: destination)
             let path = aStar.main()
-            if path == nil { return }
+            if path == nil {
+                self.delegate?.invoke(self, listener: WalkEventListener.init(params: nil, chainListeners: nil))
+                return
+            }
 
-            // Generate SKAction for moving
-            var playerActions: Array<SKAction> = []
-            var events: [EventListener] = []
-            var preStepPoint = player.position
+            // Generate event listener chain for walking animation
+            var chain: ListenerChain = []
             for step: TileCoordinate in path! {
-                let nextStePoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(step)
-                playerActions += player.getActionTo(preStepPoint, destination: nextStePoint)
-
-                // If there were events on tile which is placed, stop moving and execute it.
-                let eventsOnStep = map.getEventsOn(step)
-                if eventsOnStep.count > 0 {
-                    events = eventsOnStep
-                    destination = step
-                    break
-                }
-                preStepPoint = nextStePoint
+                chain = chain + self.generateOneStepWalkListener(step)
             }
 
-            // Generate SKAction for scrolling screen
-            let delay = SKAction.wait(forDuration: TimeInterval(Double(player.speed * CGFloat(path!.count))))
-            let scrollAction: SKAction? = sheet.scrollSheet(destination)
-            var scrollActions: Array<SKAction> = []
-            if scrollAction != nil {
-                scrollActions.append(delay)
-                scrollActions.append(scrollAction!)
+            let nextListener = chain.first!.listener
+            let nextListenerChain: ListenerChain? = chain.count == 1 ? nil : Array(chain.dropFirst())
+            do {
+                let nextListenerInstance = try nextListener.init(params: chain.first!.params, chainListeners: nextListenerChain)
+                self.delegate?.invoke(self, listener: nextListenerInstance)
+            } catch {
+                throw error
             }
-
-            sender!.movePlayer(
-                playerActions,
-                tileDeparture: departure,
-                tileDestination: destination,
-                events: events,
-                screenActions: scrollActions)
         }
+    }
+
+    fileprivate func generateOneStepWalkListener(_ destination: TileCoordinate) -> ListenerChain {
+        return [ (listener: WalkOneStepEventListener.self, params: JSON(["destination": destination.description])) ]
     }
 
     internal func chain(listeners: ListenerChain) {
