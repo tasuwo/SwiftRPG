@@ -51,6 +51,8 @@ class EventDispatcher : NotifiableFromListener {
         listeners.removeAll()
     }
 
+    // Invoke all event listenrs in this dispacher.
+    // If exception has thrown during executing, remove the listener which thrown exception.
     func trigger(_ sender: GameSceneProtocol!, args: JSON!) throws {
         for listener in listeners.values {
             do {
@@ -58,10 +60,13 @@ class EventDispatcher : NotifiableFromListener {
                     try listener.invoke!(sender, args)
                 }
             } catch EventListenerError.illegalArguementFormat(let string) {
+                self.remove(listener)
                 throw EventDispacherError.FiledToInvokeListener("Illegal arguement format:" + string)
             } catch EventListenerError.illegalParamFormat(let array) {
+                self.remove(listener)
                 throw EventDispacherError.FiledToInvokeListener("Failed to invoke listener:" + array.description)
             } catch EventListenerError.invalidParam(let string) {
+                self.remove(listener)
                 throw EventDispacherError.FiledToInvokeListener("Invalid parameter:" + string)
             }
         }
