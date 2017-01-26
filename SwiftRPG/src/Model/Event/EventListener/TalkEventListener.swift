@@ -12,80 +12,6 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-/// 会話開始のリスナー．
-class StartTalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var isExecuting: Bool = false
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-
-    fileprivate let directionString: String
-    fileprivate let params: JSON
-    internal var listeners: ListenerChain?
-
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-
-        // JSONSchema で判定したいが，JSONSchema は入れ子になっている JSON を扱えない
-        // これは，object の判定を NSDictionary へキャスト可能かどうかで判定しているため
-        if params == nil { throw EventListenerError.illegalParamFormat(["Parameter is nil"]) }
-
-        let maxIndex = params?.arrayObject?.count
-        if maxIndex == nil { throw EventListenerError.illegalParamFormat(["No properties in json parameter"]) }
-
-        let directionString = params![maxIndex!-1]["direction"].string
-        // "direction" を params から取り除く
-        var array = params!.arrayObject as? [[String:String]]
-        array?.removeLast()
-
-        self.directionString = directionString!
-        self.triggerType = .button
-        self.executionType = .onece
-        self.params = JSON(array!)
-        self.listeners = listeners
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-
-            // ダイアログ初期化
-            sender!.textBox.clean()
-
-            // プレイヤーの向きの変更
-            let map = sender!.map!
-            let player = map.getObjectByName(objectNameTable.PLAYER_NAME)
-            if let playerDirection = DIRECTION.fromString(self.directionString) {
-                player?.setDirection(playerDirection)
-            }
-
-            _ = firstly {
-                sender!.hideAllButtons()
-            }.then {
-                _ in
-                sender!.textBox.show(duration: 0.2)
-            }.always {
-                do {
-                    // 会話を1つ進める
-                    let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
-                    try moveConversation(_: sender, args)
-
-                    // TODO: index < 1 のとき = ここで会話が終了する時
-                    self.delegate?.invoke(self, listener: try TalkEventListener(params: self.params, chainListeners: self.listeners))
-                } catch {
-                    // throw error
-
-                    // TODO: 例外を外に投げたいがどうするか
-                    print(error)
-                }
-            }
-        }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
-    }
-}
-
-/// 会話進行のリスナー
 class TalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
@@ -109,8 +35,10 @@ class TalkEventListener: EventListener {
 
     init(params: JSON?, chainListeners listeners: ListenerChain?, index: Int) throws {
 
-        // JSONSchema で判定したいが，JSONSchema は入れ子になっている JSON を扱えない
-        // これは，object の判定を NSDictionary へキャスト可能かどうかで判定しているため
+        // TODO:
+        // The truth is validation as follows should be executed by JSONSchema,
+        // but JSONSchema doesn't work well with nested JSON.
+        // This is because that determine whether it's object or not by whether it's castable to NSDicationary
         // let schema = Schema([
         //   "type": "object",
         //   "minProperties": 1,
@@ -121,21 +49,22 @@ class TalkEventListener: EventListener {
         let maxIndex = params?.arrayObject?.count
         if maxIndex == nil { throw EventListenerError.illegalParamFormat(["No properties in json parameter"]) }
 
-        self.params = params!
-        self.listeners = listeners
-        self.index = index
-        self.triggerType = .touch
+        self.params        = params!
+        self.listeners     = listeners
+        self.index         = index
+        self.triggerType   = .touch
         self.executionType = .onece
-        // 会話の回数をプロパティ数から判断している．明示的にすべき？
+        // TODO: The value of following variable is determined by the number of property.
+        //       It might have to be defined specifically.
+        // a number of conversation times
         self.talkContentsMaxNum = (params?.arrayObject?.count)!
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-
+        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
             do {
                 let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index, params: self.params)
                 try moveConversation(sender, args)
 
-                // 会話の継続，終了に応じて次の EventListener を決定
+                // Determine the Event Listener which executed in next 
+                // depending on whether conversation is continued or not.
                 let nextEventListener: EventListener
                 if index < self.talkContentsMaxNum - 1 {
                     nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners, index: self.index+1)
@@ -151,7 +80,6 @@ class TalkEventListener: EventListener {
     }
 
     static func generateMoveConversationMethod(_ index: Int, params: JSON) throws -> EventMethod {
-
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -168,59 +96,18 @@ class TalkEventListener: EventListener {
         if result.valid == false {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
-
         if TALKER_IMAGE.index(forKey: params[index]["talker"].string!) == nil {
             throw EventListenerError.invalidParam("Talker image name specified at param `talker` is not declared in configuration file")
         }
 
-        let talker = params[index]["talker"].string!
-        let talkBody = params[index]["talk_body"].string!
-        let talkSideString = params[index]["talk_side"].string!
-        let talkSide: Dialog.TALK_SIDE = talkSideString == "L" ? .left : .right
+        let talker          = params[index]["talker"].string!
+        let talkBody        = params[index]["talk_body"].string!
+        let talkSideString  = params[index]["talk_side"].string!
+        let talkSide        = talkSideString == "L" ? Dialog.TALK_SIDE.left : Dialog.TALK_SIDE.right
         let talkerImageName = TALKER_IMAGE[talker]
 
-        return {
-            sender, args in
-            // テキスト描画
+        return { sender, args in
             sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
-        }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
-    }
-}
-
-class FinishTalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.params = params
-        self.listeners = listeners
-        self.triggerType = .touch
-        self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-            
-            firstly {
-                sender!.textBox.hide(duration: 0)
-            }.then { _ -> Void in
-                do {
-                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                } catch {
-                    throw error
-                }
-            }.catch { error in
-                print(error.localizedDescription)
-            }
         }
     }
 

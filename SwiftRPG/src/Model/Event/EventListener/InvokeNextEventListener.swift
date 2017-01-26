@@ -20,11 +20,9 @@ class InvokeNextEventListener: EventListener {
     internal var listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.triggerType = .immediate
+        self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
             // If there are no registered listener, exit
             if listeners == nil || listeners?.count == 0 { return }
 

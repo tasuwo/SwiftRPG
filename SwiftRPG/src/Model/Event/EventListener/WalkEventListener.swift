@@ -23,11 +23,9 @@ class WalkEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) {
-        self.triggerType = .touch
+        self.triggerType   = .touch
         self.executionType = .loop
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) in
-
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
             let schema = Schema([
                 "type": "object",
                 "properties": [
@@ -39,23 +37,29 @@ class WalkEventListener: EventListener {
             if result.valid == false {
                 throw EventListenerError.illegalParamFormat(result.errors!)
             }
+            // TODO: The following method end up throw exception even in the case the 'touchedPoint' value is (0,0).
+            if CGPointFromString((args?["touchedPoint"].string)!) == CGPoint.init(x: 0, y: 0) {
+                throw EventListenerError.illegalParamFormat(["The parameter 'touchedPoint' isn't castable to CGPoint."])
+            }
 
             let map   = sender!.map!
             let sheet = map.sheet!
 
-            let touchedPointString = args?["touchedPoint"].string
-            let touchedPoint = CGPointFromString(touchedPointString!)
-            let player = map.getObjectByName(objectNameTable.PLAYER_NAME)!
-            let departure = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.position)
-            var destination = TileCoordinate.getTileCoordinateFromScreenCoordinate(sheet.getSheetPosition(), screenCoordinate: touchedPoint)
+            let touchedPoint = CGPointFromString((args?["touchedPoint"].string)!)
+            let player       = map.getObjectByName(objectNameTable.PLAYER_NAME)!
+            let departure    = TileCoordinate.getTileCoordinateFromSheetCoordinate(player.position)
+            var destination  = TileCoordinate.getTileCoordinateFromScreenCoordinate(
+                sheet.getSheetPosition(),
+                screenCoordinate: touchedPoint
+            )
 
-            // ルート探索
+            // Route search
             let aStar = AStar(map: map)
             aStar.initialize(departure, destination: destination)
             let path = aStar.main()
             if path == nil { return }
 
-            // 移動のためのアクションの定義
+            // Generate SKAction for moving
             var playerActions: Array<SKAction> = []
             var events: [EventListener] = []
             var preStepPoint = player.position
@@ -63,7 +67,7 @@ class WalkEventListener: EventListener {
                 let nextStePoint: CGPoint = TileCoordinate.getSheetCoordinateFromTileCoordinate(step)
                 playerActions += player.getActionTo(preStepPoint, destination: nextStePoint)
 
-                // 移動中にイベントが存在するタイルを踏んだら動きを止める
+                // If there were events on tile which is placed, stop moving and execute it.
                 let eventsOnStep = map.getEventsOn(step)
                 if eventsOnStep.count > 0 {
                     events = eventsOnStep
@@ -73,7 +77,7 @@ class WalkEventListener: EventListener {
                 preStepPoint = nextStePoint
             }
 
-            // 画面をスクロールさせる
+            // Generate SKAction for scrolling screen
             let delay = SKAction.wait(forDuration: TimeInterval(Double(player.speed * CGFloat(path!.count))))
             let scrollAction: SKAction? = sheet.scrollSheet(destination)
             var scrollActions: Array<SKAction> = []
@@ -82,7 +86,6 @@ class WalkEventListener: EventListener {
                 scrollActions.append(scrollAction!)
             }
 
-            // 移動
             sender!.movePlayer(
                 playerActions,
                 tileDeparture: departure,

@@ -40,6 +40,9 @@
 		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
 		2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */; };
 		2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */; };
+		2CEDA5CE1E39DEDA00DB076A /* FinishTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */; };
+		2CEDA5D01E39DF0B00DB076A /* StartTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */; };
+		2CEDA5D31E39E33A00DB076A /* HideEventDialogListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5D21E39E33A00DB076A /* HideEventDialogListener.swift */; };
 		2CFD72F61E364BBF0039A6AC /* MoveObjectEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */; };
 		2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */; };
 		528D0F387D1749B21DA59F9A /* Pods_SwiftRPGTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C5E95AB68BFE3E0EF1C522 /* Pods_SwiftRPGTests.framework */; };
@@ -121,6 +124,9 @@
 		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myGameScene.swift; sourceTree = "<group>"; };
 		2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitEventListener.swift; sourceTree = "<group>"; };
+		2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishTalkEventListener.swift; sourceTree = "<group>"; };
+		2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartTalkEventListener.swift; sourceTree = "<group>"; };
+		2CEDA5D21E39E33A00DB076A /* HideEventDialogListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideEventDialogListener.swift; sourceTree = "<group>"; };
 		2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveObjectEventListener.swift; sourceTree = "<group>"; };
 		2CFD72F71E379C5A0039A6AC /* BehaviorPropertyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorPropertyParser.swift; sourceTree = "<group>"; };
 		403FA2E28BB935711065C147 /* Pods-SwiftRPGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRPGTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRPGTests/Pods-SwiftRPGTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,11 +217,11 @@
 		2C2D31911D524717000D8A2B /* EventListener */ = {
 			isa = PBXGroup;
 			children = (
-				2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */,
+				2CEDA5D11E39E32300DB076A /* Event Dialog */,
+				2CEDA5CC1E39DEC400DB076A /* Talk Event */,
 				2C556E7B1D4BA60400E03414 /* WalkEventListener.swift */,
 				2C2D31A41D531F04000D8A2B /* ItemGetEventListener.swift */,
 				2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */,
-				2C2941AF1E35FC470016A7E4 /* ShowEventDialogListener.swift */,
 				2C86E2311E0D15B90053062C /* InvokeNextEventListener.swift */,
 				2C2941B31E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift */,
 				2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */,
@@ -249,6 +255,25 @@
 				2C59EF2E1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift */,
 			);
 			path = animation;
+			sourceTree = "<group>";
+		};
+		2CEDA5CC1E39DEC400DB076A /* Talk Event */ = {
+			isa = PBXGroup;
+			children = (
+				2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */,
+				2C2D318F1D5242E5000D8A2B /* TalkEventListener.swift */,
+				2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */,
+			);
+			name = "Talk Event";
+			sourceTree = "<group>";
+		};
+		2CEDA5D11E39E32300DB076A /* Event Dialog */ = {
+			isa = PBXGroup;
+			children = (
+				2C2941AF1E35FC470016A7E4 /* ShowEventDialogListener.swift */,
+				2CEDA5D21E39E33A00DB076A /* HideEventDialogListener.swift */,
+			);
+			name = "Event Dialog";
 			sourceTree = "<group>";
 		};
 		981DBCD92BFFE134BED803A5 /* Frameworks */ = {
@@ -732,12 +757,14 @@
 				2C3673E01E0ABE570060E5EF /* MenuViewController.swift in Sources */,
 				A0112D901C7DB10700E225CC /* zPositionTable.swift in Sources */,
 				D7C157A01B3E9CD400C13909 /* AppDelegate.swift in Sources */,
+				2CEDA5D01E39DF0B00DB076A /* StartTalkEventListener.swift in Sources */,
 				2C86E2321E0D15B90053062C /* InvokeNextEventListener.swift in Sources */,
 				D7BFE5481B521BBF00AB0D3A /* TitleScene.swift in Sources */,
 				2C2E64C31B78DA2000B25B6E /* AStar.swift in Sources */,
 				2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */,
 				A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */,
 				A06593D21C721A1000148D2B /* MapObject.swift in Sources */,
+				2CEDA5D31E39E33A00DB076A /* HideEventDialogListener.swift in Sources */,
 				2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */,
 				2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */,
 				2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */,
@@ -762,6 +789,7 @@
 				2C2143371D5345A5006D3C50 /* DataModels.swift in Sources */,
 				2C556E7C1D4BA60400E03414 /* WalkEventListener.swift in Sources */,
 				2C2D31991D530F67000D8A2B /* IMAGE_SET.swift in Sources */,
+				2CEDA5CE1E39DEDA00DB076A /* FinishTalkEventListener.swift in Sources */,
 				2CFD72F61E364BBF0039A6AC /* MoveObjectEventListener.swift in Sources */,
 				2C363A541B7B20260042FA2D /* EventDispatcher.swift in Sources */,
 				A0D839941C8017AD005CC12D /* TalkBodyParser.swift in Sources */,

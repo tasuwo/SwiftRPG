@@ -27,12 +27,10 @@ class RenderDefaultViewEventListener: EventListener {
         self.listeners = listeners
         self.triggerType = .immediate
         self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
             firstly {
                 sender!.hideAllButtons()
-            }.then {
-                _ in
+            }.then { _ in
                 sender!.showDefaultButtons()
             }.then { _ -> Void in
                 do {

@@ -22,13 +22,6 @@ class ShowEventDialogListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    ///  コンストラクタ
-    ///
-    ///  - parameter params:    JSON形式の引数．
-    ///  - text : action button に表示するテキスト
-    ///  - parameter listeners: 次に実行する event listener
-    ///
-    ///  - returns: なし
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
 
         let schema = Schema([
@@ -43,12 +36,11 @@ class ShowEventDialogListener: EventListener {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
 
-        self.params = params
-        self.listeners = listeners
-        self.triggerType = .immediate
+        self.params        = params
+        self.listeners     = listeners
+        self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
             sender!.eventDialog.text = params!["text"].string!
             sender!.eventDialog.isHidden = false
 
@@ -61,39 +53,3 @@ class ShowEventDialogListener: EventListener {
         self.listeners = listeners
     }
 }
-
-class HideEventDialogListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var listensers: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    let triggerType: TriggerType
-    let executionType: ExecutionType
-    internal var listeners: ListenerChain?
-
-    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
-        self.triggerType = .touch
-        self.executionType = .onece
-        self.listeners = listeners
-        self.params = params
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-
-            sender!.eventDialog.isHidden = true
-
-            do {
-                let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                self.delegate?.invoke(self, listener: nextEventListener)
-            } catch {
-                throw error
-            }
-        }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
-    }
-}
-

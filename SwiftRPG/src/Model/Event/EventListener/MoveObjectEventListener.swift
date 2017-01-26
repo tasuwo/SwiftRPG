@@ -24,7 +24,6 @@ class MoveObjectEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) throws {
-
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -50,13 +49,11 @@ class MoveObjectEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(["The parameter 'speed' couldn't convert to integer"])
         }
 
-        self.params = params
-        self.listeners = chainListeners
-        self.triggerType = .immediate
+        self.params        = params
+        self.listeners     = chainListeners
+        self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) in
-
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
             self.isExecuting = true
 
             let map   = sender!.map!

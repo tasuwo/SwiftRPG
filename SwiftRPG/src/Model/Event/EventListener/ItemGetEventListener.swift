@@ -12,9 +12,6 @@ import JSONSchema
 import SpriteKit
 import RealmSwift
 
-/// アイテムゲットのリスナー
-/// - アイテムをDBに保存
-/// - アイテムゲットのダイアログを表示
 class ItemGetEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
@@ -23,8 +20,8 @@ class ItemGetEventListener: EventListener {
     let triggerType: TriggerType
     let executionType: ExecutionType
 
-    fileprivate let params: JSON
     internal var listeners: ListenerChain?
+    fileprivate let params: JSON
     fileprivate let itemKey: String
     fileprivate let itemName: String
     fileprivate let itemText: String
@@ -47,17 +44,16 @@ class ItemGetEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
         
-        self.triggerType = .immediate
+        self.triggerType   = .immediate
         self.executionType = .onece
-        self.params = params!
-        self.listeners = listeners
-        self.itemKey = params!["key"].string!
-        self.itemName = params!["name"].string!
-        self.itemText = params!["description"].string!
+        self.params        = params!
+        self.listeners     = listeners
+        self.itemKey       = params!["key"].string!
+        self.itemName      = params!["name"].string!
+        self.itemText      = params!["description"].string!
         self.itemImageName = params!["image_name"].string!
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) -> () in
-            // アイテムをデータベースに登録
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+            // Insert data to database
             let realm = try! Realm()
             try! realm.write {
                 var item = realm.objects(StoredItems.self).filter("key == \"\(self.itemKey)\"").first

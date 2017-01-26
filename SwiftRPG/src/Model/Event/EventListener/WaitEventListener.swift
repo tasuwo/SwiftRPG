@@ -24,7 +24,6 @@ class WaitEventListener: EventListener {
     let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) throws {
-
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -42,12 +41,11 @@ class WaitEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(["The parameter 'time' couldn't convert to integer"])
         }
 
-        self.params = params
-        self.listeners = chainListeners
-        self.triggerType = .immediate
+        self.params        = params
+        self.listeners     = chainListeners
+        self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke = {
-            (sender: GameSceneProtocol?, args: JSON?) in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
 
             self.isExecuting = true
 
