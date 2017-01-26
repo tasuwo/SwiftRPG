@@ -26,22 +26,22 @@ open class Tile: MapObject {
 
     fileprivate(set) var id: MapObjectId
     fileprivate(set) var hasCollision: Bool
-    fileprivate var events_: [EventListener] = []
-    var events: [EventListener] {
-        get {
-            return self.events_
-        }
-        set {
-            self.events_ = newValue
-        }
-    }
-    fileprivate var parent_: MapObject?
-    var parent: MapObject? {
+    fileprivate var parent_: MapObjectId?
+    var parent: MapObjectId? {
         get {
             return self.parent_
         }
         set {
             self.parent_ = newValue
+        }
+    }
+    fileprivate var children_: [MapObjectId] = []
+    var children: [MapObjectId] {
+        get {
+            return self.children_
+        }
+        set {
+            self.children_ = newValue
         }
     }
     func setCollision() {
@@ -124,8 +124,11 @@ open class Tile: MapObject {
         tileSets: Dictionary<TileSetID, TileSet>,
         collisionPlacement: Dictionary<TileCoordinate, Int>,
         tilePlacement: Dictionary<TileCoordinate, Int>
-    ) throws -> Dictionary<TileCoordinate, Tile> {
+    ) throws ->
+        (tiles: Dictionary<TileCoordinate, Tile>, events: Dictionary<TileCoordinate, EventObject>)
+    {
         var tiles: Dictionary<TileCoordinate, Tile> = [:]
+        var eventObjects: Dictionary<TileCoordinate, EventObject> = [:]
         for (coordinate, tileID) in tilePlacement {
             let tileProperty = properties[tileID]
             if tileProperty == nil {
@@ -167,7 +170,6 @@ open class Tile: MapObject {
             }
             tile.setImageWithUIImage(tileImage!)
 
-            // イベントを付与する
             if let action = tile.property["event"] {
                 let listeners: Dictionary<TileCoordinate, EventListener>
                 do {
@@ -179,6 +181,9 @@ open class Tile: MapObject {
                     throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)
                 }
 
+                if listeners.count == 0 {
+                    break
+                }
                 if listeners.count > 1 {
                     throw MapObjectError.failedToGenerate("Tile event should has only one relative coordinate")
                 }
@@ -186,12 +191,17 @@ open class Tile: MapObject {
                     throw MapObjectError.failedToGenerate("Tile event should has (0,0) relative coordinate")
                 }
 
-                tile.events.append(listeners.first!.value)
+                let listener = listeners.first!.value
+
+                // Create event object for this tile
+                let eventObject = EventObject(parentId: tile.id, relativeCoordinate: coordinate, event: listener)
+                tile.children.append(eventObject.id)
+                eventObjects[tile.coordinate] = eventObject
             }
 
             tiles[coordinate] = tile
         }
-        return tiles
+        return (tiles: tiles, events: eventObjects)
     }
 
     // MARK: -

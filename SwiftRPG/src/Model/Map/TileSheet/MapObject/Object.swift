@@ -31,33 +31,31 @@ open class Object: MapObject {
             return TileCoordinate.getTileCoordinateFromSheetCoordinate(self.position)
         }
     }
-    var relativeCoordinateFromParent: TileCoordinate? = nil
     /// Index for animation
     /// Whether the step animation is started from left or right leg is depends on whether this value is 1 or 0.
     fileprivate var stepIndex: Int = 0
-    var children: [MapObjectId] = []
     fileprivate(set) var behavior: EventListener? = nil
 
     // MARK: - MapObject
 
     fileprivate(set) var id: MapObjectId
     fileprivate(set) var hasCollision: Bool
-    fileprivate var events_: [EventListener] = []
-    var events: [EventListener] {
-        get {
-            return self.events_
-        }
-        set {
-            self.events_ = newValue
-        }
-    }
-    fileprivate var parent_: MapObject?
-    var parent: MapObject? {
+    fileprivate var parent_: MapObjectId?
+    var parent: MapObjectId? {
         get {
             return self.parent_
         }
         set {
             self.parent_ = newValue
+        }
+    }
+    fileprivate var children_: [MapObjectId] = []
+    var children: [MapObjectId] {
+        get {
+            return self.children_
+        }
+        set {
+            self.children_ = newValue
         }
     }
     func setCollision() {
@@ -229,11 +227,14 @@ open class Object: MapObject {
         properties: Dictionary<TileID, TileProperty>,
         tileSets: Dictionary<TileSetID, TileSet>,
         objectPlacement: Dictionary<TileCoordinate, Int>
-    ) throws -> Dictionary<TileCoordinate, [Object]> {
+    ) throws ->
+        (objects: Dictionary<TileCoordinate, [Object]>, events: Dictionary<TileCoordinate, [EventObject]>)
+    {
         var objects: Dictionary<TileCoordinate, [Object]> = [:]
         for (coordinate, _) in tiles {
             objects[coordinate] = []
         }
+        var eventObjects: Dictionary<TileCoordinate, [EventObject]> = [:]
 
         // オブジェクトの配置
         for (coordinate, _) in tiles {
@@ -304,27 +305,17 @@ open class Object: MapObject {
                     let properties = try EventPropertyParser.parse(from: obj_action)
                     let listeners = try ListenerGenerator.generate(properties: properties)
 
-                    var eventObjects: [Object] = []
-                    let parent = object
-
                     // Create event object for per coordinate
                     for (coordinate, listener) in listeners {
-                        // TODO: Implement EventObject: MapObject only for events
-                        let eventObject: Object = Object(name: "", position: CGPoint.init(x: 0, y: 0) , images: nil)
-                        eventObject.events.append(listener)
-                        eventObject.relativeCoordinateFromParent = coordinate
-
+                        let eventObject = EventObject(parentId: object.id, relativeCoordinate: coordinate, event: listener)
                         object.children.append(eventObject.id)
-                        eventObject.parent = parent
-                        eventObjects.append(eventObject)
-                    }
 
-                    // Placement event objects on object dict map
-                    for eventObject in eventObjects {
-                        if objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!] != nil {
-                            objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!]!.append(eventObject)
+                        // Store event objects with it's coordinate
+                        let placedCoordinate = eventObject.relativeCoordinateFromParent + object.coordinate
+                        if eventObjects[placedCoordinate] != nil {
+                            eventObjects[placedCoordinate]?.append(eventObject)
                         } else {
-                            objects[eventObject.coordinate + eventObject.relativeCoordinateFromParent!] = [eventObject]
+                            eventObjects[placedCoordinate] = [eventObject]
                         }
                     }
                 } catch EventParserError.invalidProperty(let string) {
@@ -336,7 +327,7 @@ open class Object: MapObject {
 
             objects[coordinate]!.append(object)
         }
-        return objects
+        return (objects: objects, events: eventObjects)
     }
 
     // MARK: -

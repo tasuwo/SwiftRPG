@@ -87,10 +87,7 @@ class MoveObjectEventListener: EventListener {
 
             // Disable events
             // Remove all events related to object from map
-            let eventObjectIds = object.getChildrenIds()
-            for id in eventObjectIds {
-                map.removeObject(id)
-            }
+            map.removeEventsOfObject(object.id)
 
             // Define action for moving
             var objectActions: Array<SKAction> = []

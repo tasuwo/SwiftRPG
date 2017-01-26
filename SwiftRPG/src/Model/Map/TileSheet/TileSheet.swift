@@ -48,8 +48,10 @@ open class TileSheet {
     fileprivate let drawingTileCols: Int!
     fileprivate var objects: Dictionary<MapObjectId, Object> = [:]
     fileprivate var tiles: Dictionary<MapObjectId, Tile> = [:]
+    fileprivate var events: Dictionary<MapObjectId, EventObject> = [:]
     fileprivate var objectsPlacement: Dictionary<TileCoordinate, [MapObjectId]> = [:]
     fileprivate var tilesPlacement: Dictionary<TileCoordinate, MapObjectId> = [:]
+    fileprivate var eventsPlacement: Dictionary<TileCoordinate, [MapObjectId]> = [:]
 
     ///  コンストラクタ
     ///
@@ -63,7 +65,8 @@ open class TileSheet {
         frameWidth: CGFloat,
         frameHeight: CGFloat,
         tiles: Dictionary<TileCoordinate, Tile>,
-        objects: Dictionary<TileCoordinate, [Object]>
+        objects: Dictionary<TileCoordinate, [Object]>,
+        events: Dictionary<TileCoordinate, [EventObject]>
     ) {
         var hasError:Bool = false
         var errMessageStack:[String] = []
@@ -104,20 +107,29 @@ open class TileSheet {
         // 左下が基準
         self.node.anchorPoint = CGPoint(x: 0.0, y: 0.0)
         
-        // タイルの追加
+        // Add Tiles
         for (coordinate, tile) in tiles {
             tile.addTo(self.node)
             self.tiles[tile.id] = tile
             self.tilesPlacement[coordinate] = tile.id
         }
-        
-        // オブジェクトの追加
+
+        // Add Objects
         for (coordinate, objectsOnTile) in objects {
             self.objectsPlacement[coordinate] = []
             for object in objectsOnTile {
                 object.addTo(self.node)
                 self.objects[object.id] = object
                 self.objectsPlacement[coordinate]?.append(object.id)
+            }
+        }
+
+        // Add Events
+        for (coordinate, eventsOnTile) in events {
+            self.eventsPlacement[coordinate] = []
+            for event in eventsOnTile {
+                self.events[event.id] = event
+                self.eventsPlacement[coordinate]?.append(event.id)
             }
         }
         
@@ -280,6 +292,30 @@ open class TileSheet {
         self.addObjectToSheet(object)
     }
 
+    func removeEventsOfObject(_ objectId: MapObjectId) {
+        let object = self.objects[objectId]
+        for eventObjectId in (object?.children)! {
+            self.removeEventObjects(eventObjectId)
+        }
+    }
+
+    func removeEventObjects(_ eventObjectId: MapObjectId) {
+        var target: (cor: TileCoordinate, i: Int)? = nil
+        for eventPlacement in self.eventsPlacement {
+            let ids = eventPlacement.value
+            for (index, id) in ids.enumerated() {
+                if id == eventObjectId {
+                    target = (cor: eventPlacement.key, i: index)
+                    break
+                }
+            }
+        }
+
+        if let t = target {
+            self.eventsPlacement[t.cor]?.remove(at: t.i)
+        }
+    }
+
     // TODO: More efficiency
     //       Need reference to tileCoordinate from mapObject
     func removeObject(_ mapObjectId: MapObjectId) {
@@ -303,11 +339,11 @@ open class TileSheet {
         let eventIds = self.objects[objectId]?.children
         if eventIds == nil { return }
         for eventId in eventIds! {
-            if let relativeCoordinate = self.objects[eventId]?.relativeCoordinateFromParent {
-                if self.objectsPlacement[coordinate + relativeCoordinate] != nil {
-                    self.objectsPlacement[coordinate + relativeCoordinate]?.append(eventId)
+            if let relativeCoordinate = self.events[eventId]?.relativeCoordinateFromParent {
+                if self.eventsPlacement[coordinate + relativeCoordinate] != nil {
+                    self.eventsPlacement[coordinate + relativeCoordinate]?.append(eventId)
                 } else {
-                    self.objectsPlacement[coordinate + relativeCoordinate]? = [eventId]
+                    self.eventsPlacement[coordinate + relativeCoordinate]? = [eventId]
                 }
             }
         }
@@ -358,9 +394,20 @@ open class TileSheet {
         return tile
     }
 
+    func getEventObjectsOn(_ coordinate: TileCoordinate) -> [EventObject] {
+        var eventObjects: [EventObject] = []
+        if let ids = self.eventsPlacement[coordinate] {
+            for id in ids {
+                eventObjects.append(self.events[id]!)
+            }
+        }
+        return eventObjects
+    }
+
     func getMapObjectsOn(_ coordinate: TileCoordinate) -> [MapObject] {
         var mapObjects: [MapObject] = []
         mapObjects = mapObjects + self.getObjectsOn(coordinate)
+        mapObjects = mapObjects + self.getEventObjectsOn(coordinate)
         if let tile = self.getTileOn(coordinate) {
             mapObjects.append(tile)
         }
@@ -369,11 +416,9 @@ open class TileSheet {
 
     func getEventsOn(_ coordinate: TileCoordinate) -> [EventListener] {
         var events: [EventListener] = []
-        let mapObjects = self.getMapObjectsOn(coordinate)
-        for mapObject in mapObjects {
-            for event in mapObject.events {
-                events.append(event)
-            }
+        let eventObjects = self.getEventObjectsOn(coordinate)
+        for eventObject in eventObjects {
+            events.append(eventObject.eventListener)
         }
         return events
     }

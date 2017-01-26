@@ -37,26 +37,30 @@ open class Map {
             return nil
         }
 
-        let tiles: Dictionary<TileCoordinate, Tile>
-        var objects: Dictionary<TileCoordinate, [Object]>
+        let tiles:        Dictionary<TileCoordinate, Tile>
+        var objects:      Dictionary<TileCoordinate, [Object]>
+        let tileEvents:   Dictionary<TileCoordinate, EventObject>
+        let objectEvents: Dictionary<TileCoordinate, [EventObject]>
         do {
             let cols, rows: Int
-            (cols, rows) = try parser.getLayerSize()
-            let tileProperties = try parser.getTileProperties()
-            let tileSets = try parser.getTileSets()
-            let collisionLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .collision)
-            let tileLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .tile)
-            let objectLayer = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .object)
-            tiles = try Tile.createTiles(rows,
-                                         cols: cols,
-                                         properties: tileProperties,
-                                         tileSets: tileSets,
-                                         collisionPlacement: collisionLayer,
-                                         tilePlacement: tileLayer)
-            objects = try Object.createObjects(tiles,
-                                               properties: tileProperties,
-                                               tileSets: tileSets,
-                                               objectPlacement: objectLayer)
+            (cols, rows)        = try parser.getLayerSize()
+            let tileProperties  = try parser.getTileProperties()
+            let tileSets        = try parser.getTileSets()
+            let collisionLayer  = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .collision)
+            let tileLayer       = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .tile)
+            let objectLayer     = try parser.getInfoFromLayer(cols, layerTileRows: rows, kind: .object)
+            (tiles, tileEvents) = try Tile.createTiles(
+                rows,
+                cols: cols,
+                properties: tileProperties,
+                tileSets: tileSets,
+                collisionPlacement: collisionLayer,
+                tilePlacement: tileLayer)
+            (objects, objectEvents) = try Object.createObjects(
+                tiles,
+                properties: tileProperties,
+                tileSets: tileSets,
+                objectPlacement: objectLayer)
         } catch ParseError.invalidValueError(let string) {
             print(string)
             return nil
@@ -70,11 +74,29 @@ open class Map {
             return nil
         }
 
+        // Merge events of tile and events of object
+        var events: Dictionary<TileCoordinate, [EventObject]> = [:]
+        for (coordinate, event) in tileEvents {
+            if events[coordinate] != nil {
+                events[coordinate]!.append(event)
+            } else {
+                events[coordinate] = [event]
+            }
+        }
+        for (coordinate, event) in objectEvents {
+            if events[coordinate] != nil {
+                events[coordinate]! = events[coordinate]! + event
+            } else {
+                events[coordinate] = event
+            }
+        }
+
         let sheet = TileSheet(parser: parser,
                               frameWidth: frameWidth,
                               frameHeight: frameHeight,
                               tiles: tiles,
-                              objects: objects)
+                              objects: objects,
+                              events: events)
         self.sheet = sheet!
     }
 
@@ -94,8 +116,8 @@ open class Map {
         return self.sheet?.getObjectCoordinateByName(name)
     }
 
-    func removeObject(_ id: MapObjectId) {
-        self.sheet?.removeObject(id)
+    func removeEventsOfObject(_ objectId: MapObjectId) {
+        self.sheet?.removeEventsOfObject(objectId)
     }
 
     func getAllObjects() -> [Object] {
