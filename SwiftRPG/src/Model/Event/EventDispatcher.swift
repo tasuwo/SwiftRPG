@@ -59,6 +59,10 @@ class EventDispatcher : NotifiableFromListener {
                 if !listener.isExecuting {
                     try listener.invoke!(sender, args)
                 }
+
+                if listener.executionType == .onece {
+                    self.remove(listener)
+                }
             } catch EventListenerError.illegalArguementFormat(let string) {
                 self.remove(listener)
                 throw EventDispacherError.FiledToInvokeListener("Illegal arguement format:" + string)
