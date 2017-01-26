@@ -10,6 +10,10 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
+enum EventDispacherError: Error {
+    case FiledToInvokeListener(String)
+}
+
 protocol NotifiableFromListener {
     func invoke(_ invoker: EventListener, listener: EventListener)
 }
@@ -52,13 +56,11 @@ class EventDispatcher : NotifiableFromListener {
                     try listener.invoke!(sender, args)
                 }
             } catch EventListenerError.illegalArguementFormat(let string) {
-                print(string)
-            } catch EventListenerError.illegalParamFormat(let string) {
-                print(string)
+                throw EventDispacherError.FiledToInvokeListener("Illegal arguement format:" + string)
+            } catch EventListenerError.illegalParamFormat(let array) {
+                throw EventDispacherError.FiledToInvokeListener("Failed to invoke listener:" + array.description)
             } catch EventListenerError.invalidParam(let string) {
-                print(string)
-            } catch {
-                throw error
+                throw EventDispacherError.FiledToInvokeListener("Invalid parameter:" + string)
             }
         }
     }
