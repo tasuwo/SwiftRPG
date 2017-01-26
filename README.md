@@ -16,12 +16,12 @@ Simple game written in swift with SpriteKit.
 - ~~Move objects~~
   - ~~Collision detection management~~
   - Stop object's behavior when touch event occured
-    - Create `EventObject` and placement for it
-    - Tying: This realize by `EventObject`'s property
-      - *object* and related *event object*
-        - Should be able to reference *object* from *event object*
-      - *event object* and related *event listener*
-        - Should be able to reference *event listener* from *event object*
+    - ~~Create `EventObject` and placement for it~~
+    - ~~Tying: This realize by `EventObject`'s property~~
+      - ~~*object* and related *event object*~~
+        - ~~Should be able to reference *object* from *event object*~~
+      - ~~*event object* and related *event listener*~~
+        - ~~Should be able to reference *event listener* from *event object*~~
     - If EventObject's event was added to EventDispatchar, the EventObject should be passed to EventManager. And the listener's id should be registered to EventObject.
       - When remove listener related to EventObject, should remove listener id from the EventObject too.
     - Add `EventExecutionType` to EventObject (**Not** EventListenerType)
