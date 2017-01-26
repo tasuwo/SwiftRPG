@@ -49,11 +49,16 @@ class ActivateButtonListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
+
             sender!.actionButton.title = params!["text"].string!
             sender!.actionButton.isHidden = false
 
-            let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-            self.delegate?.invoke(self, listener: nextEventListener)
+            do {
+                let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                self.delegate?.invoke(self, listener: nextEventListener)
+            } catch {
+                throw error
+            }
         }
     }
 

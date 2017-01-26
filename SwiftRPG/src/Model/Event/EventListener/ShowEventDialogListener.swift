@@ -80,10 +80,15 @@ class HideEventDialogListener: EventListener {
         self.params = params
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) -> () in
+
             sender!.eventDialog.isHidden = true
 
-            let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-            self.delegate?.invoke(self, listener: nextEventListener)
+            do {
+                let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                self.delegate?.invoke(self, listener: nextEventListener)
+            } catch {
+                throw error
+            }
         }
     }
 

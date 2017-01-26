@@ -79,8 +79,12 @@ class MoveObjectEventListener: EventListener {
             let route = aStar.main()
             if route == nil {
                 // If there are no route to destination, finish this listener and invoke next listener
-                let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                self.delegate?.invoke(self, listener: nextEventListener)
+                do {
+                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    self.delegate?.invoke(self, listener: nextEventListener)
+                } catch {
+                    throw error
+                }
                 return
             }
 
@@ -113,16 +117,22 @@ class MoveObjectEventListener: EventListener {
                 preStepPoint = nextStepPoint
             }
 
-            _ = firstly {
+            firstly {
                 sender!.moveObject(
                     objectName!,
                     actions: objectActions,
                     tileDeparture: departure,
                     tileDestination: destination
                 )
-            }.always {
-                let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                self.delegate?.invoke(self, listener: nextEventListener)
+            }.then { _ -> Void in
+                do {
+                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    self.delegate?.invoke(self, listener: nextEventListener)
+                } catch {
+                    throw error
+                }
+            }.catch { error in
+                print(error.localizedDescription)
             }
         }
     }

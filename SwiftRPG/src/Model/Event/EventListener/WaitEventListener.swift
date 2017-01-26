@@ -56,13 +56,15 @@ class WaitEventListener: EventListener {
 
             firstly {
                 self.generatePromiseClojureForWaiting(map: map, time: time)
-            }.always {
-                let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                self.delegate?.invoke(self, listener: nextEventListener)
-            }.catch {
-                _ in
-                // Adding some code if it has become that there is 
-                // a possibility exception throwing occurrence in above blocks.
+            }.then { _ -> Void in
+                do {
+                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    self.delegate?.invoke(self, listener: nextEventListener)
+                } catch {
+                    throw error
+                }
+            }.catch { error in
+                print(error.localizedDescription)
             }
         }
     }
