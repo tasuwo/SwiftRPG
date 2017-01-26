@@ -41,11 +41,6 @@ class EventManager: NotifiableFromDispacher {
         }
     }
 
-    func removeAllEvents(_ type: TriggerType) {
-        let dispacher = self.getDispacherOf(type)
-        dispacher.removeAll()
-    }
-
     func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
         let dispacher = self.getDispacherOf(type)
         do {

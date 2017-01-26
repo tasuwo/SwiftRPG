@@ -72,11 +72,6 @@ extension GameViewController: GameSceneDelegate {
             print("Failed to trigger cyclic event: " + string)
         } catch {
             print("Unexpected error has occurred during triggering cyclic event")
-
-            // If cyclic event couldn't execute, the game might be hang
-            // So when error has occurred, remove all cyclic events
-            // TODO: Remove only cyclic event which is cause of exception
-            self.eventManager.removeAllEvents(.immediate)
         }
     }
 
