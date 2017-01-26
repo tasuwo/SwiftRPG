@@ -29,7 +29,10 @@ class MoveObjectEventListener: EventListener {
             "type": "object",
             "properties": [
                 "name": ["type": "string"],
-                "direction": ["type":"string"],
+                "direction": [
+                    "type":"string",
+                    "enum": ["LEFT", "RIGHT", "UP", "DOWN"]
+                ],
                 "step_num": ["type":"string"],
                 "speed": ["type":"string"]
             ],
@@ -39,6 +42,13 @@ class MoveObjectEventListener: EventListener {
         if result.valid == false {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
+        // TODO: Validation as following must be executed as a part of validation by JSONSchema
+        if (Int(params!["step_num"].string!) == nil) {
+            throw EventListenerError.illegalParamFormat(["The parameter 'step_num' couldn't convert to integer"])
+        }
+        if (Int(params!["speed"].string!) == nil) {
+            throw EventListenerError.illegalParamFormat(["The parameter 'speed' couldn't convert to integer"])
+        }
 
         self.params = params
         self.listeners = chainListeners
@@ -46,23 +56,24 @@ class MoveObjectEventListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) in
+
             self.isExecuting = true
+
             let map   = sender!.map!
 
             let objectName = self.params?["name"].string!
-            let direction_str = self.params?["direction"].string!
-            let direction = DIRECTION.fromString(direction_str!)
-            let step_num = Int((self.params?["step_num"].string!)!)
-            let speed = Int((self.params?["speed"].string!)!)
+            let direction  = DIRECTION.fromString((self.params?["direction"].string!)!)
+            let step_num   = Int((self.params?["step_num"].string!)!)
+            let speed      = Int((self.params?["speed"].string!)!)
 
             let object = map.getObjectByName(objectName!)!
             object.setDirection(direction!)
             object.setSpeed(CGFloat(speed!))
 
+            // Route search by A* algorithm
             let departure = object.coordinate
             let destination = self.calcDestination(departure, direction: direction!, step_num: step_num!)
 
-            // Route search by A* algorithm
             let aStar = AStar(map: map)
             aStar.initialize(departure, destination: destination)
             let route = aStar.main()
@@ -120,13 +131,13 @@ class MoveObjectEventListener: EventListener {
         var diff: TileCoordinate = TileCoordinate(x: 0, y: 0)
         switch direction {
         case .up:
-            diff = diff + TileCoordinate(x: 0, y: 1)
+            diff = diff + TileCoordinate(x:  0, y:  1)
         case .down:
-            diff = diff + TileCoordinate(x: 0, y: -1)
+            diff = diff + TileCoordinate(x:  0, y: -1)
         case .right:
-            diff = diff + TileCoordinate(x: 1, y: 0)
+            diff = diff + TileCoordinate(x:  1, y:  0)
         case .left:
-            diff = diff + TileCoordinate(x: -1, y: 0)
+            diff = diff + TileCoordinate(x: -1, y:  0)
         }
         return (departure + diff)
     }

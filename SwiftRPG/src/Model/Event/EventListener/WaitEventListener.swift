@@ -31,10 +31,15 @@ class WaitEventListener: EventListener {
                 "time": ["type": "string"]
             ],
             "required": ["time"],
-            ])
+            ]
+        )
         let result = schema.validate(params?.rawValue ?? [])
         if result.valid == false {
             throw EventListenerError.illegalParamFormat(result.errors!)
+        }
+        // TODO: Validation as following must be executed as a part of validation by JSONSchema
+        if (Int(params!["time"].string!) == nil) {
+            throw EventListenerError.illegalParamFormat(["The parameter 'time' couldn't convert to integer"])
         }
 
         self.params = params
@@ -43,17 +48,31 @@ class WaitEventListener: EventListener {
         self.executionType = .onece
         self.invoke = {
             (sender: GameSceneProtocol?, args: JSON?) in
+
             self.isExecuting = true
+
             let map = sender!.map!
-            let time = self.params?["time"].string!
-            _ = firstly {
-                return Promise<Void> { fulfill, reject in
-                    map.wait(Int(time!)!, callback: {() in fulfill()})
-                }
+            let time = Int((self.params?["time"].string!)!)!
+
+            firstly {
+                self.generatePromiseClojureForWaiting(map: map, time: time)
             }.always {
                 let nextEventListener = InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 self.delegate?.invoke(self, listener: nextEventListener)
+            }.catch {
+                _ in
+                // Adding some code if it has become that there is 
+                // a possibility exception throwing occurrence in above blocks.
             }
+        }
+    }
+
+    // TODO: Currently, for delaying animated, run delay action for Map SKSpriteNode.
+    //       This might be problem if we wanted to animate map.
+    fileprivate func generatePromiseClojureForWaiting(map: Map, time: Int) -> Promise<Void> {
+        return Promise<Void> {
+            fullfill, reject in
+            map.wait(time, callback: { () in fullfill() })
         }
     }
 
