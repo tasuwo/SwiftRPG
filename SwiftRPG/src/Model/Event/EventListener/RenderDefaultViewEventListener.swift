@@ -22,13 +22,11 @@ class RenderDefaultViewEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         self.params = params
         self.listeners = listeners
         self.triggerType = .immediate
-        self.executionType = .onece
         self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
             

@@ -20,7 +20,6 @@ class TalkEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     fileprivate let params: JSON
     internal var listeners: ListenerChain?
@@ -55,7 +54,6 @@ class TalkEventListener: EventListener {
         self.listeners     = listeners
         self.index         = index
         self.triggerType   = .touch
-        self.executionType = .onece
         // TODO: The value of following variable is determined by the number of property.
         //       It might have to be defined specifically.
         // a number of conversation times

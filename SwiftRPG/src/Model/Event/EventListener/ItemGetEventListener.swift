@@ -21,7 +21,6 @@ class ItemGetEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     internal var listeners: ListenerChain?
     fileprivate let params: JSON
@@ -48,7 +47,6 @@ class ItemGetEventListener: EventListener {
         }
         
         self.triggerType   = .immediate
-        self.executionType = .onece
         self.params        = params!
         self.listeners     = listeners
         self.itemKey       = params!["key"].string!

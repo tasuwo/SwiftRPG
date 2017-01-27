@@ -22,7 +22,6 @@ class ShowEventDialogListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
 
@@ -41,7 +40,6 @@ class ShowEventDialogListener: EventListener {
         self.params        = params
         self.listeners     = listeners
         self.triggerType   = .immediate
-        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.eventDialog.text = params!["text"].string!
             sender!.eventDialog.isHidden = false

@@ -23,11 +23,9 @@ class WalkEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) {
         self.triggerType   = .touch
-        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             let schema = Schema([
                 "type": "object",

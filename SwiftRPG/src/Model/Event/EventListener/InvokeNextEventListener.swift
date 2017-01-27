@@ -18,12 +18,10 @@ class InvokeNextEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
     internal var listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         self.triggerType   = .immediate
-        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             // If there are no registered listener, exit
             if listeners == nil || listeners?.count == 0 {

@@ -22,12 +22,10 @@ class HideEventDialogListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
     internal var listeners: ListenerChain?
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) {
         self.triggerType   = .touch
-        self.executionType = .onece
         self.listeners     = listeners
         self.params        = params
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in

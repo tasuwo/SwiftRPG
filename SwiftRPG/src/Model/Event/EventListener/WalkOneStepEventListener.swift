@@ -23,7 +23,6 @@ class WalkOneStepEventListener: EventListener {
     var params: JSON?
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners: ListenerChain?) throws {
 
@@ -42,7 +41,6 @@ class WalkOneStepEventListener: EventListener {
         self.params        = params
         self.listeners     = chainListeners
         self.triggerType   = .immediate
-        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
 

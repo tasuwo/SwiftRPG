@@ -22,7 +22,6 @@ class ActivateButtonListener: EventListener {
     var eventObjectId: MapObjectId? = nil
     var isExecuting: Bool = false
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         let schema = Schema([
@@ -40,7 +39,6 @@ class ActivateButtonListener: EventListener {
         self.params        = params
         self.listeners     = listeners
         self.triggerType   = .immediate
-        self.executionType = .onece
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.actionButton.title = params!["text"].string!
             sender!.actionButton.isHidden = false

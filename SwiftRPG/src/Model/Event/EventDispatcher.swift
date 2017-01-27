@@ -94,9 +94,7 @@ class EventDispatcher : NotifiableFromListener {
         for listener in listeners.values {
             if !listener.isExecuting {
                 try listener.invoke!(sender, args).then { _ -> Void in
-                    if listener.executionType == .onece {
-                        self.remove(listener, sender: sender)
-                    }
+                    self.remove(listener, sender: sender)
                 }.catch { error in
                     // TODO:
                 }

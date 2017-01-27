@@ -23,11 +23,6 @@ enum TriggerType {
     case button
 }
 
-enum ExecutionType {
-    case onece
-    case loop
-}
-
 protocol GameSceneProtocol {
     var actionButton: UIButton!    { get set }
     var menuButton:   UIButton!    { get set }
@@ -49,7 +44,6 @@ protocol EventHandler: class {
     var invoke:        EventMethod?  { get set }
     var rollback:      EventMethod?  { get set }
     var triggerType:   TriggerType   { get }
-    var executionType: ExecutionType { get }
 }
 
 typealias ListenerChain = [(listener: EventListener.Type, params: JSON?)]

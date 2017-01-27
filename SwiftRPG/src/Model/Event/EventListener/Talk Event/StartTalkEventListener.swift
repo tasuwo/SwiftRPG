@@ -20,7 +20,6 @@ class StartTalkEventListener: EventListener {
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
-    let executionType: ExecutionType
 
     fileprivate let directionString: String
     fileprivate let params: JSON
@@ -40,7 +39,6 @@ class StartTalkEventListener: EventListener {
 
         self.directionString = directionString!
         self.triggerType     = .button
-        self.executionType   = .onece
         self.params          = JSON(array!)
         self.listeners       = listeners
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
