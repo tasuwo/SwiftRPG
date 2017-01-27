@@ -43,6 +43,9 @@ class StartTalkEventListener: EventListener {
         self.executionType   = .onece
         self.params          = JSON(array!)
         self.listeners       = listeners
+        self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+            sender?.actionButton.isHidden = true
+        }
         self.invoke          = { (sender: GameSceneProtocol?, args: JSON?) -> () in
             // Initialize dialog
             sender!.textBox.clean()

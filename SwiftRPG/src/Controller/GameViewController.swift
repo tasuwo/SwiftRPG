@@ -111,7 +111,7 @@ extension GameViewController: GameSceneDelegate {
                 }
                 let removedIds = self.eventObjectIds?.subtracting(newIdSets)
                 for id in removedIds! {
-                    self.eventManager.remove(id)
+                    self.eventManager.remove(id, sender: gameScene)
                     self.eventObjectIds!.remove(id)
                 }
             }
@@ -123,19 +123,10 @@ extension GameViewController: GameSceneDelegate {
         } else {
             if self.eventObjectIds != nil {
                 for id in self.eventObjectIds! {
-                    self.eventManager.remove(id)
+                    self.eventManager.remove(id, sender: gameScene)
                 }
                 self.eventObjectIds = nil
             }
-        }
-
-        // Manage actionButton rendering
-        // TODO: If actionButton showing was managed here, 
-        //       activate button listener is no longer necessary.
-        if self.eventManager.existsListeners(.button) == false {
-            gameScene.actionButton.isHidden = true
-        } else {
-            gameScene.actionButton.isHidden = false
         }
 
         // Trigger cyclic events

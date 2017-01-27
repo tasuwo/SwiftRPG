@@ -50,7 +50,7 @@ class EventManager: NotifiableFromDispacher {
     }
 
     @discardableResult
-    func remove(_ id: MapObjectId) -> Bool {
+    func remove(_ id: MapObjectId, sender: GameSceneProtocol? = nil) -> Bool {
         let listeners = self.getAllListeners()
         var targetListener: EventListener? = nil
         var targetDispacher: EventDispatcher? = nil
@@ -65,7 +65,7 @@ class EventManager: NotifiableFromDispacher {
 
         if let l = targetListener,
            let d = targetDispacher {
-            return d.remove(l)
+            return d.remove(l, sender: sender)
         }
 
         return false

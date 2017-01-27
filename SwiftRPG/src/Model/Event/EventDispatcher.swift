@@ -40,29 +40,40 @@ class EventDispatcher : NotifiableFromListener {
     }
 
     @discardableResult
-    func remove(_ listener: ListenerType) -> Bool {
+    func remove(_ listener: ListenerType, sender: GameSceneProtocol? = nil) -> Bool {
         if listener.id == nil { return false }
+
+        do {
+            try listener.rollback?(sender, nil)
+        // } catch EventListenerError.illegalArguementFormat(let string) {
+        // } catch EventListenerError.illegalParamFormat(let array) {
+        // } catch EventListenerError.invalidParam(let string) {
+        } catch {
+            // TODO
+        }
+
         listeners.removeValue(forKey: listener.id!)
         listener.id = nil
         return true
     }
 
     @discardableResult
-    func removeByEventObjectId(_ listener: ListenerType) -> Bool {
+    func removeByEventObjectId(_ listener: ListenerType, sender: GameSceneProtocol? = nil) -> Bool {
         if listener.eventObjectId == nil { return false }
-        var key: IdType? = nil
-        for (key_, listener_) in self.listeners {
+        var targetListener: EventListener? = nil
+
+        for listener_ in self.listeners.values {
             if listener_.eventObjectId == listener.eventObjectId {
-                key = key_
+                targetListener = listener_
+                break
             }
         }
 
-        if let k = key {
-            listeners.removeValue(forKey: k)
-            return true
-        } else {
-            return false
+        if let targetListener_ = targetListener {
+            return self.remove(targetListener_, sender: sender)
         }
+
+        return false
     }
     
     func removeAll() {
@@ -87,16 +98,16 @@ class EventDispatcher : NotifiableFromListener {
                 }
 
                 if listener.executionType == .onece {
-                    self.remove(listener)
+                    self.remove(listener, sender: sender)
                 }
             } catch EventListenerError.illegalArguementFormat(let string) {
-                self.remove(listener)
+                self.remove(listener, sender: sender)
                 throw EventDispacherError.FiledToInvokeListener("Illegal arguement format:" + string)
             } catch EventListenerError.illegalParamFormat(let array) {
-                self.remove(listener)
+                self.remove(listener, sender: sender)
                 throw EventDispacherError.FiledToInvokeListener("Failed to invoke listener:" + array.description)
             } catch EventListenerError.invalidParam(let string) {
-                self.remove(listener)
+                self.remove(listener, sender: sender)
                 throw EventDispacherError.FiledToInvokeListener("Invalid parameter:" + string)
             }
         }
