@@ -134,7 +134,6 @@ class EventManager: NotifiableFromDispacher {
         invokerDispacher.removeByEventObjectId(invoker)
 
         // TODO: うまく排他制御する
-        // nextListenersDispacher.removeAll()
-        if nextListenersDispacher.add(listener) == false { return }
+        nextListenersDispacher.add(listener)
     }
 }
