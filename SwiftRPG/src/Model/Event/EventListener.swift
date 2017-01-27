@@ -37,6 +37,9 @@ protocol GameSceneProtocol {
     func hideAllButtons()     -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
     func showEventDialog()    -> Promise<Void>
+
+    func stopBehaviors()
+    func startBehaviors()
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> Promise<Void>
@@ -51,7 +54,7 @@ protocol EventListener: EventHandler {
     var id:            UInt64!                 { get set }
     var delegate:      NotifiableFromListener? { get set }
     var listeners:     ListenerChain?          { get }
-    var isExecuting:   Bool                    { get }
+    var isExecuting:   Bool                    { get set }
     var isBehavior:    Bool                    { get set }
     var eventObjectId: MapObjectId?            { get set }
 

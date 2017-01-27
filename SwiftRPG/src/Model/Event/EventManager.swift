@@ -22,6 +22,8 @@ class EventManager: NotifiableFromDispacher {
     fileprivate var actionButtonEventDispacher: EventDispatcher
     fileprivate var cyclicEventDispacher: EventDispatcher
 
+    fileprivate var isBlockedBehavior: Bool = false
+
     init() {
         self.touchEventDispacher = EventDispatcher()
         self.actionButtonEventDispacher = EventDispatcher()
@@ -37,8 +39,10 @@ class EventManager: NotifiableFromDispacher {
         let listeners = self.getAllListeners()
         if listener.eventObjectId != nil {
             for listener_ in listeners {
-                // If there are listener which is generated from same event object, should be ignored.
-                if listener_.eventObjectId == listener.eventObjectId { return false }
+                if listener_.eventObjectId == listener.eventObjectId
+                && listener_.isBehavior == listener.isBehavior {
+                    return false
+                }
             }
         }
         let dispacher = self.getDispacherOf(listener.triggerType)
@@ -56,7 +60,8 @@ class EventManager: NotifiableFromDispacher {
         var targetDispacher: EventDispatcher? = nil
 
         for listener in listeners {
-            if listener.eventObjectId == id {
+            if listener.eventObjectId == id
+            && listener.isBehavior == false {
                 targetDispacher = self.getDispacherOf(listener.triggerType)
                 targetListener = listener
                 break
@@ -69,6 +74,14 @@ class EventManager: NotifiableFromDispacher {
         }
 
         return false
+    }
+
+    func blockBehavior() {
+        self.isBlockedBehavior = true
+    }
+
+    func unblockBehavior() {
+        self.isBlockedBehavior = false
     }
 
     func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
@@ -123,6 +136,10 @@ class EventManager: NotifiableFromDispacher {
     func invoke(_ invoker: EventListener, listener: EventListener) {
         let invokerDispacher = self.getDispacherOf(invoker.triggerType)
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
+
+        if isBlockedBehavior && listener.isBehavior {
+            return
+        }
 
         // Cannot execute following code:
         // In Listener chain, listeners which passed to here are defined as clojure in each event listeners.

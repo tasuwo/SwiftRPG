@@ -293,6 +293,8 @@ open class Object: MapObject {
             if let obj_behavior = property!["behavior"] {
                 do {
                     let listener = try BehaviorPropertyParser.parse(from: obj_behavior)
+                    listener?.eventObjectId = object.id
+                    listener?.isBehavior = true
                     object.behavior = listener
                 } catch ListenerGeneratorError.failed(let string) {
                     throw MapObjectError.failedToGenerate("Failed to generate event listener: " + string)

@@ -139,9 +139,15 @@ extension GameViewController: GameSceneDelegate {
         }
     }
 
-    func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
+    func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
+        self.eventManager.unblockBehavior()
         for behavior in behaviors.values {
+            behavior.isExecuting = false
             self.eventManager.add(behavior)
         }
+    }
+
+    func stopBehaviors() {
+        self.eventManager.blockBehavior()
     }
 }

@@ -61,7 +61,6 @@ class TalkEventListener: EventListener {
         self.talkContentsMaxNum = (params?.arrayObject?.count)!
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
-            sender?.startBehaviors()
             sender?.textBox.hide()
             return Promise<Void> { fullfill, reject in fullfill() }
         }

@@ -44,7 +44,6 @@ class StartTalkEventListener: EventListener {
         self.listeners       = listeners
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
-            sender?.startBehaviors()
             sender?.textBox.hide()
             return Promise<Void> { fullfill, reject in fullfill() }
         }
@@ -52,7 +51,10 @@ class StartTalkEventListener: EventListener {
             self.isExecuting = true
 
             // Initialize dialog
-            sender!.textBox.clean()
+            sender?.textBox.clean()
+
+            // Stop All Object's behavior
+            sender?.stopBehaviors()
 
             // Change direction of player
             let map = sender!.map!

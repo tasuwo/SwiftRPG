@@ -17,7 +17,8 @@ protocol GameSceneDelegate: class {
     func actionButtonTouched()
     func menuButtonTouched()
     func viewUpdated()
-    func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
+    func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
+    func stopBehaviors()
 }
 
 /// ゲーム画面
@@ -143,15 +144,19 @@ class GameScene: Scene, GameSceneProtocol {
         }
     }
 
-    // MARK: ---
+    func stopBehaviors() {
+        self.gameSceneDelegate?.stopBehaviors()
+    }
 
-    func registerBehaviors() {
+    func startBehaviors() {
         var behaviors: Dictionary<MapObjectId, EventListener> = [:]
         let objects = self.map?.getAllObjects()
         for object in objects! {
             behaviors[object.id] = object.behavior
         }
-        self.gameSceneDelegate?.registerBehaviors(behaviors)
+        self.gameSceneDelegate?.startBehaviors(behaviors)
     }
+
+    // MARK: ---
 }
 
