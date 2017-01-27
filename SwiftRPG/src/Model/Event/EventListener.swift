@@ -29,33 +29,36 @@ enum ExecutionType {
 }
 
 protocol GameSceneProtocol {
-    var actionButton: UIButton! { get set }
-    var menuButton: UIButton! { get set }
-    var eventDialog: DialogLabel! { get set }
-    var map: Map? { get set }
-    var textBox: Dialog! { get set }
+    var actionButton: UIButton!    { get set }
+    var menuButton:   UIButton!    { get set }
+    var eventDialog:  DialogLabel! { get set }
+    var map:          Map?         { get set }
+    var textBox:      Dialog!      { get set }
 
-    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction]) -> Promise<Void> 
-    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate) -> Promise<Void>
-    func hideAllButtons() -> Promise<Void>
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction])
+        -> Promise<Void>
+    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate)
+        -> Promise<Void>
+    func hideAllButtons()     -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
-    func showEventDialog() -> Promise<Void>
+    func showEventDialog()    -> Promise<Void>
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
 protocol EventHandler: class {
-    var invoke: EventMethod? { get set }
-    var triggerType: TriggerType { get }
+    var invoke:        EventMethod?  { get set }
+    var triggerType:   TriggerType   { get }
     var executionType: ExecutionType { get }
 }
 
 typealias ListenerChain = [(listener: EventListener.Type, params: JSON?)]
 protocol EventListener: EventHandler {
-    var id: UInt64! { get set }
-    var delegate: NotifiableFromListener? { get set }
-    var listeners: ListenerChain? { get }
-    var isExecuting: Bool { get }
-    var eventObjectId: MapObjectId? { get set }
+    var id:            UInt64!                 { get set }
+    var delegate:      NotifiableFromListener? { get set }
+    var listeners:     ListenerChain?          { get }
+    var isExecuting:   Bool                    { get }
+    var eventObjectId: MapObjectId?            { get set }
+
     func chain(listeners: ListenerChain)
     init(params: JSON?, chainListeners: ListenerChain?) throws
 }
