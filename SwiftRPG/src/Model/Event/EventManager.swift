@@ -33,6 +33,13 @@ class EventManager: NotifiableFromDispacher {
     }
 
     func add(_ listener: EventListener) -> Bool {
+        let listeners = self.getAllListeners()
+        if listener.eventObjectId != nil {
+            for listener_ in listeners {
+                // If there are listener which is generated from same event object, should be ignored.
+                if listener_.eventObjectId == listener.eventObjectId { return false }
+            }
+        }
         let dispacher = self.getDispacherOf(listener.triggerType)
         if dispacher.add(listener) == false {
             return false
@@ -51,6 +58,14 @@ class EventManager: NotifiableFromDispacher {
     }
 
     // MARK: - Private methods
+
+    fileprivate func getAllListeners() -> [EventListener] {
+        var listeners: [EventListener] = []
+        listeners += self.touchEventDispacher.getAllListeners()
+        listeners += self.actionButtonEventDispacher.getAllListeners()
+        listeners += self.cyclicEventDispacher.getAllListeners()
+        return listeners
+    }
 
     fileprivate func getDispacherOf(_ type: TriggerType) -> EventDispatcher {
         switch type {
