@@ -28,6 +28,10 @@ class HideEventDialogListener: EventListener {
         self.triggerType   = .touch
         self.listeners     = listeners
         self.params        = params
+        self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            sender?.eventDialog.isHidden = true
+            return Promise<Void> { fullfill, reject in fullfill() }
+        }
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.eventDialog.isHidden = true
 

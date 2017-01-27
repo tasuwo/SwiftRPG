@@ -40,6 +40,10 @@ class ShowEventDialogListener: EventListener {
         self.params        = params
         self.listeners     = listeners
         self.triggerType   = .immediate
+        self.rollback      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            sender?.eventDialog.isHidden = true
+            return Promise<Void> { fullfill, reject in fullfill() }
+        }
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.eventDialog.text = params!["text"].string!
             sender!.eventDialog.isHidden = false

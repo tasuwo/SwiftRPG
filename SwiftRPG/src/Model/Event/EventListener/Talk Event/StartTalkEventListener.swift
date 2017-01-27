@@ -43,6 +43,8 @@ class StartTalkEventListener: EventListener {
         self.listeners       = listeners
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
+            sender?.startBehaviors()
+            sender?.textBox.hide()
             return Promise<Void> { fullfill, reject in fullfill() }
         }
         self.invoke          = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in

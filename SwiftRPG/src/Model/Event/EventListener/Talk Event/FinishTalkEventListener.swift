@@ -27,6 +27,12 @@ class FinishTalkEventListener: EventListener {
         self.params        = params
         self.listeners     = listeners
         self.triggerType   = .touch
+        self.rollback      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            sender?.actionButton.isHidden = true
+            sender?.startBehaviors()
+            sender?.textBox.hide()
+            return Promise<Void> { fullfill, reject in fullfill() }
+        }
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
             

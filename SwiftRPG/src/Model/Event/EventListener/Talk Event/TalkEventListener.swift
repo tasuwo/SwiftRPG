@@ -58,6 +58,12 @@ class TalkEventListener: EventListener {
         //       It might have to be defined specifically.
         // a number of conversation times
         self.talkContentsMaxNum = (params?.arrayObject?.count)!
+        self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            sender?.actionButton.isHidden = true
+            sender?.startBehaviors()
+            sender?.textBox.hide()
+            return Promise<Void> { fullfill, reject in fullfill() }
+        }
         self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             do {
                 let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index, params: self.params)
