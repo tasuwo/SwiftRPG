@@ -47,6 +47,7 @@ protocol GameSceneProtocol {
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
 protocol EventHandler: class {
     var invoke:        EventMethod?  { get set }
+    var rollback:      EventMethod?  { get set }
     var triggerType:   TriggerType   { get }
     var executionType: ExecutionType { get }
 }

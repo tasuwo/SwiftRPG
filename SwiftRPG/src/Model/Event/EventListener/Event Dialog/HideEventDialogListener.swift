@@ -16,6 +16,7 @@ class HideEventDialogListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var rollback: EventMethod?
     var listensers: ListenerChain?
     var params: JSON?
     var isExecuting: Bool = false

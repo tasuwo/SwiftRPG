@@ -15,6 +15,7 @@ class ActivateButtonListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var rollback: EventMethod?
     var listeners: ListenerChain?
     var params: JSON?
     var eventObjectId: MapObjectId? = nil

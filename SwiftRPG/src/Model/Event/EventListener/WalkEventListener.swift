@@ -17,6 +17,7 @@ class WalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var rollback: EventMethod?
     var listeners: ListenerChain?
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil

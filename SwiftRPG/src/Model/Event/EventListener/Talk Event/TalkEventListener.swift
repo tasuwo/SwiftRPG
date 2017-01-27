@@ -16,6 +16,7 @@ class TalkEventListener: EventListener {
     var id: UInt64!
     var delegate: NotifiableFromListener?
     var invoke: EventMethod?
+    var rollback: EventMethod?
     var isExecuting: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
