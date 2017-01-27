@@ -426,6 +426,10 @@ open class TileSheet {
 
     // other getter's
 
+    func getObjectBehavior(_ id: MapObjectId) -> EventListener? {
+        return self.objects[id]?.behavior
+    }
+
     func getObjectByName(_ name: String) -> Object? {
         for object in self.objects.values {
             if object.name == name {

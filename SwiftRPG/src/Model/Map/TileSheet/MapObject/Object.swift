@@ -292,7 +292,7 @@ open class Object: MapObject {
             // Add behavior
             if let obj_behavior = property!["behavior"] {
                 do {
-                    let listener = try BehaviorPropertyParser.parse(from: obj_behavior)
+                    let listener = try BehaviorPropertyParser.parse(from: obj_behavior, parentId: object.id)
                     listener?.eventObjectId = object.id
                     listener?.isBehavior = true
                     object.behavior = listener

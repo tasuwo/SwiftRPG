@@ -8,9 +8,10 @@
 
 import Foundation
 import SpriteKit
+import SwiftyJSON
 
 class BehaviorPropertyParser {
-    class func parse(from properties: String) throws -> EventListener? {
+    class func parse(from properties: String, parentId: MapObjectId) throws -> EventListener? {
         var chain: ListenerChain = []
         let lines = properties.components(separatedBy: "\n")
         for line in lines {
@@ -23,6 +24,8 @@ class BehaviorPropertyParser {
                 // TODO
             }
         }
+
+        chain = chain + [(listener: ReloadBehaviorEventListener.self, params: JSON(["eventObjectId":parentId]) as JSON?)]
 
         var listener: EventListener? = nil
         let listenerType = chain.first?.listener

@@ -108,6 +108,10 @@ open class Map {
         self.sheet!.addTo(scene)
     }
 
+    func getObjectBehavior(_ id: MapObjectId) -> EventListener? {
+        return self.sheet?.getObjectBehavior(id)
+    }
+
     func getObjectByName(_ name: String) -> Object? {
         return self.sheet?.getObjectByName(name)
     }
