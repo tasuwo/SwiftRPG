@@ -118,8 +118,7 @@ extension GameViewController: GameSceneDelegate {
 
             // Invoke events
             for event in events {
-                if self.eventManager.add(event) == false {
-                }
+                self.eventManager.add(event)
             }
         } else {
             if self.eventObjectIds != nil {
