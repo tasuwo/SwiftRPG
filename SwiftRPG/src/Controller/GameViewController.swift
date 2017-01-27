@@ -74,16 +74,10 @@ extension GameViewController: GameSceneDelegate {
         let gameScene = skView.scene as! GameScene
         let map = gameScene.map
 
+        // Update z-index of objects
         map?.updateObjectsZPosition()
 
-        do {
-            try self.eventManager.trigger(.immediate, sender: gameScene, args: nil)
-        } catch EventManagerError.FailedToTrigger(let string) {
-            print("Failed to trigger cyclic event: " + string)
-        } catch {
-            print("Unexpected error has occurred during triggering cyclic event")
-        }
-
+        // Check events existence
         if let events = map?.getEventsOnPlayerPosition() {
             for event in events {
                 if self.eventManager.add(event) == false {
@@ -91,6 +85,15 @@ extension GameViewController: GameSceneDelegate {
                     // print("Failed to adding event")
                 }
             }
+        }
+
+        // Trigger cyclic events
+        do {
+            try self.eventManager.trigger(.immediate, sender: gameScene, args: nil)
+        } catch EventManagerError.FailedToTrigger(let string) {
+            print("Failed to trigger cyclic event: " + string)
+        } catch {
+            print("Unexpected error has occurred during triggering cyclic event")
         }
     }
 
