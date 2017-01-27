@@ -46,7 +46,7 @@ class ListenerGenerator {
             do {
                 let listener = try listenerType?.init(
                     params: params,
-                    chainListeners: ListenerChain(listenerChain.dropFirst(1)) + ListenerContainer.getDefault())
+                    chainListeners: ListenerChain(listenerChain.dropFirst(1)))
                 listeners[coordinate] = listener
             } catch EventListenerError.illegalArguementFormat(let string) {
                 throw ListenerGeneratorError.failed("Illegal arguement for listener: " + string)

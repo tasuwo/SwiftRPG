@@ -68,11 +68,4 @@ class ListenerContainer {
             throw ListenerContainerError.eventIdNotFound
         }
     }
-
-    class func getDefault() -> ListenerChain {
-        return [
-            (listener: RenderDefaultViewEventListener.self, params: nil),
-            (listener: WalkEventListener.self, params: nil)
-        ]
-    }
 }
