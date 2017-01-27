@@ -59,8 +59,6 @@ class GameScene: Scene, GameSceneProtocol {
 
     func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction]) -> Promise<Void> {
         let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
-        self.textBox.hide()
-        self.actionButton.isHidden = true
 
         return Promise { fulfill, reject in
             let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!

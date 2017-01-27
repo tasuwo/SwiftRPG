@@ -12,6 +12,7 @@ import SwiftyJSON
 
 class GameViewController: SceneController {
     var eventManager: EventManager!
+    var eventObjectIds: Set<MapObjectId>? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,8 @@ extension GameViewController: GameSceneDelegate {
         self.present(viewController, animated: true, completion: nil)
     }
 
+    // TODO: Error handling when adding or removing event listener has failed
+
     // This function is executed cyclically
     // The role of this function is as following
     //   - Update object's z-index position.
@@ -77,14 +80,63 @@ extension GameViewController: GameSceneDelegate {
         // Update z-index of objects
         map?.updateObjectsZPosition()
 
-        // Check events existence
-        if let events = map?.getEventsOnPlayerPosition() {
-            for event in events {
-                if self.eventManager.add(event) == false {
-                    // TODO: Deal with failure
-                    // print("Failed to adding event")
+        // If player was on the event object, the listeners which has the placed event's
+        // id should be in event dispatcher. But if player left from the event object, 
+        // the listeners should be removed from dispatcher as soon as possible.
+        // To realize above, the placed event's id should be stored in somewhere.
+        //
+        // - The role of Object class is to store information about self and generate some
+        //   components (e.g. animation) for dealing with self by others.
+        // - The role of Map class is to store the state of placement of objects and tiles,
+        //   and provide methods for manipulating them.
+        //
+        // I cannot judge this, so this role add to this controller for now.
+        if let events_ = map?.getEventsOnPlayerPosition() {
+            let events: [EventListener] = events_
+
+            // Update eventObjectIds value
+            if self.eventObjectIds == nil {
+                self.eventObjectIds = []
+                for event in events {
+                    self.eventObjectIds?.insert(event.eventObjectId!)
+                }
+            } else {
+                var newIdSets: Set<MapObjectId> = []
+                for event in events {
+                    newIdSets.insert(event.eventObjectId!)
+                }
+                let unregisteredIds = newIdSets.subtracting(self.eventObjectIds!)
+                for id in unregisteredIds {
+                    self.eventObjectIds?.insert(id)
+                }
+                let removedIds = self.eventObjectIds?.subtracting(newIdSets)
+                for id in removedIds! {
+                    self.eventManager.remove(id)
+                    self.eventObjectIds!.remove(id)
                 }
             }
+
+            // Invoke events
+            for event in events {
+                if self.eventManager.add(event) == false {
+                }
+            }
+        } else {
+            if self.eventObjectIds != nil {
+                for id in self.eventObjectIds! {
+                    self.eventManager.remove(id)
+                }
+                self.eventObjectIds = nil
+            }
+        }
+
+        // Manage actionButton rendering
+        // TODO: If actionButton showing was managed here, 
+        //       activate button listener is no longer necessary.
+        if self.eventManager.existsListeners(.button) == false {
+            gameScene.actionButton.isHidden = true
+        } else {
+            gameScene.actionButton.isHidden = false
         }
 
         // Trigger cyclic events
@@ -99,10 +151,7 @@ extension GameViewController: GameSceneDelegate {
 
     func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
         for behavior in behaviors.values {
-            if self.eventManager.add(behavior) == false {
-                // TODO: Deal with failure
-                print("Failed to adding event")
-            }
+            self.eventManager.add(behavior)
         }
     }
 }

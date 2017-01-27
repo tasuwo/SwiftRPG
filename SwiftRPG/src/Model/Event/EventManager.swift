@@ -32,6 +32,7 @@ class EventManager: NotifiableFromDispacher {
         self.cyclicEventDispacher.delegate = self
     }
 
+    @discardableResult
     func add(_ listener: EventListener) -> Bool {
         let listeners = self.getAllListeners()
         if listener.eventObjectId != nil {
@@ -48,6 +49,28 @@ class EventManager: NotifiableFromDispacher {
         }
     }
 
+    @discardableResult
+    func remove(_ id: MapObjectId) -> Bool {
+        let listeners = self.getAllListeners()
+        var targetListener: EventListener? = nil
+        var targetDispacher: EventDispatcher? = nil
+
+        for listener in listeners {
+            if listener.eventObjectId == id {
+                targetDispacher = self.getDispacherOf(listener.triggerType)
+                targetListener = listener
+                break
+            }
+        }
+
+        if let l = targetListener,
+           let d = targetDispacher {
+            return d.remove(l)
+        }
+
+        return false
+    }
+
     func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
         let dispacher = self.getDispacherOf(type)
         do {
@@ -55,6 +78,22 @@ class EventManager: NotifiableFromDispacher {
         } catch EventDispacherError.FiledToInvokeListener(let string) {
             throw EventManagerError.FailedToTrigger(string)
         }
+    }
+
+    func existsListeners(_ type: TriggerType) -> Bool {
+        let dispathcer = self.getDispacherOf(type)
+        let listeners = dispathcer.getAllListeners()
+        return !listeners.isEmpty
+    }
+
+    func shouldActivateButton() -> Bool {
+        let listeners = self.getDispacherOf(.immediate).getAllListeners()
+        for listener in listeners {
+            if let _ = listener as? ActivateButtonListener {
+                return true
+            }
+        }
+        return false
     }
 
     // MARK: - Private methods
@@ -95,7 +134,7 @@ class EventManager: NotifiableFromDispacher {
         invokerDispacher.removeByEventObjectId(invoker)
 
         // TODO: うまく排他制御する
-        nextListenersDispacher.removeAll()
+        // nextListenersDispacher.removeAll()
         if nextListenersDispacher.add(listener) == false { return }
     }
 }
