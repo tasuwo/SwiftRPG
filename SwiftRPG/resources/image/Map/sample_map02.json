@@ -123,7 +123,7 @@
             {
              "0":
                 {
-                 "behavior":"wait,5\nmove,mob,LEFT,1,5\nwait,5\nmove,mob,RIGHT,1,5",
+                 "behavior":"wait,1\nmove,mob,LEFT,1,1\nwait,1\nmove,mob,RIGHT,1,1",
                  "collision":"1",
                  "event":"talk,{(0,-1)},talk_01.txt\nitem,{(0,-1)},test"
                 }
