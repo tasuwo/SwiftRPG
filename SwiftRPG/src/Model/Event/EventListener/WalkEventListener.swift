@@ -59,7 +59,9 @@ class WalkEventListener: EventListener {
             aStar.initialize(departure, destination: destination)
             let path = aStar.main()
             if path == nil {
-                self.delegate?.invoke(self, listener: WalkEventListener.init(params: nil, chainListeners: nil))
+                let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
+                nextEventListener.eventObjectId = self.eventObjectId
+                self.delegate?.invoke(self, listener: nextEventListener)
                 return
             }
 
@@ -73,6 +75,7 @@ class WalkEventListener: EventListener {
             let nextListenerChain: ListenerChain? = chain.count == 1 ? nil : Array(chain.dropFirst())
             do {
                 let nextListenerInstance = try nextListener.init(params: chain.first!.params, chainListeners: nextListenerChain)
+                nextListenerInstance.eventObjectId = self.eventObjectId
                 self.delegate?.invoke(self, listener: nextListenerInstance)
             } catch {
                 throw error

@@ -34,6 +34,7 @@ class FinishTalkEventListener: EventListener {
                 }.then { _ -> Void in
                     do {
                         let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                        nextEventListener.eventObjectId = self.eventObjectId
                         self.delegate?.invoke(self, listener: nextEventListener)
                     } catch {
                         throw error

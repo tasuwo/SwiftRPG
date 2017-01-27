@@ -70,8 +70,14 @@ class EventManager: NotifiableFromDispacher {
         let invokerDispacher = self.getDispacherOf(invoker.triggerType)
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
-        // 呼び出し元の EventListener 自身を Dispacher から削除する
-        if invokerDispacher.remove(invoker) == false {}
+        // Cannot execute following code:
+        // In Listener chain, listeners which passed to here are defined as clojure in each event listeners.
+        // The remove function of event dispatcher uses listener id which is specified at the time of adding listener to dispathcer.
+        // But the clojure could only know about variables at the time of it is defined, so cannot access listener id from clojure.
+        //   if invokerDispacher.remove(invoker) == false {}
+        // Instead of listener id, we use event object id
+        // Commonly, one event object has only one event listener chain, and it is defined at the time of 
+        invokerDispacher.removeByEventObjectId(invoker)
 
         // TODO: うまく排他制御する
         nextListenersDispacher.removeAll()

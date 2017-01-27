@@ -72,6 +72,7 @@ class TalkEventListener: EventListener {
                 } else {
                     nextEventListener = try FinishTalkEventListener(params: self.params, chainListeners: self.listeners)
                 }
+                nextEventListener.eventObjectId = self.eventObjectId
                 
                 self.delegate?.invoke(self, listener: nextEventListener)
             } catch {

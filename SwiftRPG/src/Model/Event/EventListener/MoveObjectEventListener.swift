@@ -79,6 +79,7 @@ class MoveObjectEventListener: EventListener {
                 // If there are no route to destination, finish this listener and invoke next listener
                 do {
                     let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    nextEventListener.eventObjectId = self.eventObjectId
                     self.delegate?.invoke(self, listener: nextEventListener)
                 } catch {
                     throw error
@@ -122,6 +123,7 @@ class MoveObjectEventListener: EventListener {
             }.then { _ -> Void in
                 do {
                     let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                    nextEventListener.eventObjectId = self.eventObjectId
                     self.delegate?.invoke(self, listener: nextEventListener)
                 } catch {
                     throw error

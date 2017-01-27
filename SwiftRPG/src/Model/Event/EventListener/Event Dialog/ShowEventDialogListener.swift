@@ -46,6 +46,7 @@ class ShowEventDialogListener: EventListener {
             sender!.eventDialog.isHidden = false
 
             let nextEventListener = HideEventDialogListener(params: self.params, chainListeners: self.listeners)
+            nextEventListener.eventObjectId = self.eventObjectId
             self.delegate?.invoke(self, listener: nextEventListener)
         }
     }

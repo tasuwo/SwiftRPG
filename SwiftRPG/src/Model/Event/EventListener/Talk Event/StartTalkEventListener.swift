@@ -65,7 +65,9 @@ class StartTalkEventListener: EventListener {
 
                     // TODO: If there are no need to invoke following (i.e. The conversation would finish in only one(above) step),
                     //       should deal with it well.
-                    self.delegate?.invoke(self, listener: try TalkEventListener(params: self.params, chainListeners: self.listeners))
+                    let nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners)
+                    nextEventListener.eventObjectId = self.eventObjectId
+                    self.delegate?.invoke(self, listener: nextEventListener)
                 } catch {
                     throw error
                 }

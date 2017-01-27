@@ -95,7 +95,9 @@ class WalkOneStepEventListener: EventListener {
 
                 // If reached at destination, stop walking and set WalkEvetListener as touch event again
                 if self.listeners == nil || self.listeners?.count == 0 {
-                    self.delegate?.invoke(self, listener: WalkEventListener.init(params: nil, chainListeners: nil))
+                    let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
+                    nextEventListener.eventObjectId = self.eventObjectId
+                    self.delegate?.invoke(self, listener: nextEventListener)
                     return
                 }
 

@@ -32,6 +32,7 @@ class InvokeNextEventListener: EventListener {
             let nextListenerChain: ListenerChain? = listeners!.count == 1 ? nil : Array(listeners!.dropFirst())
             do {
                 let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
+                nextListenerInstance.eventObjectId = self.eventObjectId
                 self.delegate?.invoke(self, listener: nextListenerInstance)
             } catch {
                 throw error
