@@ -17,7 +17,6 @@ protocol GameSceneDelegate: class {
     func actionButtonTouched()
     func menuButtonTouched()
     func viewUpdated()
-    func addEvent(_ events: [EventListener])
     func registerBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
 }
 
@@ -53,7 +52,6 @@ class GameScene: Scene, GameSceneProtocol {
     }
 
     override func update(_ currentTime: TimeInterval) {
-        map?.updateObjectsZPosition()
         self.gameSceneDelegate?.viewUpdated()
     }
 
@@ -145,10 +143,6 @@ class GameScene: Scene, GameSceneProtocol {
             }
             ) { (animationCompleted: Bool) -> Void in fulfill()}
         }
-    }
-
-    func registerEvent(listeners: [EventListener]) {
-        self.gameSceneDelegate?.addEvent(listeners)
     }
 
     // MARK: ---

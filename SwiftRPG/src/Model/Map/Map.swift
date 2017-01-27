@@ -180,4 +180,14 @@ open class Map {
             incremental += 1
         }
     }
+
+    func getEventsOnPlayerPosition() -> [EventListener]? {
+        let player = self.getObjectByName(objectNameTable.PLAYER_NAME)
+        let events = self.getEventsOn((player?.coordinate)!)
+        if events.isEmpty {
+            return nil
+        } else {
+            return events
+        }
+    }
 }

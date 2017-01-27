@@ -62,9 +62,19 @@ extension GameViewController: GameSceneDelegate {
         self.present(viewController, animated: true, completion: nil)
     }
 
+    // This function is executed cyclically
+    // The role of this function is as following
+    //   - Update object's z-index position.
+    //     Front objects should render as looking like upper than back objects.
+    //   - Check player collision with events.
+    //     If the collision was occurred, invoke event.
+    //   - Trigger cyclic event listeners.
     func viewUpdated() {
         let skView = self.view as! SKView
         let gameScene = skView.scene as! GameScene
+        let map = gameScene.map
+
+        map?.updateObjectsZPosition()
 
         do {
             try self.eventManager.trigger(.immediate, sender: gameScene, args: nil)
@@ -73,13 +83,13 @@ extension GameViewController: GameSceneDelegate {
         } catch {
             print("Unexpected error has occurred during triggering cyclic event")
         }
-    }
 
-    func addEvent(_ events: [EventListener]) {
-        for event in events {
-            if self.eventManager.add(event) == false {
-                // TODO: Deal with failure
-                print("Failed to adding event")
+        if let events = map?.getEventsOnPlayerPosition() {
+            for event in events {
+                if self.eventManager.add(event) == false {
+                    // TODO: Deal with failure
+                    // print("Failed to adding event")
+                }
             }
         }
     }

@@ -40,7 +40,6 @@ protocol GameSceneProtocol {
     func hideAllButtons() -> Promise<Void>
     func showDefaultButtons() -> Promise<Void>
     func showEventDialog() -> Promise<Void>
-    func registerEvent(listeners: [EventListener])
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()

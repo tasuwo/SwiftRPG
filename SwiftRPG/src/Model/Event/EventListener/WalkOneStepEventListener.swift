@@ -63,13 +63,6 @@ class WalkOneStepEventListener: EventListener {
                 return
             }
 
-            // If there were events on tile which is placed, stop moving and execute it.
-            var events: [EventListener] = []
-            let eventsOnStep = map.getEventsOn(destination)
-            if eventsOnStep.count > 0 {
-                events = eventsOnStep
-            }
-
             // Generate SKAction for scrolling screen
             let delay = SKAction.wait(forDuration: TimeInterval(Double(player.speed)))
             let scrollAction: SKAction? = sheet.scrollSheet(destination)
@@ -86,13 +79,6 @@ class WalkOneStepEventListener: EventListener {
                     tileDestination: destination,
                     screenActions: scrollActions)
             }.then { _ -> Void in
-                // If there are event on reached tile, invoke it
-                if !events.isEmpty {
-                    self.delegate?.invoke(self, listener: WalkEventListener.init(params: nil, chainListeners: nil))
-                    sender?.registerEvent(listeners: events)
-                    return
-                }
-
                 // If reached at destination, stop walking and set WalkEvetListener as touch event again
                 if self.listeners == nil || self.listeners?.count == 0 {
                     let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
