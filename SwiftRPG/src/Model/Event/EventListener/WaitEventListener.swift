@@ -21,6 +21,7 @@ class WaitEventListener: EventListener {
     var listeners: ListenerChain?
     var params: JSON?
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
 
@@ -58,6 +59,7 @@ class WaitEventListener: EventListener {
                     do {
                         let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                         nextEventListener.eventObjectId = self.eventObjectId
+                        nextEventListener.isBehavior = self.isBehavior
                         self.delegate?.invoke(self, listener: nextEventListener)
                     } catch {
                         throw error

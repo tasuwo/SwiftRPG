@@ -21,6 +21,7 @@ class WalkEventListener: EventListener {
     var rollback: EventMethod?
     var listeners: ListenerChain?
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
 
@@ -61,6 +62,7 @@ class WalkEventListener: EventListener {
             if path == nil {
                 let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                 nextEventListener.eventObjectId = self.eventObjectId
+                nextEventListener.isBehavior = self.isBehavior
                 self.delegate?.invoke(self, listener: nextEventListener)
                 return Promise<Void> { fullfill, reject in fullfill() }
             }
@@ -76,6 +78,7 @@ class WalkEventListener: EventListener {
             do {
                 let nextListenerInstance = try nextListener.init(params: chain.first!.params, chainListeners: nextListenerChain)
                 nextListenerInstance.eventObjectId = self.eventObjectId
+                nextListenerInstance.isBehavior = self.isBehavior
                 self.delegate?.invoke(self, listener: nextListenerInstance)
             } catch {
                 throw error

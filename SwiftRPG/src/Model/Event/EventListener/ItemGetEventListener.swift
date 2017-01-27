@@ -19,6 +19,7 @@ class ItemGetEventListener: EventListener {
     var invoke: EventMethod?
     var rollback: EventMethod?
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
 
@@ -73,6 +74,7 @@ class ItemGetEventListener: EventListener {
             do {
                 let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 nextEventListener.eventObjectId = self.eventObjectId
+                nextEventListener.isBehavior = self.isBehavior
                 self.delegate?.invoke(self, listener: nextEventListener)
             } catch {
                 throw error

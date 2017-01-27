@@ -16,6 +16,7 @@ class InvokeNextEventListener: EventListener {
     var invoke: EventMethod?
     var rollback: EventMethod?
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
     internal var listeners: ListenerChain?
@@ -34,6 +35,7 @@ class InvokeNextEventListener: EventListener {
             do {
                 let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
                 nextListenerInstance.eventObjectId = self.eventObjectId
+                nextListenerInstance.isBehavior = self.isBehavior
                 self.delegate?.invoke(self, listener: nextListenerInstance)
             } catch {
                 throw error

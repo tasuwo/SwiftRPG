@@ -20,6 +20,7 @@ class WalkOneStepEventListener: EventListener {
     var rollback: EventMethod?
     var listeners: ListenerChain?
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     var params: JSON?
     var eventObjectId: MapObjectId? = nil
     let triggerType: TriggerType
@@ -83,6 +84,7 @@ class WalkOneStepEventListener: EventListener {
                     if self.listeners == nil || self.listeners?.count == 0 {
                         let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                         nextEventListener.eventObjectId = self.eventObjectId
+                        nextEventListener.isBehavior = self.isBehavior
                         self.delegate?.invoke(self, listener: nextEventListener)
                         return
                     }
@@ -92,6 +94,7 @@ class WalkOneStepEventListener: EventListener {
                     let nextListenerChain: ListenerChain? = self.listeners!.count == 1 ? nil : Array(self.listeners!.dropFirst())
                     do {
                         let nextListenerInstance = try nextListener.init(params: self.listeners!.first!.params, chainListeners: nextListenerChain)
+                        nextListenerInstance.isBehavior = self.isBehavior
                         self.delegate?.invoke(self, listener: nextListenerInstance)
                     } catch {
                         throw error

@@ -52,6 +52,7 @@ protocol EventListener: EventHandler {
     var delegate:      NotifiableFromListener? { get set }
     var listeners:     ListenerChain?          { get }
     var isExecuting:   Bool                    { get }
+    var isBehavior:    Bool                    { get set }
     var eventObjectId: MapObjectId?            { get set }
 
     func chain(listeners: ListenerChain)

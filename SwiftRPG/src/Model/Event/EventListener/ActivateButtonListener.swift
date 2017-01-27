@@ -21,6 +21,7 @@ class ActivateButtonListener: EventListener {
     var params: JSON?
     var eventObjectId: MapObjectId? = nil
     var isExecuting: Bool = false
+    var isBehavior: Bool = false
     let triggerType: TriggerType
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
@@ -46,6 +47,7 @@ class ActivateButtonListener: EventListener {
             do {
                 let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 nextEventListener.eventObjectId = self.eventObjectId
+                nextEventListener.isBehavior = self.isBehavior
                 self.delegate?.invoke(self, listener: nextEventListener)
             } catch {
                 throw error
