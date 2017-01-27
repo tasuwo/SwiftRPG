@@ -46,9 +46,35 @@ class EventDispatcher : NotifiableFromListener {
         listener.id = nil
         return true
     }
+
+    @discardableResult
+    func removeByEventObjectId(_ listener: ListenerType) -> Bool {
+        if listener.eventObjectId == nil { return false }
+        var key: IdType? = nil
+        for (key_, listener_) in self.listeners {
+            if listener_.eventObjectId == listener.eventObjectId {
+                key = key_
+            }
+        }
+
+        if let k = key {
+            listeners.removeValue(forKey: k)
+            return true
+        } else {
+            return false
+        }
+    }
     
     func removeAll() {
         listeners.removeAll()
+    }
+
+    func getAllListeners() -> [EventListener] {
+        var listeners: [EventListener] = []
+        for listener in self.listeners.values {
+            listeners.append(listener)
+        }
+        return listeners
     }
 
     // Invoke all event listenrs in this dispacher.
