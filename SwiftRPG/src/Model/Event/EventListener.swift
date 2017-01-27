@@ -44,7 +44,7 @@ protocol GameSceneProtocol {
     func showEventDialog()    -> Promise<Void>
 }
 
-typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> ()
+typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> Promise<Void>
 protocol EventHandler: class {
     var invoke:        EventMethod?  { get set }
     var rollback:      EventMethod?  { get set }

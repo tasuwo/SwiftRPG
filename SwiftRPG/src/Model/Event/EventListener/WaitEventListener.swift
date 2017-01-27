@@ -47,25 +47,28 @@ class WaitEventListener: EventListener {
         self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
-
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
 
             let map = sender!.map!
             let time = Int((self.params?["time"].string!)!)!
 
-            firstly {
-                self.generatePromiseClojureForWaiting(map: map, time: time)
-            }.then { _ -> Void in
-                do {
-                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                    nextEventListener.eventObjectId = self.eventObjectId
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                } catch {
-                    throw error
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    self.generatePromiseClojureForWaiting(map: map, time: time)
+                }.then { _ -> Void in
+                    do {
+                        let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                        nextEventListener.eventObjectId = self.eventObjectId
+                        self.delegate?.invoke(self, listener: nextEventListener)
+                    } catch {
+                        throw error
+                    }
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
                 }
-            }.catch { error in
-                print(error.localizedDescription)
             }
         }
     }

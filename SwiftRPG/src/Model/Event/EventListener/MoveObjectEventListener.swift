@@ -55,7 +55,7 @@ class MoveObjectEventListener: EventListener {
         self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
 
             let map   = sender!.map!
@@ -85,7 +85,7 @@ class MoveObjectEventListener: EventListener {
                 } catch {
                     throw error
                 }
-                return
+                return Promise<Void> { fullfill, reject in fullfill() }
             }
 
             // Disable events
@@ -114,23 +114,27 @@ class MoveObjectEventListener: EventListener {
                 preStepPoint = nextStepPoint
             }
 
-            firstly {
-                sender!.moveObject(
-                    objectName!,
-                    actions: objectActions,
-                    tileDeparture: departure,
-                    tileDestination: destination
-                )
-            }.then { _ -> Void in
-                do {
-                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                    nextEventListener.eventObjectId = self.eventObjectId
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                } catch {
-                    throw error
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    sender!.moveObject(
+                        objectName!,
+                        actions: objectActions,
+                        tileDeparture: departure,
+                        tileDestination: destination
+                    )
+                }.then { _ -> Void in
+                    do {
+                        let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                        nextEventListener.eventObjectId = self.eventObjectId
+                        self.delegate?.invoke(self, listener: nextEventListener)
+                    } catch {
+                        throw error
+                    }
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
                 }
-            }.catch { error in
-                print(error.localizedDescription)
             }
         }
     }

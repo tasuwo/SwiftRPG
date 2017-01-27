@@ -30,7 +30,7 @@ class HideEventDialogListener: EventListener {
         self.executionType = .onece
         self.listeners     = listeners
         self.params        = params
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.eventDialog.isHidden = true
 
             do {
@@ -40,6 +40,8 @@ class HideEventDialogListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 

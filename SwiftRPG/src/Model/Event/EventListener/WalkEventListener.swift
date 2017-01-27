@@ -11,6 +11,7 @@ import UIKit
 import SpriteKit
 import SwiftyJSON
 import JSONSchema
+import PromiseKit
 
 /// プレイヤー移動のリスナー
 class WalkEventListener: EventListener {
@@ -27,7 +28,7 @@ class WalkEventListener: EventListener {
     required init(params: JSON?, chainListeners: ListenerChain?) {
         self.triggerType   = .touch
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             let schema = Schema([
                 "type": "object",
                 "properties": [
@@ -63,7 +64,7 @@ class WalkEventListener: EventListener {
                 let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                 nextEventListener.eventObjectId = self.eventObjectId
                 self.delegate?.invoke(self, listener: nextEventListener)
-                return
+                return Promise<Void> { fullfill, reject in fullfill() }
             }
 
             // Generate event listener chain for walking animation
@@ -81,6 +82,8 @@ class WalkEventListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 

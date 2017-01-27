@@ -43,7 +43,7 @@ class WalkOneStepEventListener: EventListener {
         self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
 
             let map   = sender!.map!
@@ -61,7 +61,7 @@ class WalkOneStepEventListener: EventListener {
             // If player can't reach destination tile because of collision, stop
             if !map.canPass(destination) {
                 self.delegate?.invoke(self, listener: WalkEventListener.init(params: nil, chainListeners: nil))
-                return
+                return Promise<Void> { fullfill, reject in fullfill() }
             }
 
             // Generate SKAction for scrolling screen
@@ -73,32 +73,36 @@ class WalkOneStepEventListener: EventListener {
                 scrollActions.append(scrollAction!)
             }
 
-            firstly {
-                sender!.movePlayer(
-                    action,
-                    tileDeparture: player.coordinate,
-                    tileDestination: destination,
-                    screenActions: scrollActions)
-            }.then { _ -> Void in
-                // If reached at destination, stop walking and set WalkEvetListener as touch event again
-                if self.listeners == nil || self.listeners?.count == 0 {
-                    let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
-                    nextEventListener.eventObjectId = self.eventObjectId
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                    return
-                }
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    sender!.movePlayer(
+                        action,
+                        tileDeparture: player.coordinate,
+                        tileDestination: destination,
+                        screenActions: scrollActions)
+                }.then { _ -> Void in
+                    // If reached at destination, stop walking and set WalkEvetListener as touch event again
+                    if self.listeners == nil || self.listeners?.count == 0 {
+                        let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
+                        nextEventListener.eventObjectId = self.eventObjectId
+                        self.delegate?.invoke(self, listener: nextEventListener)
+                        return
+                    }
 
-                // If player don't reach at destination, invoke next step animation listener
-                let nextListener = self.listeners!.first!.listener
-                let nextListenerChain: ListenerChain? = self.listeners!.count == 1 ? nil : Array(self.listeners!.dropFirst())
-                do {
-                    let nextListenerInstance = try nextListener.init(params: self.listeners!.first!.params, chainListeners: nextListenerChain)
-                    self.delegate?.invoke(self, listener: nextListenerInstance)
-                } catch {
-                    throw error
+                    // If player don't reach at destination, invoke next step animation listener
+                    let nextListener = self.listeners!.first!.listener
+                    let nextListenerChain: ListenerChain? = self.listeners!.count == 1 ? nil : Array(self.listeners!.dropFirst())
+                    do {
+                        let nextListenerInstance = try nextListener.init(params: self.listeners!.first!.params, chainListeners: nextListenerChain)
+                        self.delegate?.invoke(self, listener: nextListenerInstance)
+                    } catch {
+                        throw error
+                    }
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
                 }
-            }.catch { error in
-                print(error.localizedDescription)
             }
         }
     }

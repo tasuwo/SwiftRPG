@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import UIKit
+import PromiseKit
 
 enum EventDispacherError: Error {
     case FiledToInvokeListener(String)
@@ -44,10 +45,9 @@ class EventDispatcher : NotifiableFromListener {
         if listener.id == nil { return false }
 
         do {
-            try listener.rollback?(sender, nil)
-        // } catch EventListenerError.illegalArguementFormat(let string) {
-        // } catch EventListenerError.illegalParamFormat(let array) {
-        // } catch EventListenerError.invalidParam(let string) {
+            try listener.rollback?(sender, nil).catch { error in
+                // TODO
+            }
         } catch {
             // TODO
         }
@@ -92,27 +92,18 @@ class EventDispatcher : NotifiableFromListener {
     // If exception has thrown during executing, remove the listener which thrown exception.
     func trigger(_ sender: GameSceneProtocol!, args: JSON!) throws {
         for listener in listeners.values {
-            do {
-                if !listener.isExecuting {
-                    try listener.invoke!(sender, args)
+            if !listener.isExecuting {
+                try listener.invoke!(sender, args).then { _ -> Void in
+                    if listener.executionType == .onece {
+                        self.remove(listener, sender: sender)
+                    }
+                }.catch { error in
+                    // TODO:
                 }
-
-                if listener.executionType == .onece {
-                    self.remove(listener, sender: sender)
-                }
-            } catch EventListenerError.illegalArguementFormat(let string) {
-                self.remove(listener, sender: sender)
-                throw EventDispacherError.FiledToInvokeListener("Illegal arguement format:" + string)
-            } catch EventListenerError.illegalParamFormat(let array) {
-                self.remove(listener, sender: sender)
-                throw EventDispacherError.FiledToInvokeListener("Failed to invoke listener:" + array.description)
-            } catch EventListenerError.invalidParam(let string) {
-                self.remove(listener, sender: sender)
-                throw EventDispacherError.FiledToInvokeListener("Invalid parameter:" + string)
             }
         }
     }
-    
+
     func hasListener() -> Bool {
         return self.listeners.count > 0
     }

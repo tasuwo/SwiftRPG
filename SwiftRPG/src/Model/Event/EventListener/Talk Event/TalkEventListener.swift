@@ -60,10 +60,12 @@ class TalkEventListener: EventListener {
         //       It might have to be defined specifically.
         // a number of conversation times
         self.talkContentsMaxNum = (params?.arrayObject?.count)!
-        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             do {
                 let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index, params: self.params)
-                try moveConversation(sender, args)
+                try moveConversation(sender, args).catch { error in
+                    // TODO
+                }
 
                 // Determine the Event Listener which executed in next 
                 // depending on whether conversation is continued or not.
@@ -79,6 +81,8 @@ class TalkEventListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 
@@ -111,6 +115,7 @@ class TalkEventListener: EventListener {
 
         return { sender, args in
             sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 

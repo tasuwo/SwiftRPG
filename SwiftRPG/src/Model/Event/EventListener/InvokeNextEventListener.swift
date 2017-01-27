@@ -24,9 +24,11 @@ class InvokeNextEventListener: EventListener {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             // If there are no registered listener, exit
-            if listeners == nil || listeners?.count == 0 { return }
+            if listeners == nil || listeners?.count == 0 {
+                return Promise<Void> { fullfill, reject in fullfill() }
+            }
 
             // If there are registered listener, invoke it
             let nextListener = listeners!.first!.listener
@@ -38,6 +40,8 @@ class InvokeNextEventListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 

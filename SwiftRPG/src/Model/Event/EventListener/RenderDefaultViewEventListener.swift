@@ -29,21 +29,27 @@ class RenderDefaultViewEventListener: EventListener {
         self.listeners = listeners
         self.triggerType = .immediate
         self.executionType = .onece
-        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> () in
-            firstly {
-                sender!.hideAllButtons()
-            }.then { _ in
-                sender!.showDefaultButtons()
-            }.then { _ -> Void in
-                do {
-                    let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
-                    nextEventListener.eventObjectId = self.eventObjectId
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                } catch {
-                    throw error
+        self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            self.isExecuting = true
+            
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    sender!.hideAllButtons()
+                }.then { _ in
+                    sender!.showDefaultButtons()
+                }.then { _ -> Void in
+                    do {
+                        let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
+                        nextEventListener.eventObjectId = self.eventObjectId
+                        self.delegate?.invoke(self, listener: nextEventListener)
+                    } catch {
+                        throw error
+                    }
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
                 }
-            }.catch { error in
-                print(error.localizedDescription)
             }
         }
     }

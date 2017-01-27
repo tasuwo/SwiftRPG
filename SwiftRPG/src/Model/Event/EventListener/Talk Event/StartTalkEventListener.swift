@@ -43,10 +43,13 @@ class StartTalkEventListener: EventListener {
         self.executionType   = .onece
         self.params          = JSON(array!)
         self.listeners       = listeners
-        self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
-        self.invoke          = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke          = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+            self.isExecuting = true
+
             // Initialize dialog
             sender!.textBox.clean()
 
@@ -57,26 +60,32 @@ class StartTalkEventListener: EventListener {
                 player?.setDirection(playerDirection)
             }
 
-            firstly {
-                sender!.hideAllButtons()
-            }.then {
-                sender!.textBox.show(duration: 0.2)
-            }.then { _ -> Void in
-                do {
-                    // Render next conversation
-                    let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
-                    try moveConversation(_: sender, args)
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    sender!.hideAllButtons()
+                }.then {
+                    sender!.textBox.show(duration: 0.2)
+                }.then { _ -> Void in
+                    do {
+                        // Render next conversation
+                        let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
+                        try moveConversation(_: sender, args).catch { error in
+                            // TODO
+                        }
 
-                    // TODO: If there are no need to invoke following (i.e. The conversation would finish in only one(above) step),
-                    //       should deal with it well.
-                    let nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners)
-                    nextEventListener.eventObjectId = self.eventObjectId
-                    self.delegate?.invoke(self, listener: nextEventListener)
-                } catch {
-                    throw error
+                        // TODO: If there are no need to invoke following (i.e. The conversation would finish in only one(above) step),
+                        //       should deal with it well.
+                        let nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners)
+                        nextEventListener.eventObjectId = self.eventObjectId
+                        self.delegate?.invoke(self, listener: nextEventListener)
+                    } catch {
+                        throw error
+                    }
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
                 }
-            }.catch { error in
-                print(error.localizedDescription)
             }
         }
     }

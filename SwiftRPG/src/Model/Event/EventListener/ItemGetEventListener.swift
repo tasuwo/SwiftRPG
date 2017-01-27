@@ -11,6 +11,7 @@ import SwiftyJSON
 import JSONSchema
 import SpriteKit
 import RealmSwift
+import PromiseKit
 
 class ItemGetEventListener: EventListener {
     var id: UInt64!
@@ -54,7 +55,7 @@ class ItemGetEventListener: EventListener {
         self.itemName      = params!["name"].string!
         self.itemText      = params!["description"].string!
         self.itemImageName = params!["image_name"].string!
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             // Insert data to database
             let realm = try! Realm()
             try! realm.write {
@@ -78,6 +79,8 @@ class ItemGetEventListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 

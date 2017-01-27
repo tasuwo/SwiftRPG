@@ -10,6 +10,7 @@ import Foundation
 import SwiftyJSON
 import JSONSchema
 import SpriteKit
+import PromiseKit
 
 class ActivateButtonListener: EventListener {
     var id: UInt64!
@@ -40,7 +41,7 @@ class ActivateButtonListener: EventListener {
         self.listeners     = listeners
         self.triggerType   = .immediate
         self.executionType = .onece
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> () in
+        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.actionButton.title = params!["text"].string!
             sender!.actionButton.isHidden = false
 
@@ -51,6 +52,8 @@ class ActivateButtonListener: EventListener {
             } catch {
                 throw error
             }
+
+            return Promise<Void> { fullfill, reject in fullfill() }
         }
     }
 
