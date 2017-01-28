@@ -16,7 +16,7 @@ enum EventDispacherError: Error {
 }
 
 protocol NotifiableFromListener {
-    func invoke(_ invoker: EventListener, listener: EventListener)
+    func invoke(_ listener: EventListener)
 }
 
 class EventDispatcher : NotifiableFromListener {
@@ -117,8 +117,8 @@ class EventDispatcher : NotifiableFromListener {
 
     // MARK: NotifilableFromListener
 
-    func invoke(_ invoker: EventListener, listener nextListener: EventListener) {
-        self.delegate?.invoke(invoker, listener: nextListener)
+    func invoke(_ nextListener: EventListener) {
+        self.delegate?.invoke(nextListener)
     }
 }
 

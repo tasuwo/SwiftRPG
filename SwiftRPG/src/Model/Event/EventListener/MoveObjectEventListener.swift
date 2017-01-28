@@ -81,7 +81,7 @@ class MoveObjectEventListener: EventListener {
                     let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                     nextEventListener.eventObjectId = self.eventObjectId
                     nextEventListener.isBehavior = self.isBehavior
-                    self.delegate?.invoke(self, listener: nextEventListener)
+                    self.delegate?.invoke(nextEventListener)
                 } catch {
                     throw error
                 }
@@ -127,7 +127,7 @@ class MoveObjectEventListener: EventListener {
                         let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                         nextEventListener.eventObjectId = self.eventObjectId
                         nextEventListener.isBehavior = self.isBehavior
-                        self.delegate?.invoke(self, listener: nextEventListener)
+                        self.delegate?.invoke(nextEventListener)
                     } catch {
                         throw error
                     }

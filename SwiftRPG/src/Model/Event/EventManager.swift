@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 protocol NotifiableFromDispacher {
-    func invoke(_ invoker: EventListener, listener: EventListener)
+    func invoke(_ listener: EventListener)
 }
 
 enum EventManagerError: Error {
@@ -133,24 +133,15 @@ class EventManager: NotifiableFromDispacher {
     // MARK: - NotifiableFromDispacher
 
     // TODO: remove, add が失敗した場合の処理の追加
-    func invoke(_ invoker: EventListener, listener: EventListener) {
-        let invokerDispacher = self.getDispacherOf(invoker.triggerType)
+    func invoke(_ listener: EventListener) {
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
         if isBlockedBehavior && listener.isBehavior {
             return
         }
 
-        // Cannot execute following code:
-        // In Listener chain, listeners which passed to here are defined as clojure in each event listeners.
-        // The remove function of event dispatcher uses listener id which is specified at the time of adding listener to dispathcer.
-        // But the clojure could only know about variables at the time of it is defined, so cannot access listener id from clojure.
-        //   if invokerDispacher.remove(invoker) == false {}
-        // Instead of listener id, we use event object id
-        // Commonly, one event object has only one event listener chain, and it is defined at the time of 
-        invokerDispacher.removeByEventObjectId(invoker)
-
-        // TODO: うまく排他制御する
-        nextListenersDispacher.add(listener)
+        if !nextListenersDispacher.add(listener) {
+            print("Failed to add listener" )
+        }
     }
 }
