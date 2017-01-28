@@ -95,7 +95,16 @@ class EventDispatcher : NotifiableFromListener {
         for listener in listeners.values {
             if !listener.isExecuting {
                 try listener.invoke!(sender, args).then { _ -> Void in
-                    self.remove(listener, sender: sender)
+                    // TODO:
+                    // Should use remove() function
+                    // But the function execute rollback()
+                    // Need to prepare different remove function which is not executing rollback()
+                    if let id_ = listener.id {
+                        self.listeners.removeValue(forKey: id_)
+                        listener.id = nil
+                    } else {
+                        // If the listener was removed before removing in this block, here is executed
+                    }
                 }.catch { error in
                     // TODO:
                 }
