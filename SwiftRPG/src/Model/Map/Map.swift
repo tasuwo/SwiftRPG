@@ -164,7 +164,6 @@ open class Map {
 
     func updateObjectPlacement(_ object: Object, departure: TileCoordinate, destination: TileCoordinate) {
         self.sheet?.replaceObject(object.id, departure: departure, destination: destination)
-        print(destination.description)
     }
 
     ///  オブジェクトのZ方向の位置を更新する
