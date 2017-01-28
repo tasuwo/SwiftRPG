@@ -152,8 +152,25 @@ class GameScene: Scene, GameSceneProtocol {
         var behaviors: Dictionary<MapObjectId, EventListener> = [:]
         let objects = self.map?.getAllObjects()
         for object in objects! {
-            behaviors[object.id] = object.behavior
+            var listener: EventListener? = nil
+            let listenerChain = object.behavior
+            let listenerType = listenerChain?.first?.listener
+            let params = listenerChain?.first?.params
+            do {
+                listener = try listenerType?.init(
+                    params: params,
+                    chainListeners: ListenerChain(listenerChain!.dropFirst(1)))
+                listener?.eventObjectId = object.id
+                listener?.isBehavior = true
+            } catch {
+                // TODO
+            }
+
+            if let l = listener {
+                behaviors[object.id] = l
+            }
         }
+
         self.gameSceneDelegate?.startBehaviors(behaviors)
     }
 

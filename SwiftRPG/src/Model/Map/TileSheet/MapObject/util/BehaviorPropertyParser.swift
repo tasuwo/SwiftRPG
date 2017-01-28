@@ -11,7 +11,7 @@ import SpriteKit
 import SwiftyJSON
 
 class BehaviorPropertyParser {
-    class func parse(from properties: String, parentId: MapObjectId) throws -> EventListener? {
+    class func parse(from properties: String, parentId: MapObjectId) throws -> ListenerChain? {
         var chain: ListenerChain = []
         let lines = properties.components(separatedBy: "\n")
         for line in lines {
@@ -25,25 +25,11 @@ class BehaviorPropertyParser {
             }
         }
 
-        chain = chain + [(listener: ReloadBehaviorEventListener.self, params: JSON(["eventObjectId":parentId]) as JSON?)]
+        // For looping animation
+        chain = chain + [
+            (listener: ReloadBehaviorEventListener.self, params: JSON(["eventObjectId":parentId]) as JSON?)
+        ]
 
-        var listener: EventListener? = nil
-        let listenerType = chain.first?.listener
-        let params = chain.first?.params
-        do {
-            listener = try listenerType?.init(
-                params: params,
-                chainListeners: ListenerChain(chain.dropFirst(1)))
-        } catch EventListenerError.illegalArguementFormat(let string) {
-            throw ListenerGeneratorError.failed("Illegal arguement for listener: " + string)
-        } catch EventListenerError.illegalParamFormat(let array) {
-            throw ListenerGeneratorError.failed("Illegal parameter for listener: " + array.joined(separator: ","))
-        } catch EventListenerError.invalidParam(let string) {
-            throw ListenerGeneratorError.failed("Invalid parameter for listener: " + string)
-        } catch EventParserError.invalidProperty(let string) {
-            throw ListenerGeneratorError.failed("Invalid property for listener: " + string)
-        }
-
-        return listener
+        return chain
     }
 }

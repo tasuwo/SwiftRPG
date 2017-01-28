@@ -46,10 +46,21 @@ class ReloadBehaviorEventListener: EventListener {
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             let map   = sender!.map!
             let id = self.params?["eventObjectId"].int!
-            let listener = map.getObjectBehavior(id!)
-            listener?.eventObjectId = self.eventObjectId
-            listener?.isExecuting = false
-            listener?.isBehavior = self.isBehavior
+
+            // TODO: Implement utility function for generate listener from behavior listener chain
+            var listener: EventListener? = nil
+            let listenerChain = map.getObjectBehavior(id!)
+            let listenerType = listenerChain?.first?.listener
+            let params = listenerChain?.first?.params
+            do {
+                listener = try listenerType?.init(
+                    params: params,
+                    chainListeners: ListenerChain(listenerChain!.dropFirst(1)))
+                listener?.eventObjectId = id
+                listener?.isBehavior = true
+            } catch {
+                // TODO
+            }
 
             self.delegate?.invoke(listener!)
 

@@ -426,7 +426,7 @@ open class TileSheet {
 
     // other getter's
 
-    func getObjectBehavior(_ id: MapObjectId) -> EventListener? {
+    func getObjectBehavior(_ id: MapObjectId) -> ListenerChain? {
         return self.objects[id]?.behavior
     }
 

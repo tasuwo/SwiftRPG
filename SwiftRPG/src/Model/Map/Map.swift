@@ -108,7 +108,7 @@ open class Map {
         self.sheet!.addTo(scene)
     }
 
-    func getObjectBehavior(_ id: MapObjectId) -> EventListener? {
+    func getObjectBehavior(_ id: MapObjectId) -> ListenerChain? {
         return self.sheet?.getObjectBehavior(id)
     }
 
