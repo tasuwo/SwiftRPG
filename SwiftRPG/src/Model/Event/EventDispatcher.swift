@@ -63,7 +63,8 @@ class EventDispatcher : NotifiableFromListener {
         var targetListener: EventListener? = nil
 
         for listener_ in self.listeners.values {
-            if listener_.eventObjectId == listener.eventObjectId {
+            if listener_.eventObjectId == listener.eventObjectId
+            && listener_.isBehavior == listener_.isBehavior {
                 targetListener = listener_
                 break
             }
