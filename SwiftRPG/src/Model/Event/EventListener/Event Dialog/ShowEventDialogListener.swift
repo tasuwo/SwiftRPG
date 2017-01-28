@@ -49,6 +49,9 @@ class ShowEventDialogListener: EventListener {
             sender!.eventDialog.text = params!["text"].string!
             sender!.eventDialog.isHidden = false
 
+            // Stop All Object's behavior
+            sender?.stopBehaviors()
+
             let nextEventListener = HideEventDialogListener(params: self.params, chainListeners: self.listeners)
             nextEventListener.eventObjectId = self.eventObjectId
             nextEventListener.isBehavior = self.isBehavior
