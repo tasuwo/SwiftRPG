@@ -11,8 +11,8 @@ import SpriteKit
 import UIKit
 
 class myGameScene: GameScene {
-    override init(size: CGSize) {
-        super.init(size: size)
+    required init(size: CGSize, playerCoordiante: TileCoordinate, playerDirection: DIRECTION) {
+        super.init(size: size, playerCoordiante: playerCoordiante, playerDirection: playerDirection)
         Bundle.main.loadNibNamed("myGameScene", owner: self, options: nil)
     }
 
@@ -32,9 +32,9 @@ class myGameScene: GameScene {
         }
 
         // 主人公の作成
-        let playerInitialPosition = TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 6, y: 6))
+        let playerInitialPosition = TileCoordinate.getSheetCoordinateFromTileCoordinate(self.playerInitialCoordinate!)
         let player = Object(name: objectNameTable.PLAYER_NAME,
-                            imageName: objectNameTable.PLAYER_IMAGE_DOWN,
+                            imageName: objectNameTable.getImageBy(direction: self.playerInitialDirection!),
                             position: playerInitialPosition,
                             images: objectNameTable.PLAYER_IMAGE_SET)
         player.setCollision()

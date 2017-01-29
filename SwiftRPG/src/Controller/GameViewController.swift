@@ -21,7 +21,7 @@ class GameViewController: SceneController {
     }
 
     override func initializeScene() {
-        let scene = myGameScene(size: self.view.bounds.size)
+        let scene = myGameScene(size: self.view.bounds.size, playerCoordiante: TileCoordinate(x:10,y:10), playerDirection: .down)
         scene.gameSceneDelegate = self
         self.scene = scene
     }

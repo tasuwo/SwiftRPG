@@ -24,6 +24,10 @@ enum TriggerType {
 }
 
 protocol GameSceneProtocol {
+    init(size: CGSize, playerCoordiante: TileCoordinate, playerDirection: DIRECTION)
+    var playerInitialCoordinate: TileCoordinate? { get }
+    var playerInitialDirection:  DIRECTION?      { get }
+    
     var actionButton: UIButton!    { get set }
     var menuButton:   UIButton!    { get set }
     var eventDialog:  DialogLabel! { get set }

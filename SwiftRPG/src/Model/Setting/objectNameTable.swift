@@ -37,4 +37,17 @@ struct objectNameTable {
             ["plr_left_02.png", "plr_left.png"]
         ]
     )
+
+    static func getImageBy(direction: DIRECTION) -> String {
+        switch direction {
+        case .up:
+            return objectNameTable.PLAYER_IMAGE_UP
+        case .down:
+            return objectNameTable.PLAYER_IMAGE_DOWN
+        case .right:
+            return objectNameTable.PLAYER_IMAGE_RIGHT
+        case .left:
+            return objectNameTable.PLAYER_IMAGE_LEFT
+        }
+    }
 }

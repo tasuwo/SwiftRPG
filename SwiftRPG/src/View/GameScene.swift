@@ -37,6 +37,8 @@ class GameScene: Scene, GameSceneProtocol {
     @IBOutlet weak var eventDialog: DialogLabel!
     var map: Map?
     var textBox: Dialog!
+    var playerInitialCoordinate: TileCoordinate? = nil
+    var playerInitialDirection: DIRECTION? = nil
 
     // MARK: ---
     
@@ -59,6 +61,16 @@ class GameScene: Scene, GameSceneProtocol {
     }
 
     // MARK: GameSceneProtocol Methods
+
+    required init(size: CGSize, playerCoordiante: TileCoordinate, playerDirection: DIRECTION) {
+        super.init(size: size)
+        self.playerInitialCoordinate = playerCoordiante
+        self.playerInitialDirection = playerDirection
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenAction: SKAction) -> Promise<Void> {
         let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
