@@ -32,13 +32,17 @@ class myGameScene: GameScene {
         }
 
         // 主人公の作成
+        let playerInitialPosition = TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 6, y: 6))
         let player = Object(name: objectNameTable.PLAYER_NAME,
                             imageName: objectNameTable.PLAYER_IMAGE_DOWN,
-                            position: TileCoordinate.getSheetCoordinateFromTileCoordinate(TileCoordinate(x: 6, y: 6)),
+                            position: playerInitialPosition,
                             images: objectNameTable.PLAYER_IMAGE_SET)
         player.setCollision()
         self.map!.setObject(player)
         self.startBehaviors()
+
+        // Config sheet's position
+        self.map?.sheet?.centerOn(point: player.position, frameWidth: self.frame.width, frameHeight: self.frame.height)
 
         actionButton.layer.borderColor = UIColor.white.cgColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)

@@ -146,6 +146,13 @@ open class TileSheet {
         return action
     }
 
+    func centerOn(point: CGPoint, frameWidth: CGFloat, frameHeight: CGFloat) {
+        self.node.position = CGPoint(
+            x: frameWidth/2 - point.x,
+            y: frameHeight/2 - point.y
+        )
+    }
+
     ///  描画範囲外を黒く塗りつぶすための，画面の外枠を生成する
     ///
     ///  - parameter frameWidth:         画面横幅
