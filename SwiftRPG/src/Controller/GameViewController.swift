@@ -17,8 +17,7 @@ class GameViewController: SceneController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.eventManager = EventManager()
-        // TODO: 追加失敗時の処理
-        if eventManager.add(WalkEventListener(params: nil, chainListeners: nil)) == false {}
+        self.eventManager.enableWalking()
     }
 
     override func initializeScene() {
@@ -150,5 +149,13 @@ extension GameViewController: GameSceneDelegate {
 
     func stopBehaviors() {
         self.eventManager.blockBehavior()
+    }
+
+    func enableWalking() {
+        self.eventManager.enableWalking()
+    }
+
+    func disableWalking() {
+        self.eventManager.disableWalking()
     }
 }

@@ -19,6 +19,8 @@ protocol GameSceneDelegate: class {
     func viewUpdated()
     func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
     func stopBehaviors()
+    func enableWalking()
+    func disableWalking()
 }
 
 /// ゲーム画面
@@ -172,6 +174,14 @@ class GameScene: Scene, GameSceneProtocol {
         }
 
         self.gameSceneDelegate?.startBehaviors(behaviors)
+    }
+
+    func enableWalking() {
+        self.gameSceneDelegate?.enableWalking()
+    }
+
+    func disableWalking() {
+        self.gameSceneDelegate?.disableWalking()
     }
 
     // MARK: ---

@@ -40,6 +40,8 @@ protocol GameSceneProtocol {
 
     func stopBehaviors()
     func startBehaviors()
+    func enableWalking()
+    func disableWalking()
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> Promise<Void>

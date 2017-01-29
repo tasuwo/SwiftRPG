@@ -23,6 +23,7 @@ class EventManager: NotifiableFromDispacher {
     fileprivate var cyclicEventDispacher: EventDispatcher
 
     fileprivate(set) var isBlockingBehavior: Bool = true
+    fileprivate(set) var isBlockingWalking: Bool = true
 
     init() {
         self.touchEventDispacher = EventDispatcher()
@@ -84,6 +85,25 @@ class EventManager: NotifiableFromDispacher {
         self.isBlockingBehavior = false
     }
 
+    func enableWalking() {
+        var existsWalkEvent = false
+        let listeners = self.getAllListeners()
+        for listener in listeners {
+            if listener as? WalkEventListener != nil {
+                existsWalkEvent = true
+            }
+        }
+        if existsWalkEvent == false {
+            self.add(WalkEventListener.init(params: nil, chainListeners: nil))
+        }
+
+        self.isBlockingWalking = false
+    }
+
+    func disableWalking() {
+        self.isBlockingWalking = true
+    }
+
     func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
         let dispacher = self.getDispacherOf(type)
         do {
@@ -135,6 +155,10 @@ class EventManager: NotifiableFromDispacher {
     // TODO: remove, add が失敗した場合の処理の追加
     func invoke(_ listener: EventListener) {
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
+
+        if isBlockingWalking && (listener as? WalkOneStepEventListener != nil) {
+            return
+        }
 
         if isBlockingBehavior && listener.isBehavior {
             return

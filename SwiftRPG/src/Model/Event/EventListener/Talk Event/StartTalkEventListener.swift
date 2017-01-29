@@ -45,6 +45,7 @@ class StartTalkEventListener: EventListenerImplement {
 
             // Stop All Object's behavior
             sender?.stopBehaviors()
+            sender?.disableWalking()
 
             // Change direction of player
             let map = sender!.map!

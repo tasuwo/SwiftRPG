@@ -25,6 +25,7 @@ class HideEventDialogListener: EventListenerImplement {
             sender!.eventDialog.isHidden = true
 
             sender?.startBehaviors()
+            sender?.enableWalking()
 
             do {
                 let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
