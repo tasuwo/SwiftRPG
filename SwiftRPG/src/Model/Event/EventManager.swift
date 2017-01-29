@@ -22,7 +22,7 @@ class EventManager: NotifiableFromDispacher {
     fileprivate var actionButtonEventDispacher: EventDispatcher
     fileprivate var cyclicEventDispacher: EventDispatcher
 
-    fileprivate var isBlockedBehavior: Bool = false
+    fileprivate(set) var isBlockingBehavior: Bool = true
 
     init() {
         self.touchEventDispacher = EventDispatcher()
@@ -77,11 +77,11 @@ class EventManager: NotifiableFromDispacher {
     }
 
     func blockBehavior() {
-        self.isBlockedBehavior = true
+        self.isBlockingBehavior = true
     }
 
     func unblockBehavior() {
-        self.isBlockedBehavior = false
+        self.isBlockingBehavior = false
     }
 
     func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
@@ -136,7 +136,7 @@ class EventManager: NotifiableFromDispacher {
     func invoke(_ listener: EventListener) {
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
-        if isBlockedBehavior && listener.isBehavior {
+        if isBlockingBehavior && listener.isBehavior {
             return
         }
 
