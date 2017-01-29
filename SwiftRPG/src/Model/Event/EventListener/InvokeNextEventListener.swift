@@ -10,18 +10,10 @@ import Foundation
 import SwiftyJSON
 import PromiseKit
 
-class InvokeNextEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-    internal var listeners: ListenerChain?
-
+class InvokeNextEventListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
+
         self.triggerType   = .immediate
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             // If there are no registered listener, exit
@@ -43,9 +35,5 @@ class InvokeNextEventListener: EventListener {
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

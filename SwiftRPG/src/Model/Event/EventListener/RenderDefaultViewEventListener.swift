@@ -12,21 +12,10 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class RenderDefaultViewEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
+class RenderDefaultViewEventListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.params = params
-        self.listeners = listeners
+        try! super.init(params: params, chainListeners: listeners)
+
         self.triggerType = .immediate
         self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
@@ -52,10 +41,6 @@ class RenderDefaultViewEventListener: EventListener {
                 }
             }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }
 

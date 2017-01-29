@@ -13,19 +13,10 @@ import SwiftyJSON
 import JSONSchema
 import PromiseKit
 
-class MoveObjectEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
+class MoveObjectEventListener: EventListenerImplement {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
 
-    required init(params: JSON?, chainListeners: ListenerChain?) throws {
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -51,8 +42,6 @@ class MoveObjectEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(["The parameter 'speed' couldn't convert to integer"])
         }
 
-        self.params        = params
-        self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
@@ -153,9 +142,5 @@ class MoveObjectEventListener: EventListener {
             diff = diff + TileCoordinate(x: -1, y:  0)
         }
         return (departure + diff)
-    }
-    
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

@@ -12,22 +12,10 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class StartTalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
-    fileprivate let directionString: String
-    fileprivate let params: JSON
-    internal var listeners: ListenerChain?
+class StartTalkEventListener: EventListenerImplement {
+    fileprivate var directionString: String
 
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-
         if params == nil { throw EventListenerError.illegalParamFormat(["Parameter is nil"]) }
 
         let maxIndex = params?.arrayObject?.count
@@ -39,9 +27,11 @@ class StartTalkEventListener: EventListener {
         array?.removeLast()
 
         self.directionString = directionString!
+
+        try! super.init(params: params, chainListeners: listeners)
+
         self.triggerType     = .button
         self.params          = JSON(array!)
-        self.listeners       = listeners
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
             sender?.textBox.hide()
@@ -71,7 +61,7 @@ class StartTalkEventListener: EventListener {
                 }.then { _ -> Void in
                     do {
                         // Render next conversation
-                        let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params)
+                        let moveConversation = try TalkEventListener.generateMoveConversationMethod(0, params: self.params!)
                         try moveConversation(_: sender, args).catch { error in
                             // TODO
                         }
@@ -92,9 +82,5 @@ class StartTalkEventListener: EventListener {
                 }
             }
         }
-    }
-    
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

@@ -12,19 +12,10 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class ActivateButtonListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var eventObjectId: MapObjectId? = nil
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    let triggerType: TriggerType
-
+class ActivateButtonListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
+        
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -37,10 +28,8 @@ class ActivateButtonListener: EventListener {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
 
-        self.params        = params
-        self.listeners     = listeners
-        self.triggerType   = .immediate
-        self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
+        self.triggerType = .immediate
+        self.invoke      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.actionButton.title = params!["text"].string!
             sender!.actionButton.isHidden = false
 
@@ -55,10 +44,6 @@ class ActivateButtonListener: EventListener {
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }
 

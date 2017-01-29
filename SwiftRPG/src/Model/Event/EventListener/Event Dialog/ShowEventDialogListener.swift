@@ -12,19 +12,9 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class ShowEventDialogListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
+class ShowEventDialogListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
 
         let schema = Schema([
             "type": "object",
@@ -38,8 +28,6 @@ class ShowEventDialogListener: EventListener {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
 
-        self.params        = params
-        self.listeners     = listeners
         self.triggerType   = .immediate
         self.rollback      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.eventDialog.isHidden = true
@@ -59,9 +47,5 @@ class ShowEventDialogListener: EventListener {
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

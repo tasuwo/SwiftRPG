@@ -12,21 +12,10 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class FinishTalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
+class FinishTalkEventListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
-        self.params        = params
-        self.listeners     = listeners
+        try! super.init(params: params, chainListeners: listeners)
+
         self.triggerType   = .touch
         self.rollback      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.actionButton.isHidden = true
@@ -57,9 +46,5 @@ class FinishTalkEventListener: EventListener {
                 }
             }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

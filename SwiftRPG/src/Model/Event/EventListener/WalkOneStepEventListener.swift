@@ -13,19 +13,9 @@ import SwiftyJSON
 import JSONSchema
 import PromiseKit
 
-class WalkOneStepEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var params: JSON?
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
-    required init(params: JSON?, chainListeners: ListenerChain?) throws {
+class WalkOneStepEventListener: EventListenerImplement {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
 
         let schema = Schema([
             "type": "object",
@@ -39,8 +29,6 @@ class WalkOneStepEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(result.errors!)
         }
 
-        self.params        = params
-        self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
@@ -106,9 +94,5 @@ class WalkOneStepEventListener: EventListener {
                 }
             }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

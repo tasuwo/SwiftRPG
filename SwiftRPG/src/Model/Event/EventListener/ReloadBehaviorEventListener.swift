@@ -12,19 +12,10 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class ReloadBehaviorEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var eventObjectId: MapObjectId? = nil
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    let triggerType: TriggerType
-
+class ReloadBehaviorEventListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
+
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -40,8 +31,6 @@ class ReloadBehaviorEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(["parameter 'eventObjectId' cannot convert to int"])
         }
 
-        self.params        = params
-        self.listeners     = listeners
         self.triggerType   = .immediate
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             let map   = sender!.map!
@@ -66,9 +55,5 @@ class ReloadBehaviorEventListener: EventListener {
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

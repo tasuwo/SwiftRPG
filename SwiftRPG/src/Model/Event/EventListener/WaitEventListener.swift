@@ -13,19 +13,10 @@ import SwiftyJSON
 import JSONSchema
 import PromiseKit
 
-class WaitEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
+class WaitEventListener: EventListenerImplement {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
+        try! super.init(params: params, chainListeners: listeners)
 
-    required init(params: JSON?, chainListeners: ListenerChain?) throws {
         let schema = Schema([
             "type": "object",
             "properties": [
@@ -43,8 +34,6 @@ class WaitEventListener: EventListener {
             throw EventListenerError.illegalParamFormat(["The parameter 'time' couldn't convert to integer"])
         }
 
-        self.params        = params
-        self.listeners     = chainListeners
         self.triggerType   = .immediate
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
@@ -80,9 +69,5 @@ class WaitEventListener: EventListener {
             fullfill, reject in
             map.wait(time, callback: { () in fullfill() })
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

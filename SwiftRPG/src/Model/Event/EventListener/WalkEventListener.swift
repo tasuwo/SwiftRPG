@@ -14,18 +14,10 @@ import JSONSchema
 import PromiseKit
 
 /// プレイヤー移動のリスナー
-class WalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listeners: ListenerChain?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
+class WalkEventListener: EventListenerImplement {
+    required init(params: JSON?, chainListeners listeners: ListenerChain?) {
+        try! super.init(params: params, chainListeners: listeners)
 
-    required init(params: JSON?, chainListeners: ListenerChain?) {
         self.triggerType   = .touch
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             let schema = Schema([
@@ -90,9 +82,5 @@ class WalkEventListener: EventListener {
 
     fileprivate func generateOneStepWalkListener(_ destination: TileCoordinate) -> ListenerChain {
         return [ (listener: WalkOneStepEventListener.self, params: JSON(["destination": destination.description])) ]
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

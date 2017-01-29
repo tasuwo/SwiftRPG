@@ -12,23 +12,11 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class HideEventDialogListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var listensers: ListenerChain?
-    var params: JSON?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-    internal var listeners: ListenerChain?
-
+class HideEventDialogListener: EventListenerImplement {
     required init(params: JSON?, chainListeners listeners: ListenerChain?) {
+        try! super.init(params: params, chainListeners: listeners)
+
         self.triggerType   = .touch
-        self.listeners     = listeners
-        self.params        = params
         self.rollback        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender?.eventDialog.isHidden = true
             return Promise<Void> { fullfill, reject in fullfill() }
@@ -49,9 +37,5 @@ class HideEventDialogListener: EventListener {
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

@@ -12,20 +12,9 @@ import JSONSchema
 import SpriteKit
 import PromiseKit
 
-class TalkEventListener: EventListener {
-    var id: UInt64!
-    var delegate: NotifiableFromListener?
-    var invoke: EventMethod?
-    var rollback: EventMethod?
-    var isExecuting: Bool = false
-    var isBehavior: Bool = false
-    var eventObjectId: MapObjectId? = nil
-    let triggerType: TriggerType
-
-    fileprivate let params: JSON
-    internal var listeners: ListenerChain?
-    fileprivate let index: Int
-    fileprivate let talkContentsMaxNum: Int
+class TalkEventListener: EventListenerImplement {
+    fileprivate var index: Int? = nil
+    fileprivate var talkContentsMaxNum: Int? = nil
 
     required convenience init(params: JSON?, chainListeners listeners: ListenerChain?) throws {
         do {
@@ -36,6 +25,7 @@ class TalkEventListener: EventListener {
     }
 
     init(params: JSON?, chainListeners listeners: ListenerChain?, index: Int) throws {
+        try! super.init(params: params, chainListeners: listeners)
 
         // TODO:
         // The truth is validation as follows should be executed by JSONSchema,
@@ -51,8 +41,6 @@ class TalkEventListener: EventListener {
         let maxIndex = params?.arrayObject?.count
         if maxIndex == nil { throw EventListenerError.illegalParamFormat(["No properties in json parameter"]) }
 
-        self.params        = params!
-        self.listeners     = listeners
         self.index         = index
         self.triggerType   = .touch
         // TODO: The value of following variable is determined by the number of property.
@@ -66,7 +54,7 @@ class TalkEventListener: EventListener {
         }
         self.invoke = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             do {
-                let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index, params: self.params)
+                let moveConversation = try TalkEventListener.generateMoveConversationMethod(self.index!, params: self.params!)
                 try moveConversation(sender, args).catch { error in
                     // TODO
                 }
@@ -74,8 +62,8 @@ class TalkEventListener: EventListener {
                 // Determine the Event Listener which executed in next 
                 // depending on whether conversation is continued or not.
                 let nextEventListener: EventListener
-                if index < self.talkContentsMaxNum - 1 {
-                    nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners, index: self.index+1)
+                if index < self.talkContentsMaxNum! - 1 {
+                    nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners, index: self.index!+1)
                 } else {
                     nextEventListener = try FinishTalkEventListener(params: self.params, chainListeners: self.listeners)
                 }
@@ -122,9 +110,5 @@ class TalkEventListener: EventListener {
             sender!.textBox.drawText(talkerImageName, body: talkBody, side: talkSide)
             return Promise<Void> { fullfill, reject in fullfill() }
         }
-    }
-
-    internal func chain(listeners: ListenerChain) {
-        self.listeners = listeners
     }
 }

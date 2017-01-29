@@ -40,6 +40,7 @@
 		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
 		2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */; };
 		2CCDA4F01E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */; };
+		2CCDA4FB1E3D9B81000E00BC /* EventListenerImplement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */; };
 		2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */; };
 		2CEDA5CE1E39DEDA00DB076A /* FinishTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */; };
 		2CEDA5D01E39DF0B00DB076A /* StartTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */; };
@@ -127,6 +128,7 @@
 		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myGameScene.swift; sourceTree = "<group>"; };
 		2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadBehaviorEventListener.swift; sourceTree = "<group>"; };
+		2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListenerImplement.swift; sourceTree = "<group>"; };
 		2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitEventListener.swift; sourceTree = "<group>"; };
 		2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishTalkEventListener.swift; sourceTree = "<group>"; };
 		2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartTalkEventListener.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				2CFD72F51E364BBF0039A6AC /* MoveObjectEventListener.swift */,
 				2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */,
 				2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */,
+				2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */,
 			);
 			path = EventListener;
 			sourceTree = "<group>";
@@ -806,6 +809,7 @@
 				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,
 				2C2E64CB1B78F15300B25B6E /* Dialog.swift in Sources */,
 				2CAC5E511E0ECE3900621F17 /* EventPropertyParser.swift in Sources */,
+				2CCDA4FB1E3D9B81000E00BC /* EventListenerImplement.swift in Sources */,
 				2C2D31A51D531F04000D8A2B /* ItemGetEventListener.swift in Sources */,
 				2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */,
 				2C2941B41E3609CB0016A7E4 /* RenderDefaultViewEventListener.swift in Sources */,
