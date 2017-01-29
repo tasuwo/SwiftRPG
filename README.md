@@ -17,8 +17,9 @@ Simple game written in swift with SpriteKit.
   - ~~Collision detection management~~
   - ~~Stop object's behavior when touch event occured~~
 - ~~Loop object's behavior~~
-- Document
-- Scene transition
+- Disabling walking and behavior
 - Sound
+- Scene transition
 - Flag management
 - Battle
+- Document
