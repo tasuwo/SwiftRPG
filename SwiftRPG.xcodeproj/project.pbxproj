@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		094461156FB6E15DBCAA8578 /* Pods_RunTowardTheLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */; };
 		2C0564981D4B062300A2F527 /* myButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0564971D4B062300A2F527 /* myButton.swift */; };
+		2C1377F41E3DF13D00247BCD /* nextGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1377F31E3DF13D00247BCD /* nextGameScene.swift */; };
 		2C1377F61E3DF50900247BCD /* SceneTransitionEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1377F51E3DF50900247BCD /* SceneTransitionEventListener.swift */; };
 		2C2143341D53308D006D3C50 /* ItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143331D53308D006D3C50 /* ItemTable.swift */; };
 		2C2143371D5345A5006D3C50 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143361D5345A5006D3C50 /* DataModels.swift */; };
@@ -38,12 +39,14 @@
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
 		2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */; };
 		2CBA283D1E3E0171009572CE /* MapTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBA283C1E3E0171009572CE /* MapTable.swift */; };
+		2CBA283F1E3E3369009572CE /* nextGameScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CBA283E1E3E3369009572CE /* nextGameScene.xib */; };
 		2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE41E0ADC12008AEB77 /* SceneController.swift */; };
 		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
 		2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */; };
 		2CCDA4F01E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */; };
 		2CCDA4FB1E3D9B81000E00BC /* EventListenerImplement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */; };
 		2CCDA5031E3DCC48000E00BC /* BackToDefaultStateEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA5021E3DCC48000E00BC /* BackToDefaultStateEventListener.swift */; };
+		2CCDA5051E3DD6A9000E00BC /* sample_map01.json in Resources */ = {isa = PBXBuildFile; fileRef = 2CCDA5041E3DD6A9000E00BC /* sample_map01.json */; };
 		2CEDA5C71E382C2B00DB076A /* WaitEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */; };
 		2CEDA5CE1E39DEDA00DB076A /* FinishTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */; };
 		2CEDA5D01E39DF0B00DB076A /* StartTalkEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */; };
@@ -100,6 +103,7 @@
 
 /* Begin PBXFileReference section */
 		2C0564971D4B062300A2F527 /* myButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myButton.swift; sourceTree = "<group>"; };
+		2C1377F31E3DF13D00247BCD /* nextGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = nextGameScene.swift; path = components/nextGameScene.swift; sourceTree = "<group>"; };
 		2C1377F51E3DF50900247BCD /* SceneTransitionEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneTransitionEventListener.swift; sourceTree = "<group>"; };
 		2C2143331D53308D006D3C50 /* ItemTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTable.swift; sourceTree = "<group>"; };
 		2C2143361D5345A5006D3C50 /* DataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
@@ -129,12 +133,14 @@
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
 		2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateButtonListener.swift; sourceTree = "<group>"; };
 		2CBA283C1E3E0171009572CE /* MapTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTable.swift; sourceTree = "<group>"; };
+		2CBA283E1E3E3369009572CE /* nextGameScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = nextGameScene.xib; path = components/nextGameScene.xib; sourceTree = "<group>"; };
 		2CC39CE41E0ADC12008AEB77 /* SceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
 		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myGameScene.swift; sourceTree = "<group>"; };
 		2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadBehaviorEventListener.swift; sourceTree = "<group>"; };
 		2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListenerImplement.swift; sourceTree = "<group>"; };
 		2CCDA5021E3DCC48000E00BC /* BackToDefaultStateEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackToDefaultStateEventListener.swift; sourceTree = "<group>"; };
+		2CCDA5041E3DD6A9000E00BC /* sample_map01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_map01.json; sourceTree = "<group>"; };
 		2CEDA5C61E382C2B00DB076A /* WaitEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitEventListener.swift; sourceTree = "<group>"; };
 		2CEDA5CD1E39DEDA00DB076A /* FinishTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishTalkEventListener.swift; sourceTree = "<group>"; };
 		2CEDA5CF1E39DF0B00DB076A /* StartTalkEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartTalkEventListener.swift; sourceTree = "<group>"; };
@@ -470,6 +476,8 @@
 				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
 				2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */,
 				A0D85B7A1C9AF2CE009B34AC /* myGameScene.xib */,
+				2C1377F31E3DF13D00247BCD /* nextGameScene.swift */,
+				2CBA283E1E3E3369009572CE /* nextGameScene.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -553,6 +561,7 @@
 			isa = PBXGroup;
 			children = (
 				A02F0CAA1C284D0F00997B86 /* black.png */,
+				2CCDA5041E3DD6A9000E00BC /* sample_map01.json */,
 				A02F0CA71C284CB500997B86 /* sample_map02.json */,
 				2C2D31A21D531CD2000D8A2B /* kanamonoMap.xcassets */,
 			);
@@ -664,9 +673,11 @@
 				A02F0CB51C284D0F00997B86 /* black.png in Resources */,
 				D7C157AB1B3E9CD400C13909 /* Images.xcassets in Resources */,
 				A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */,
+				2CBA283F1E3E3369009572CE /* nextGameScene.xib in Resources */,
 				D7C157A21B3E9CD400C13909 /* GameScene.sks in Resources */,
 				A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */,
 				2C2D31A31D531CD2000D8A2B /* kanamonoMap.xcassets in Resources */,
+				2CCDA5051E3DD6A9000E00BC /* sample_map01.json in Resources */,
 				A0D85B7B1C9AF2CE009B34AC /* myGameScene.xib in Resources */,
 				A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */,
 				A02F0CA91C284CB500997B86 /* sample_map02.json in Resources */,
@@ -823,6 +834,7 @@
 				2C1377F61E3DF50900247BCD /* SceneTransitionEventListener.swift in Sources */,
 				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
 				2C2941AC1E35DCAF0016A7E4 /* ListenerGenerator.swift in Sources */,
+				2C1377F41E3DF13D00247BCD /* nextGameScene.swift in Sources */,
 				A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,
