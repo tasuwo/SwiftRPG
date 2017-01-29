@@ -52,19 +52,16 @@ class WalkOneStepEventListener: EventListenerImplement {
                 }
             )
 
+            let screenAction = sheet.getActionTo(
+                player.position,
+                destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination),
+                speed: player.speed
+            )
+
             // If player can't reach destination tile because of collision, stop
             if !map.canPass(destination) {
                 self.delegate?.invoke(WalkEventListener.init(params: nil, chainListeners: nil))
                 return Promise<Void> { fullfill, reject in fullfill() }
-            }
-
-            // Generate SKAction for scrolling screen
-            let delay = SKAction.wait(forDuration: TimeInterval(Double(player.speed)))
-            let scrollAction: SKAction? = sheet.scrollSheet(destination)
-            var scrollActions: Array<SKAction> = []
-            if scrollAction != nil {
-                scrollActions.append(delay)
-                scrollActions.append(scrollAction!)
             }
 
             return Promise<Void> { fullfill, reject in
@@ -73,7 +70,8 @@ class WalkOneStepEventListener: EventListenerImplement {
                         action,
                         tileDeparture: player.coordinate,
                         tileDestination: destination,
-                        screenActions: scrollActions)
+                        screenAction: screenAction
+                    )
                 }.then { _ -> Void in
                     // If reached at destination, stop walking and set WalkEvetListener as touch event again
                     if self.listeners == nil || self.listeners?.count == 0 {

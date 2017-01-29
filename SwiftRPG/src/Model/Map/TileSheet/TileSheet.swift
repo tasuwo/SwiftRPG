@@ -139,65 +139,11 @@ open class TileSheet {
         }
     }
 
-    ///  スクロールすべきか否かを検知し，すべきであればスクロール用のアクションを返す
-    ///  キャラクターの移動ごとに呼び出される必要がある
-    ///
-    ///  - parameter position: キャラクターの現在位置
-    ///
-    ///  - returns: スクロールのためのアクション
-    func scrollSheet(_ playerPosition: TileCoordinate) -> SKAction? {
-        // 到達していたらスクロールするタイル
-        // 原点沿いのタイル
-        // WARNING: 補正値 +1
-        let sheetOrigin = TileCoordinate.getTileCoordinateFromScreenCoordinate(
-            self.node.position,
-            screenCoordinate: CGPoint(x: self.drawingRangeWidth + 1, y: self.drawingRangeHeight + 1)
-        )
-        // 原点から見て画面端のタイル
-        let max_x = sheetOrigin.x + self.drawingTileRows - 1
-        let max_y = sheetOrigin.y + self.drawingTileCols - 1
-        
-        // スクロールするか？(プレイヤーの現在位置チェック)
-        if ((    playerPosition.x >= max_x
-              || playerPosition.y >= max_y
-              || playerPosition.x <= sheetOrigin.x
-              || playerPosition.y <= sheetOrigin.y
-            ) == false) {
-            return nil
-        }
-
-        var direction: DIRECTION
-
-        if (playerPosition.x >= max_x) {
-            direction = DIRECTION.right
-        } else if (playerPosition.y >= max_y) {
-            direction = DIRECTION.up
-        } else if (playerPosition.x <= sheetOrigin.x) {
-            direction = DIRECTION.left
-        } else if (playerPosition.y <= sheetOrigin.y) {
-            direction = DIRECTION.down
-        } else {
-            // WARNING: won't use
-            direction = DIRECTION.up
-        }
-
-        var deltaX: CGFloat = 0
-        var deltaY: CGFloat = 0
-        switch (direction) {
-        case .up:
-            deltaX = 0
-            deltaY = -(CGFloat(self.drawingTileCols - 1) * Tile.TILE_SIZE)
-        case .down:
-            deltaX = 0
-            deltaY = CGFloat(self.drawingTileCols - 1) * Tile.TILE_SIZE
-        case .left:
-            deltaX = CGFloat(self.drawingTileRows - 1) * Tile.TILE_SIZE
-            deltaY = 0
-        case .right:
-            deltaX = -(CGFloat(self.drawingTileRows - 1) * Tile.TILE_SIZE)
-            deltaY = 0
-        }
-        return SKAction.moveBy(x: deltaX, y: deltaY, duration: 0.5)
+    func getActionTo(_ departure: CGPoint, destination: CGPoint, speed: CGFloat) -> SKAction {
+        let diff = CGPoint(x: destination.x - departure.x,
+                           y: destination.y - departure.y)
+        let action = SKAction.moveBy(x: -1 * diff.x, y: -1 * diff.y, duration: TimeInterval(speed))
+        return action
     }
 
     ///  描画範囲外を黒く塗りつぶすための，画面の外枠を生成する

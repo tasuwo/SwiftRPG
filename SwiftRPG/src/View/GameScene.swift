@@ -60,24 +60,18 @@ class GameScene: Scene, GameSceneProtocol {
 
     // MARK: GameSceneProtocol Methods
 
-    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenActions: [SKAction]) -> Promise<Void> {
+    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenAction: SKAction) -> Promise<Void> {
         let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
 
+        // WARNING: Actions of player and sheet should be executed in parallel.
+        //          Should specified it?
         return Promise { fulfill, reject in
             let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
             player?.runAction(playerActions, destination: destination, callback: {
                 self.map!.updateObjectPlacement(player!, departure: tileDeparture, destination: tileDestination)
-                if screenActions.isEmpty {
-                    fulfill()
-                }
-            })
-
-            if screenActions.isEmpty { return }
-            UIApplication.shared.beginIgnoringInteractionEvents()
-            self.map?.sheet!.runAction(screenActions, callback: {
-                UIApplication.shared.endIgnoringInteractionEvents()
                 fulfill()
             })
+            self.map?.sheet!.runAction([screenAction], callback: {})
         }
     }
 
