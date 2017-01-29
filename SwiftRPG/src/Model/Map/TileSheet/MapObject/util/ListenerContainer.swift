@@ -64,6 +64,19 @@ class ListenerContainer {
             return [
                 (listener: WaitEventListener.self, params: JSON(["time":time]))
             ]
+        case "scene":
+            let map_file_name = params[0] as String
+            let player_place_coordiante = params[1] as String
+            let player_direction = params[2] as String
+
+            return [
+                (listener: SceneTransitionEventListener.self,
+                 params: JSON([
+                    "map_file_name":map_file_name,
+                    "player_place_coordinate":player_place_coordiante,
+                    "player_direction":player_direction
+                    ]))
+            ]
         default:
             throw ListenerContainerError.eventIdNotFound
         }

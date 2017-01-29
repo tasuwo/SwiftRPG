@@ -158,4 +158,9 @@ extension GameViewController: GameSceneDelegate {
     func disableWalking() {
         self.eventManager.disableWalking()
     }
+
+    func transitionTo() {
+        let viewController = MenuViewController()
+        self.present(viewController, animated: true, completion: nil)
+    }
 }
