@@ -44,9 +44,14 @@ class ListenerGenerator {
             let listenerType = listenerChain.first?.listener
             let params = listenerChain.first?.params
             do {
+                // When the listener chain has finished, the player and objects
+                // should be able to move.
+                let chain: ListenerChain = ListenerChain(listenerChain.dropFirst(1)) + [
+                    (listener: BackToDefaultStateEventListener.self, params: nil)
+                ]
                 let listener = try listenerType?.init(
                     params: params,
-                    chainListeners: ListenerChain(listenerChain.dropFirst(1)))
+                    chainListeners: chain)
                 listeners[coordinate] = listener
             } catch EventListenerError.illegalArguementFormat(let string) {
                 throw ListenerGeneratorError.failed("Illegal arguement for listener: " + string)

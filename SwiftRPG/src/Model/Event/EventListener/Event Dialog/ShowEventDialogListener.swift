@@ -38,8 +38,8 @@ class ShowEventDialogListener: EventListenerImplement {
             sender!.eventDialog.isHidden = false
 
             // Stop All Object's behavior
-            // sender?.stopBehaviors()
-            // sender?.disableWalking()
+            sender?.stopBehaviors()
+            sender?.disableWalking()
 
             let nextEventListener = HideEventDialogListener(params: self.params, chainListeners: self.listeners)
             nextEventListener.eventObjectId = self.eventObjectId

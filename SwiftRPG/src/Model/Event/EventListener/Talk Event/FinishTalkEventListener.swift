@@ -24,9 +24,6 @@ class FinishTalkEventListener: EventListenerImplement {
         }
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
-
-            // sender?.startBehaviors()
-            // sender?.enableWalking()
             
             return Promise<Void> { fullfill, reject in
                 firstly {

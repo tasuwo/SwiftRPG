@@ -24,9 +24,6 @@ class HideEventDialogListener: EventListenerImplement {
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             sender!.eventDialog.isHidden = true
 
-            sender?.startBehaviors()
-            sender?.enableWalking()
-
             do {
                 let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 nextEventListener.eventObjectId = self.eventObjectId
