@@ -140,6 +140,7 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
+        if self.eventManager.isBlockingBehavior == false { return }
         self.eventManager.unblockBehavior()
         for behavior in behaviors.values {
             behavior.isExecuting = false
