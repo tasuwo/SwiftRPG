@@ -42,7 +42,14 @@ class WalkOneStepEventListener: EventListenerImplement {
             // Generate SKAction for moving
             let action = player.getActionTo(
                 player.position,
-                destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination)
+                destination: TileCoordinate.getSheetCoordinateFromTileCoordinate(destination),
+                preCallback: {
+                    map.setCollisionOn(coordinate: destination)
+                },
+                postCallback: {
+                    map.removeCollisionOn(coordinate: destination)
+                    map.updateObjectPlacement(player, departure: player.coordinate, destination: destination)
+                }
             )
 
             // If player can't reach destination tile because of collision, stop
