@@ -131,7 +131,7 @@
             {
              "0":
                 {
-                 "behavior":"wait,1\nmove,mob,LEFT,1,1\nwait,1\nmove,mob,RIGHT,1,1",
+                 "behavior":"wait,1\nmove,mob,UP,1,1\nwait,1\nmove,mob,DOWN,1,1",
                  "collision":"1",
                  "event":"talk,{(0,-1)},talk_01.txt"
                 }
