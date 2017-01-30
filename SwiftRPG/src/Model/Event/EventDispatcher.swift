@@ -104,6 +104,7 @@ class EventDispatcher : NotifiableFromListener {
                         listener.id = nil
                     } else {
                         // If the listener was removed before removing in this block, here is executed
+                        print("Failed to listener at the time of end of trigger")
                     }
                 }.catch { error in
                     // TODO:
