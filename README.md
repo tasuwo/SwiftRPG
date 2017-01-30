@@ -20,9 +20,11 @@ Simple game written in swift with SpriteKit.
 - ~~Disabling walking and behavior~~
 - ~~Scene transition~~
 - ~~Use only SpriteKit. Use UIKit for using storyboard, but it's not efficiency.~~
-- Fix displacement of tile and objects
 - Sound
 - Flag management
 - Battle
 - Document
 
+## BUG
+
+- Talk with npc during npc moving, the game would be crashed.
