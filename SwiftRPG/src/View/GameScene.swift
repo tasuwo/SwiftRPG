@@ -73,10 +73,12 @@ class GameScene: SKScene, GameSceneProtocol {
 
         if actionButton.contains(location) && actionButton.isHidden == false {
             self.gameSceneDelegate?.actionButtonTouched()
+            return
         }
 
         if menuButton.contains(location) && menuButton.isHidden == false {
             self.gameSceneDelegate?.menuButtonTouched()
+            return
         }
 
         if self.map!.sheet!.isOnFrame(location) {
