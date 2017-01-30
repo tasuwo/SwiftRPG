@@ -13,17 +13,18 @@ import SwiftyJSON
 class GameViewController: SceneController {
     var eventManager: EventManager!
     var eventObjectIds: Set<MapObjectId>? = nil
+    var currentGameScene: GameScene? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.eventManager = EventManager()
-        self.eventManager.enableWalking()
     }
 
     override func initializeScene() {
         let scene = myGameScene(size: self.view.bounds.size, playerCoordiante: TileCoordinate(x:10,y:10), playerDirection: .down)
         scene.gameSceneDelegate = self
         self.scene = scene
+        self.currentGameScene = scene
     }
 }
 
@@ -32,8 +33,7 @@ extension GameViewController: GameSceneDelegate {
 
     func gameSceneTouched(_ location: CGPoint) {
         let args = JSON(["touchedPoint": NSStringFromCGPoint(location)])
-        let skView = self.view as! SKView
-        let gameScene = skView.scene as! GameScene
+        let gameScene = self.currentGameScene!
 
         do {
             try self.eventManager.trigger(.touch, sender: gameScene, args: args)
@@ -45,8 +45,7 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func actionButtonTouched() {
-        let skView = self.view as! SKView
-        let gameScene = skView.scene as! GameScene
+        let gameScene = self.currentGameScene!
 
         do {
             try self.eventManager.trigger(.button, sender: gameScene, args: nil)
@@ -72,8 +71,7 @@ extension GameViewController: GameSceneDelegate {
     //     If the collision was occurred, invoke event.
     //   - Trigger cyclic event listeners.
     func viewUpdated() {
-        let skView = self.view as! SKView
-        let gameScene = skView.scene as! GameScene
+        let gameScene = self.currentGameScene!
         let map = gameScene.map
 
         // Update z-index of objects
@@ -159,8 +157,18 @@ extension GameViewController: GameSceneDelegate {
         self.eventManager.disableWalking()
     }
 
-    func transitionTo() {
-        let viewController = MenuViewController()
-        self.present(viewController, animated: true, completion: nil)
+    func blockAllEventListeners() {
+        self.eventManager.blockCurrentListeners()
+    }
+
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
+        let scene = newScene.init(size: (self.view?.bounds.size)!, playerCoordiante: coordinate, playerDirection: direction)
+        scene.gameSceneDelegate = self
+        let skView = self.view as! SKView
+        let gameScene = skView.scene as! GameScene
+        gameScene.view?.presentScene(scene)
+
+        self.scene = scene
+        self.currentGameScene = scene
     }
 }

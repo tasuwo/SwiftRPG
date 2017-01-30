@@ -26,7 +26,7 @@ class SceneTransitionEventListener: EventListenerImplement {
                     "enum": ["LEFT", "RIGHT", "UP", "DOWN"]
                 ]
             ],
-            "required": ["map_file_name", "player_place", "player_direction"],
+            "required": ["map_file_name", "player_place_coordinate", "player_direction"],
             ])
         let result = schema.validate(params?.rawValue ?? [])
         if result.valid == false {
@@ -38,6 +38,9 @@ class SceneTransitionEventListener: EventListenerImplement {
             let mapFileName = params!["map_file_name"].string!
             let playerCoordinate = self.convertToCoordinate(params!["player_place_coordinate"].string!)
             let playerDirection = DIRECTION.fromString((self.params?["player_direction"].string!)!)
+
+            // Clean event manager: remove all event listener from event manager
+            sender?.removeAllEvetListenrs()
 
             // Scene transition
             let gameSceneType = MapTable.fromJsonFileName[mapFileName]

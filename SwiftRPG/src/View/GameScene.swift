@@ -21,7 +21,8 @@ protocol GameSceneDelegate: class {
     func stopBehaviors()
     func enableWalking()
     func disableWalking()
-    func transitionTo()
+    func blockAllEventListeners()
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION)
 }
 
 /// ゲーム画面
@@ -191,9 +192,12 @@ class GameScene: Scene, GameSceneProtocol {
         self.gameSceneDelegate?.disableWalking()
     }
 
+    func removeAllEvetListenrs() {
+        self.gameSceneDelegate?.blockAllEventListeners()
+    }
+
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
-        let scene = newScene.init(size: (self.view?.bounds.size)!, playerCoordiante: coordinate, playerDirection: direction)
-        self.scene?.view?.presentScene(scene)
+        self.gameSceneDelegate?.transitionTo(newScene, playerCoordinate: coordinate, playerDirection: direction)
     }
 
     // MARK: ---

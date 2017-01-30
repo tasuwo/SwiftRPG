@@ -46,6 +46,7 @@ protocol GameSceneProtocol {
     func startBehaviors()
     func enableWalking()
     func disableWalking()
+    func removeAllEvetListenrs()
 
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate: TileCoordinate, playerDirection: DIRECTION)
 }

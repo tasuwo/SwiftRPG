@@ -39,6 +39,8 @@ class nextGameScene: GameScene {
 
         self.map?.sheet?.centerOn(point: player.position, frameWidth: self.frame.width, frameHeight: self.frame.height)
 
+        self.gameSceneDelegate?.enableWalking()
+
         actionButton.layer.borderColor = UIColor.white.cgColor
         actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
         actionButton.isHidden = true
