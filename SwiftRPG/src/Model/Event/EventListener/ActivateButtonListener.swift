@@ -30,7 +30,7 @@ class ActivateButtonListener: EventListenerImplement {
 
         self.triggerType = .immediate
         self.invoke      = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
-            sender!.actionButton.text = self.params!["text"].string!
+            sender!.actionButtonLabel.text = self.params!["text"].string!
             sender!.actionButton.isHidden = false
 
             do {

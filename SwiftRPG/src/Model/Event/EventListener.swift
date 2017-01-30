@@ -28,11 +28,14 @@ protocol GameSceneProtocol {
     var playerInitialCoordinate: TileCoordinate? { get }
     var playerInitialDirection:  DIRECTION?      { get }
     
-    var actionButton: SKLabelNode { get set }
-    var menuButton:   SKLabelNode { get set }
-    var eventDialog:  SKLabelNode { get set }
-    var map:          Map?        { get set }
-    var textBox:      Dialog!     { get set }
+    var actionButton:      SKSpriteNode { get set }
+    var menuButton:        SKSpriteNode { get set }
+    var eventDialog:       SKSpriteNode { get set }
+    var actionButtonLabel: SKLabelNode  { get set }
+    var menuButtonLabel:   SKLabelNode  { get set }
+    var eventDialogLabel:  SKLabelNode  { get set }
+    var map:               Map?         { get set }
+    var textBox:           Dialog!      { get set }
 
     func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenAction: SKAction)
         -> Promise<Void>

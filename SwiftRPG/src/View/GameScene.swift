@@ -31,9 +31,12 @@ class GameScene: SKScene, GameSceneProtocol {
 
     // MARK: GameSceneProtocol Properties
 
-    var actionButton: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
-    var menuButton:   SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
-    var eventDialog:  SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    var actionButton = SKSpriteNode(color: .black, size: CGSize(width: 200, height: 100))
+    var menuButton   = SKSpriteNode(color: .black, size: CGSize(width: 100, height: 50))
+    var eventDialog  = SKSpriteNode(color: .black, size: CGSize(width: 200, height: 100))
+    var actionButtonLabel: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    var menuButtonLabel:   SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    var eventDialogLabel:  SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     var map: Map?
     var textBox: Dialog!
     var playerInitialCoordinate: TileCoordinate? = nil
@@ -42,20 +45,27 @@ class GameScene: SKScene, GameSceneProtocol {
     // MARK: ---
 
     override func didMove(to view: SKView) {
-        actionButton.text = "Action"
-        menuButton.text   = "menu"
-        eventDialog.text  = "event"
+        actionButtonLabel.text = "Action"
+        menuButtonLabel.text   = "menu"
+        eventDialogLabel.text  = "event"
 
         actionButton.zPosition = 9999
         menuButton.zPosition   = 9999
         eventDialog.zPosition  = 9999
+        actionButton.zPosition = 9999
+        menuButtonLabel.zPosition   = 9999
+        eventDialogLabel.zPosition  = 9999
 
-        actionButton.fontSize = 40
-        menuButton.fontSize   = 20
-        eventDialog.fontSize  = 20
+        actionButtonLabel.fontSize = 40
+        menuButtonLabel.fontSize   = 20
+        eventDialogLabel.fontSize  = 20
+
+        actionButton.addChild(actionButtonLabel)
+        menuButton.addChild(menuButtonLabel)
+        eventDialog.addChild(eventDialogLabel)
 
         actionButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY*(2/3))
-        menuButton.position   = CGPoint(x:50, y:30)
+        menuButton.position   = CGPoint(x:80, y:30)
         eventDialog.position  = CGPoint(x:self.frame.midX, y:self.frame.midY)
 
         actionButton.isHidden = true

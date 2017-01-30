@@ -34,7 +34,7 @@ class ShowEventDialogListener: EventListenerImplement {
             return Promise<Void> { fullfill, reject in fullfill() }
         }
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
-            sender!.eventDialog.text = params!["text"].string!
+            sender!.eventDialogLabel.text = params!["text"].string!
             sender!.eventDialog.isHidden = false
 
             // Stop All Object's behavior
