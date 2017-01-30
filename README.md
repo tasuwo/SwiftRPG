@@ -19,7 +19,8 @@ Simple game written in swift with SpriteKit.
 - ~~Loop object's behavior~~
 - ~~Disabling walking and behavior~~
 - ~~Scene transition~~
-- Use only SpriteKit. Use UIKit for using storyboard, but it's not efficiency.
+- ~~Use only SpriteKit. Use UIKit for using storyboard, but it's not efficiency.~~
+- Fix displacement of tile and objects
 - Sound
 - Flag management
 - Battle
