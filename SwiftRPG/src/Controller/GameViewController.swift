@@ -165,10 +165,8 @@ extension GameViewController: GameSceneDelegate {
         let scene = newScene.init(size: (self.view?.bounds.size)!, playerCoordiante: coordinate, playerDirection: direction)
         scene.gameSceneDelegate = self
         let skView = self.view as! SKView
-        let gameScene = skView.scene as! GameScene
-        gameScene.view?.presentScene(scene)
+        skView.presentScene(scene)
 
-        self.scene = scene
         self.currentGameScene = scene
     }
 }
