@@ -42,8 +42,6 @@ class SecondGameScene: GameScene {
 
         self.gameSceneDelegate?.enableWalking()
 
-        // actionButton.layer.borderColor = UIColor.white.cgColor
-        // actionButton.addTarget(self, action: #selector(GameScene.actionButtonTouched(_:)), for: .touchUpInside)
         actionButton.isHidden = true
 
         textBox = Dialog(frame_width: self.frame.width, frame_height: self.frame.height)
@@ -52,9 +50,5 @@ class SecondGameScene: GameScene {
         textBox.addTo(self)
 
         eventDialog.isHidden = true
-        // eventDialog.layer.backgroundColor = UIColor.black.cgColor
-        // eventDialog.layer.borderColor = UIColor.white.cgColor
-
-        // menuButton.layer.borderColor = UIColor.white.cgColor
     }
 }
