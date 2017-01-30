@@ -55,7 +55,7 @@ class WalkEventListener: EventListenerImplement {
                 let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                 nextEventListener.eventObjectId = self.eventObjectId
                 nextEventListener.isBehavior = self.isBehavior
-                self.delegate?.invoke(nextEventListener)
+                self.delegate?.invoke(nextEventListener, invoker: self)
                 return Promise<Void> { fullfill, reject in fullfill() }
             }
 
@@ -71,7 +71,7 @@ class WalkEventListener: EventListenerImplement {
                 let nextListenerInstance = try nextListener.init(params: chain.first!.params, chainListeners: nextListenerChain)
                 nextListenerInstance.eventObjectId = self.eventObjectId
                 nextListenerInstance.isBehavior = self.isBehavior
-                self.delegate?.invoke(nextListenerInstance)
+                self.delegate?.invoke(nextListenerInstance, invoker: self)
             } catch {
                 throw error
             }

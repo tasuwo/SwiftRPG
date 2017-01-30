@@ -60,7 +60,7 @@ class WalkOneStepEventListener: EventListenerImplement {
 
             // If player can't reach destination tile because of collision, stop
             if !map.canPass(destination) {
-                self.delegate?.invoke(WalkEventListener.init(params: nil, chainListeners: nil))
+                self.delegate?.invoke(WalkEventListener.init(params: nil, chainListeners: nil), invoker: self)
                 return Promise<Void> { fullfill, reject in fullfill() }
             }
 
@@ -78,7 +78,7 @@ class WalkOneStepEventListener: EventListenerImplement {
                         let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                         nextEventListener.eventObjectId = self.eventObjectId
                         nextEventListener.isBehavior = self.isBehavior
-                        self.delegate?.invoke(nextEventListener)
+                        self.delegate?.invoke(nextEventListener, invoker: self)
                         return
                     }
 
@@ -88,7 +88,7 @@ class WalkOneStepEventListener: EventListenerImplement {
                     do {
                         let nextListenerInstance = try nextListener.init(params: self.listeners!.first!.params, chainListeners: nextListenerChain)
                         nextListenerInstance.isBehavior = self.isBehavior
-                        self.delegate?.invoke(nextListenerInstance)
+                        self.delegate?.invoke(nextListenerInstance, invoker: self)
                     } catch {
                         throw error
                     }

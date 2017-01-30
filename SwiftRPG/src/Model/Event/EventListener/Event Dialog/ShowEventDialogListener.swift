@@ -44,7 +44,7 @@ class ShowEventDialogListener: EventListenerImplement {
             let nextEventListener = HideEventDialogListener(params: self.params, chainListeners: self.listeners)
             nextEventListener.eventObjectId = self.eventObjectId
             nextEventListener.isBehavior = self.isBehavior
-            self.delegate?.invoke(nextEventListener)
+            self.delegate?.invoke(nextEventListener, invoker: self)
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }

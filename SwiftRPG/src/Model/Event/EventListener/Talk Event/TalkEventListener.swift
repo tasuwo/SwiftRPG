@@ -70,7 +70,7 @@ class TalkEventListener: EventListenerImplement {
                 nextEventListener.eventObjectId = self.eventObjectId
                 nextEventListener.isBehavior = self.isBehavior
                 
-                self.delegate?.invoke(nextEventListener)
+                self.delegate?.invoke(nextEventListener, invoker: self)
             } catch {
                 throw error
             }

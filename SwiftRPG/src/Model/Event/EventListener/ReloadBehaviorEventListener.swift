@@ -51,7 +51,7 @@ class ReloadBehaviorEventListener: EventListenerImplement {
                 // TODO
             }
 
-            self.delegate?.invoke(listener!)
+            self.delegate?.invoke(listener!, invoker: self)
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }

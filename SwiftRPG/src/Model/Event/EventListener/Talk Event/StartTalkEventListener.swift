@@ -72,7 +72,7 @@ class StartTalkEventListener: EventListenerImplement {
                         let nextEventListener = try TalkEventListener(params: self.params, chainListeners: self.listeners)
                         nextEventListener.eventObjectId = self.eventObjectId
                         nextEventListener.isBehavior = self.isBehavior
-                        self.delegate?.invoke(nextEventListener)
+                        self.delegate?.invoke(nextEventListener, invoker: self)
                     } catch {
                         throw error
                     }

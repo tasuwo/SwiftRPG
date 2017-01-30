@@ -28,7 +28,7 @@ class InvokeNextEventListener: EventListenerImplement {
                 let nextListenerInstance = try nextListener.init(params: listeners!.first!.params, chainListeners: nextListenerChain)
                 nextListenerInstance.eventObjectId = self.eventObjectId
                 nextListenerInstance.isBehavior = self.isBehavior
-                self.delegate?.invoke(nextListenerInstance)
+                self.delegate?.invoke(nextListenerInstance, invoker: self)
             } catch {
                 throw error
             }

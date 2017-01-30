@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 protocol NotifiableFromDispacher {
-    func invoke(_ listener: EventListener)
+    func invoke(_ listener: EventListener, invoker: EventListener)
 }
 
 enum EventManagerError: Error {
@@ -153,7 +153,7 @@ class EventManager: NotifiableFromDispacher {
     // MARK: - NotifiableFromDispacher
 
     // TODO: remove, add が失敗した場合の処理の追加
-    func invoke(_ listener: EventListener) {
+    func invoke(_ listener: EventListener, invoker: EventListener) {
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
         if isBlockingWalking && (listener as? WalkOneStepEventListener != nil) {
