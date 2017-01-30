@@ -20,6 +20,7 @@ class BackToDefaultStateEventListener: EventListenerImplement {
 
             sender!.enableWalking()
             sender!.startBehaviors()
+            sender!.menuButton.isHidden = false
 
             return Promise<Void> { fullfill, reject in fullfill() }
         }
