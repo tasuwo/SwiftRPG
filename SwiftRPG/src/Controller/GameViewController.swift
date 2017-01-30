@@ -15,13 +15,27 @@ class GameViewController: SceneController {
     var eventObjectIds: Set<MapObjectId>? = nil
     var currentGameScene: GameScene? = nil
 
+    var gameSceneType: GameScene.Type? = nil
+    var initialPlayerCoordinate: TileCoordinate? = nil
+    var initialPlayerDirection: DIRECTION? = nil
+
+    convenience init(_ sceneType: GameScene.Type, playerCoordinate: TileCoordinate, playerDirection: DIRECTION) {
+        self.init(nibName:nil, bundle:nil)
+        self.gameSceneType = sceneType
+        self.initialPlayerCoordinate = playerCoordinate
+        self.initialPlayerDirection = playerDirection
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.eventManager = EventManager()
     }
 
     override func initializeScene() {
-        let scene = myGameScene(size: self.view.bounds.size, playerCoordiante: TileCoordinate(x:10,y:10), playerDirection: .down)
+        let scene = self.gameSceneType!.init(
+            size: self.view.bounds.size,
+            playerCoordiante: self.initialPlayerCoordinate!,
+            playerDirection: self.initialPlayerDirection!)
         scene.gameSceneDelegate = self
         self.scene = scene
         self.currentGameScene = scene
@@ -162,11 +176,10 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
-        let scene = newScene.init(size: (self.view?.bounds.size)!, playerCoordiante: coordinate, playerDirection: direction)
-        scene.gameSceneDelegate = self
-        let skView = self.view as! SKView
-        skView.presentScene(scene)
-
-        self.currentGameScene = scene
+        let gameViewController: UIViewController = GameViewController(
+            newScene,
+            playerCoordinate: coordinate,
+            playerDirection: direction)
+        self.present(gameViewController, animated: false, completion: nil)
     }
 }

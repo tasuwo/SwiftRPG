@@ -25,7 +25,10 @@ class TitleViewController: UIViewController {
 
 extension TitleViewController: TitleSceneDelegate {
     func newGameTouched() {
-        let gameViewController: UIViewController = GameViewController()
+        let gameViewController: UIViewController = GameViewController(
+            myGameScene.self,
+            playerCoordinate: TileCoordinate(x:7,y:7),
+            playerDirection: .down)
         self.present(gameViewController, animated: false, completion: nil)
     }
 }
