@@ -26,36 +26,64 @@ protocol GameSceneDelegate: class {
 }
 
 /// ゲーム画面
-class GameScene: Scene, GameSceneProtocol {
+class GameScene: SKScene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
-    @IBAction func didPressMenuButton(_ sender: AnyObject) {
-        self.gameSceneDelegate?.menuButtonTouched()
-    }
 
     // MARK: GameSceneProtocol Properties
 
-    @IBOutlet weak var actionButton: UIButton!
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var eventDialog: DialogLabel!
+    var actionButton: SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    var menuButton:   SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
+    var eventDialog:  SKLabelNode = SKLabelNode(fontNamed: "Chalkduster")
     var map: Map?
     var textBox: Dialog!
     var playerInitialCoordinate: TileCoordinate? = nil
     var playerInitialDirection: DIRECTION? = nil
 
     // MARK: ---
+
+    override func didMove(to view: SKView) {
+        actionButton.text = "Action"
+        menuButton.text   = "menu"
+        eventDialog.text  = "event"
+
+        actionButton.zPosition = 9999
+        menuButton.zPosition   = 9999
+        eventDialog.zPosition  = 9999
+
+        actionButton.fontSize = 40
+        menuButton.fontSize   = 20
+        eventDialog.fontSize  = 20
+
+        actionButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY*(2/3))
+        menuButton.position   = CGPoint(x:50, y:30)
+        eventDialog.position  = CGPoint(x:self.frame.midX, y:self.frame.midY)
+
+        actionButton.isHidden = true
+        eventDialog.isHidden = true
+
+        self.addChild(actionButton)
+        self.addChild(menuButton)
+        self.addChild(eventDialog)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if map == nil { return }
+
         let location = touches.first!.location(in: self)
+
+        if actionButton.contains(location) && actionButton.isHidden == false {
+            self.gameSceneDelegate?.actionButtonTouched()
+        }
+
+        if menuButton.contains(location) && menuButton.isHidden == false {
+            self.gameSceneDelegate?.menuButtonTouched()
+        }
+
         if self.map!.sheet!.isOnFrame(location) {
             self.gameSceneDelegate?.frameTouched(location)
         } else {
             self.gameSceneDelegate?.gameSceneTouched(location)
         }
-    }
-
-    func actionButtonTouched(_ sender: UIButton) {
-        self.gameSceneDelegate?.actionButtonTouched()
     }
 
     override func update(_ currentTime: TimeInterval) {

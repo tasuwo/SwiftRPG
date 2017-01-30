@@ -12,10 +12,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuScene" customModule="SwiftRPG" customModuleProvider="target">
             <connections>
                 <outlet property="backButton" destination="cHS-g3-7er" id="av2-e7-rTp"/>
-                <outlet property="baseView" destination="mbw-hU-E5c" id="wh4-mc-xQO"/>
+                <outlet property="baseView" destination="mbw-hU-E5c" id="xe5-ko-mIS"/>
                 <outlet property="contentsView" destination="UTw-z4-1Mx" id="bDO-Bt-huA"/>
                 <outlet property="dialog" destination="VuO-jg-d9W" id="eqM-dI-uhr"/>
-                <outlet property="sceneView" destination="iN0-l3-epB" id="5lj-cn-0fp"/>
+                <outlet property="sceneView" destination="iN0-l3-epB" id="lGL-ZD-92T"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

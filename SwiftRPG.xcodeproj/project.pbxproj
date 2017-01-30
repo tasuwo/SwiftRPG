@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		094461156FB6E15DBCAA8578 /* Pods_RunTowardTheLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F2AB7D20E4C6EA09FA69C3 /* Pods_RunTowardTheLightTests.framework */; };
 		2C0564981D4B062300A2F527 /* myButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0564971D4B062300A2F527 /* myButton.swift */; };
-		2C1377F41E3DF13D00247BCD /* nextGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1377F31E3DF13D00247BCD /* nextGameScene.swift */; };
+		2C1377F41E3DF13D00247BCD /* SecondGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1377F31E3DF13D00247BCD /* SecondGameScene.swift */; };
 		2C1377F61E3DF50900247BCD /* SceneTransitionEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1377F51E3DF50900247BCD /* SceneTransitionEventListener.swift */; };
 		2C2143341D53308D006D3C50 /* ItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143331D53308D006D3C50 /* ItemTable.swift */; };
 		2C2143371D5345A5006D3C50 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2143361D5345A5006D3C50 /* DataModels.swift */; };
@@ -39,10 +39,7 @@
 		2CAEA0BD1D4AE1C90084D8B0 /* MenuSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */; };
 		2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */; };
 		2CBA283D1E3E0171009572CE /* MapTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBA283C1E3E0171009572CE /* MapTable.swift */; };
-		2CBA283F1E3E3369009572CE /* nextGameScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CBA283E1E3E3369009572CE /* nextGameScene.xib */; };
-		2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE41E0ADC12008AEB77 /* SceneController.swift */; };
-		2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE61E0AE0BA008AEB77 /* Scene.swift */; };
-		2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */; };
+		2CC39CE91E0AEF60008AEB77 /* FirstGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC39CE81E0AEF60008AEB77 /* FirstGameScene.swift */; };
 		2CCDA4F01E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */; };
 		2CCDA4FB1E3D9B81000E00BC /* EventListenerImplement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */; };
 		2CCDA5031E3DCC48000E00BC /* BackToDefaultStateEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCDA5021E3DCC48000E00BC /* BackToDefaultStateEventListener.swift */; };
@@ -75,7 +72,6 @@
 		A0D8398F1C8010E1005CC12D /* talkerImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D8398E1C8010E1005CC12D /* talkerImage.swift */; };
 		A0D839921C80176D005CC12D /* talk_01.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0D839911C80176D005CC12D /* talk_01.txt */; };
 		A0D839941C8017AD005CC12D /* TalkBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D839931C8017AD005CC12D /* TalkBodyParser.swift */; };
-		A0D85B7B1C9AF2CE009B34AC /* myGameScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0D85B7A1C9AF2CE009B34AC /* myGameScene.xib */; };
 		D72319F21B5699F200D13BAA /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72319F11B5699F200D13BAA /* TitleViewController.swift */; };
 		D7747D251B6E58F300793445 /* UIButtonAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7747D241B6E58F300793445 /* UIButtonAnimated.swift */; };
 		D7A7CE161B761B1500E0557C /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A7CE151B761B1500E0557C /* Node.swift */; };
@@ -103,7 +99,7 @@
 
 /* Begin PBXFileReference section */
 		2C0564971D4B062300A2F527 /* myButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myButton.swift; sourceTree = "<group>"; };
-		2C1377F31E3DF13D00247BCD /* nextGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = nextGameScene.swift; path = components/nextGameScene.swift; sourceTree = "<group>"; };
+		2C1377F31E3DF13D00247BCD /* SecondGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecondGameScene.swift; path = components/SecondGameScene.swift; sourceTree = "<group>"; };
 		2C1377F51E3DF50900247BCD /* SceneTransitionEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneTransitionEventListener.swift; sourceTree = "<group>"; };
 		2C2143331D53308D006D3C50 /* ItemTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTable.swift; sourceTree = "<group>"; };
 		2C2143361D5345A5006D3C50 /* DataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
@@ -133,10 +129,7 @@
 		2CAEA0BC1D4AE1C90084D8B0 /* MenuSceneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSceneModel.swift; sourceTree = "<group>"; };
 		2CB5CB5D1D55F8410017C17F /* ActivateButtonListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateButtonListener.swift; sourceTree = "<group>"; };
 		2CBA283C1E3E0171009572CE /* MapTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTable.swift; sourceTree = "<group>"; };
-		2CBA283E1E3E3369009572CE /* nextGameScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = nextGameScene.xib; path = components/nextGameScene.xib; sourceTree = "<group>"; };
-		2CC39CE41E0ADC12008AEB77 /* SceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
-		2CC39CE61E0AE0BA008AEB77 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
-		2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myGameScene.swift; sourceTree = "<group>"; };
+		2CC39CE81E0AEF60008AEB77 /* FirstGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstGameScene.swift; sourceTree = "<group>"; };
 		2CCDA4EF1E3BA0DB000E00BC /* ReloadBehaviorEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadBehaviorEventListener.swift; sourceTree = "<group>"; };
 		2CCDA4FA1E3D9B81000E00BC /* EventListenerImplement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListenerImplement.swift; sourceTree = "<group>"; };
 		2CCDA5021E3DCC48000E00BC /* BackToDefaultStateEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackToDefaultStateEventListener.swift; sourceTree = "<group>"; };
@@ -172,7 +165,6 @@
 		A0D8398E1C8010E1005CC12D /* talkerImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = talkerImage.swift; sourceTree = "<group>"; };
 		A0D839911C80176D005CC12D /* talk_01.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = talk_01.txt; sourceTree = "<group>"; };
 		A0D839931C8017AD005CC12D /* TalkBodyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkBodyParser.swift; sourceTree = "<group>"; };
-		A0D85B7A1C9AF2CE009B34AC /* myGameScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = myGameScene.xib; sourceTree = "<group>"; };
 		C2C518581BF2EDF721F1D5E0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72319F11B5699F200D13BAA /* TitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
 		D7747D241B6E58F300793445 /* UIButtonAnimated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonAnimated.swift; sourceTree = "<group>"; };
@@ -458,7 +450,6 @@
 				D72319F11B5699F200D13BAA /* TitleViewController.swift */,
 				D7C157A51B3E9CD400C13909 /* GameViewController.swift */,
 				2C3673DF1E0ABE570060E5EF /* MenuViewController.swift */,
-				2CC39CE41E0ADC12008AEB77 /* SceneController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -468,16 +459,13 @@
 			children = (
 				2C59EF321D641B6C00DCCCA5 /* animation */,
 				2C0564961D4B034C00A2F527 /* components */,
-				2CC39CE61E0AE0BA008AEB77 /* Scene.swift */,
 				D7BFE5471B521BBF00AB0D3A /* TitleScene.swift */,
 				A06D85A81C7EA58A003F19BB /* TitleScene.xib */,
-				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
 				A07DEBA31C9B7DF200B787BA /* MenuScene.swift */,
 				A07DEBA11C9B7B6100B787BA /* MenuScene.xib */,
-				2CC39CE81E0AEF60008AEB77 /* myGameScene.swift */,
-				A0D85B7A1C9AF2CE009B34AC /* myGameScene.xib */,
-				2C1377F31E3DF13D00247BCD /* nextGameScene.swift */,
-				2CBA283E1E3E3369009572CE /* nextGameScene.xib */,
+				D7C157A31B3E9CD400C13909 /* GameScene.swift */,
+				2CC39CE81E0AEF60008AEB77 /* FirstGameScene.swift */,
+				2C1377F31E3DF13D00247BCD /* SecondGameScene.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -673,12 +661,10 @@
 				A02F0CB51C284D0F00997B86 /* black.png in Resources */,
 				D7C157AB1B3E9CD400C13909 /* Images.xcassets in Resources */,
 				A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */,
-				2CBA283F1E3E3369009572CE /* nextGameScene.xib in Resources */,
 				D7C157A21B3E9CD400C13909 /* GameScene.sks in Resources */,
 				A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */,
 				2C2D31A31D531CD2000D8A2B /* kanamonoMap.xcassets in Resources */,
 				2CCDA5051E3DD6A9000E00BC /* sample_map01.json in Resources */,
-				A0D85B7B1C9AF2CE009B34AC /* myGameScene.xib in Resources */,
 				A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */,
 				A02F0CA91C284CB500997B86 /* sample_map02.json in Resources */,
 				2C2D319B1D531983000D8A2B /* player.xcassets in Resources */,
@@ -797,7 +783,7 @@
 				2C3EF4CD1E0E063B0059840A /* UIButton+title.swift in Sources */,
 				D7747D251B6E58F300793445 /* UIButtonAnimated.swift in Sources */,
 				2C2D31931D525F35000D8A2B /* ListenerContainer.swift in Sources */,
-				2CC39CE91E0AEF60008AEB77 /* myGameScene.swift in Sources */,
+				2CC39CE91E0AEF60008AEB77 /* FirstGameScene.swift in Sources */,
 				D7A7CE161B761B1500E0557C /* Node.swift in Sources */,
 				A07DEBB01C9B9EBF00B787BA /* ItemCell.swift in Sources */,
 				D7C157A41B3E9CD400C13909 /* GameScene.swift in Sources */,
@@ -805,7 +791,6 @@
 				2CEDA5D91E3A23D800DB076A /* WalkOneStepEventListener.swift in Sources */,
 				A02DDEE91C7BD050007C5BC2 /* objectNameTable.swift in Sources */,
 				D7D97FFF1B6F05B1000704B0 /* Tile.swift in Sources */,
-				2CC39CE71E0AE0BA008AEB77 /* Scene.swift in Sources */,
 				2C0564981D4B062300A2F527 /* myButton.swift in Sources */,
 				D7D8A5AB1B70652600147A45 /* Object.swift in Sources */,
 				2C2D31951D52F39F000D8A2B /* String+subscript.swift in Sources */,
@@ -823,7 +808,6 @@
 				A02DDEE61C7AF0C9007C5BC2 /* Map.swift in Sources */,
 				A06593D21C721A1000148D2B /* MapObject.swift in Sources */,
 				2CEDA5D31E39E33A00DB076A /* HideEventDialogListener.swift in Sources */,
-				2CC39CE51E0ADC12008AEB77 /* SceneController.swift in Sources */,
 				2CFD72F81E379C5A0039A6AC /* BehaviorPropertyParser.swift in Sources */,
 				2C59EF2F1D630A0600DCCCA5 /* TransitionToMenuAnimator.swift in Sources */,
 				2C2E64C51B78DC7600B25B6E /* TileCoordinate.swift in Sources */,
@@ -834,7 +818,7 @@
 				2C1377F61E3DF50900247BCD /* SceneTransitionEventListener.swift in Sources */,
 				A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */,
 				2C2941AC1E35DCAF0016A7E4 /* ListenerGenerator.swift in Sources */,
-				2C1377F41E3DF13D00247BCD /* nextGameScene.swift in Sources */,
+				2C1377F41E3DF13D00247BCD /* SecondGameScene.swift in Sources */,
 				A07DEBB31C9BAA3600B787BA /* DialogLabel.swift in Sources */,
 				A0B3C84A1B991DA500DEDDE0 /* EventListener.swift in Sources */,
 				2CB5CB5E1D55F8410017C17F /* ActivateButtonListener.swift in Sources */,

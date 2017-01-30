@@ -10,7 +10,7 @@ import Foundation
 
 struct MapTable {
     static let fromJsonFileName: Dictionary<String, GameScene.Type> = [
-        "sample_map02.json": myGameScene.self,
-        "sample_map01.json": nextGameScene.self
+        "sample_map02.json": FirstGameScene.self,
+        "sample_map01.json": SecondGameScene.self
     ]
 }

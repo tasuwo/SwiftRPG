@@ -10,35 +10,35 @@ import UIKit
 import SpriteKit
 import SwiftyJSON
 
-class GameViewController: SceneController {
+class GameViewController: UIViewController {
+    var viewInitiated: Bool = false
     var eventManager: EventManager!
     var eventObjectIds: Set<MapObjectId>? = nil
     var currentGameScene: GameScene? = nil
 
-    var gameSceneType: GameScene.Type? = nil
-    var initialPlayerCoordinate: TileCoordinate? = nil
-    var initialPlayerDirection: DIRECTION? = nil
-
-    convenience init(_ sceneType: GameScene.Type, playerCoordinate: TileCoordinate, playerDirection: DIRECTION) {
-        self.init(nibName:nil, bundle:nil)
-        self.gameSceneType = sceneType
-        self.initialPlayerCoordinate = playerCoordinate
-        self.initialPlayerDirection = playerDirection
+    override func loadView() {
+        self.view = SKView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.isMultipleTouchEnabled = false
         self.eventManager = EventManager()
     }
 
-    override func initializeScene() {
-        let scene = self.gameSceneType!.init(
-            size: self.view.bounds.size,
-            playerCoordiante: self.initialPlayerCoordinate!,
-            playerDirection: self.initialPlayerDirection!)
-        scene.gameSceneDelegate = self
-        self.scene = scene
-        self.currentGameScene = scene
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if (!viewInitiated) {
+            let scene = FirstGameScene(size: self.view.frame.size, playerCoordiante: TileCoordinate(x:7,y:7), playerDirection: .down)
+            scene.gameSceneDelegate = self
+            self.currentGameScene = scene
+
+            let skView = self.view as! SKView
+            skView.presentScene(self.currentGameScene)
+
+            self.viewInitiated = true
+        }
     }
 }
 
@@ -176,10 +176,12 @@ extension GameViewController: GameSceneDelegate {
     }
 
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
-        let gameViewController: UIViewController = GameViewController(
-            newScene,
-            playerCoordinate: coordinate,
-            playerDirection: direction)
-        self.present(gameViewController, animated: false, completion: nil)
+        let scene = newScene.init(size: self.view.bounds.size, playerCoordiante: coordinate, playerDirection: direction)
+        scene.gameSceneDelegate = self
+        self.currentGameScene = scene
+
+        let skView = self.view as! SKView
+        let skScene = skView.scene!
+        skScene.view?.presentScene(scene)
     }
 }

@@ -9,11 +9,36 @@
 import UIKit
 import SpriteKit
 
-class MenuViewController: SceneController {
+class MenuViewController: UIViewController {
+    var viewInitiated: Bool = false
+    var scene: SKScene!
     fileprivate var model: MenuSceneModel!
     let transition = TransitionBetweenGameAndMenuSceneAnimator()
 
-    override func initializeScene() {
+    override func loadView() {
+        self.view = SKView()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.isMultipleTouchEnabled = false
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if (!viewInitiated) {
+            self.initializeScene()
+
+            self.view = self.scene.view
+            let view = self.view as! SKView
+            view.presentScene(self.scene)
+
+            self.viewInitiated = true
+        }
+    }
+
+    func initializeScene() {
         let scene = MenuScene(size: self.view.bounds.size)
         scene.menuSceneDelegate = self
 
