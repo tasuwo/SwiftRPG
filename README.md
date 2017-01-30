@@ -18,8 +18,10 @@ Simple game written in swift with SpriteKit.
   - ~~Stop object's behavior when touch event occured~~
 - ~~Loop object's behavior~~
 - ~~Disabling walking and behavior~~
+- ~~Scene transition~~
+- Use only SpriteKit. Use UIKit for using storyboard, but it's not efficiency.
 - Sound
-- Scene transition
 - Flag management
 - Battle
 - Document
+
