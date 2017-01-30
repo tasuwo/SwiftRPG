@@ -11,11 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuScene" customModule="SwiftRPG" customModuleProvider="target">
             <connections>
-                <outlet property="backButton" destination="cHS-g3-7er" id="av2-e7-rTp"/>
-                <outlet property="baseView" destination="mbw-hU-E5c" id="xe5-ko-mIS"/>
-                <outlet property="contentsView" destination="UTw-z4-1Mx" id="bDO-Bt-huA"/>
-                <outlet property="dialog" destination="VuO-jg-d9W" id="eqM-dI-uhr"/>
-                <outlet property="sceneView" destination="iN0-l3-epB" id="lGL-ZD-92T"/>
+                <outlet property="backButton" destination="cHS-g3-7er" id="LjJ-TK-aSM"/>
+                <outlet property="baseView" destination="mbw-hU-E5c" id="EUx-zo-UI4"/>
+                <outlet property="contentsView" destination="UTw-z4-1Mx" id="Sc1-Vv-os5"/>
+                <outlet property="dialog" destination="VuO-jg-d9W" id="bTH-TW-Dba"/>
+                <outlet property="sceneView" destination="iN0-l3-epB" id="FaO-tR-Q62"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -63,7 +63,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
-                                <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="WRA-Il-emI"/>
+                                <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="CDr-FW-Arl"/>
                             </connections>
                         </button>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UTw-z4-1Mx">

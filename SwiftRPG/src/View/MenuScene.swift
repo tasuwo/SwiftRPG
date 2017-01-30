@@ -40,7 +40,7 @@ class MenuScene: SKScene {
         super.init(size: size)
 
         Bundle.main.loadNibNamed("MenuScene", owner: self, options: nil)
-        self.view?.addSubview(sceneView)
+        self.view?.addSubview(baseView)
 
         contentsView.delegate = self
         contentsView.register(ItemCell.self, forCellWithReuseIdentifier: "cell")

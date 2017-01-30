@@ -11,7 +11,6 @@ import SpriteKit
 
 class MenuViewController: UIViewController {
     var viewInitiated: Bool = false
-    var scene: SKScene!
     fileprivate var model: MenuSceneModel!
     let transition = TransitionBetweenGameAndMenuSceneAnimator()
 
@@ -28,26 +27,20 @@ class MenuViewController: UIViewController {
         super.viewWillLayoutSubviews()
 
         if (!viewInitiated) {
-            self.initializeScene()
+            let scene = MenuScene(size: self.view.bounds.size)
+            scene.menuSceneDelegate = self
 
-            self.view = self.scene.view
-            let view = self.view as! SKView
-            view.presentScene(self.scene)
+            self.model = MenuSceneModel()
+            self.model.delegate = scene
+            self.model.updateItems()
+            scene.model = self.model
+            
+            self.view = scene.sceneView
+            let skView = self.view as! SKView
+            skView.presentScene(scene)
 
             self.viewInitiated = true
         }
-    }
-
-    func initializeScene() {
-        let scene = MenuScene(size: self.view.bounds.size)
-        scene.menuSceneDelegate = self
-
-        self.model = MenuSceneModel()
-        self.model.delegate = scene
-        self.model.updateItems()
-        scene.model = self.model
-
-        self.scene = scene
     }
 }
 
