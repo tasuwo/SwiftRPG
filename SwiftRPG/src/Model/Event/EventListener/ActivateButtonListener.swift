@@ -33,6 +33,8 @@ class ActivateButtonListener: EventListenerImplement {
             sender!.actionButtonLabel.text = self.params!["text"].string!
             sender!.actionButton.isHidden = false
 
+            sender?.stopBehaviors()
+
             do {
                 let nextEventListener = try InvokeNextEventListener(params: self.params, chainListeners: self.listeners)
                 nextEventListener.eventObjectId = self.eventObjectId
