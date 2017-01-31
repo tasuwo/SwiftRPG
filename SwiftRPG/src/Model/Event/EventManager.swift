@@ -11,6 +11,7 @@ import SwiftyJSON
 
 protocol NotifiableFromDispacher {
     func invoke(_ listener: EventListener, invoker: EventListener)
+    func removed(_ listenerId: UInt64, sender: EventDispatcher)
 }
 
 enum EventManagerError: Error {
@@ -28,9 +29,9 @@ class EventManager: NotifiableFromDispacher {
     internal var unavailabledCyclicEventIds: [UInt64] = []
 
     init() {
-        self.touchEventDispacher = EventDispatcher()
-        self.actionButtonEventDispacher = EventDispatcher()
-        self.cyclicEventDispacher = EventDispatcher()
+        self.touchEventDispacher = EventDispatcher(.touch)
+        self.actionButtonEventDispacher = EventDispatcher(.button)
+        self.cyclicEventDispacher = EventDispatcher(.immediate)
 
         self.touchEventDispacher.delegate = self
         self.actionButtonEventDispacher.delegate = self
@@ -246,6 +247,14 @@ class EventManager: NotifiableFromDispacher {
 
         if !nextListenersDispacher.add(listener) {
             print("Failed to add listener" )
+        }
+    }
+
+    func removed(_ listenerId: UInt64, sender: EventDispatcher) {
+        if sender.triggerType == .immediate {
+            if self.unavailabledCyclicEventIds.contains(listenerId) {
+                self.unavailabledCyclicEventIds = self.unavailabledCyclicEventIds.filter { $0 != listenerId }
+            }
         }
     }
 }

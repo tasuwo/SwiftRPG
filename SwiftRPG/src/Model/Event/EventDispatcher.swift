@@ -26,9 +26,13 @@ class EventDispatcher : NotifiableFromListener {
     fileprivate var listeners = Dictionary<IdType, ListenerType>()
     fileprivate var uniqueId: UInt64 = 0
 
+    let triggerType: TriggerType
+
     var delegate: NotifiableFromDispacher?
 
-    init() {}
+    init(_ type: TriggerType) {
+        self.triggerType = type
+    }
 
     @discardableResult
     func add(_ listener: ListenerType) -> Bool {
@@ -52,33 +56,12 @@ class EventDispatcher : NotifiableFromListener {
             // TODO
         }
 
-        listeners.removeValue(forKey: listener.id!)
+        let id = listener.id!
+        listeners.removeValue(forKey: id)
         listener.id = nil
+        self.delegate?.removed(id, sender: self)
+
         return true
-    }
-
-    @discardableResult
-    func removeByEventObjectId(_ listener: ListenerType, sender: GameSceneProtocol? = nil) -> Bool {
-        if listener.eventObjectId == nil { return false }
-        var targetListener: EventListener? = nil
-
-        for listener_ in self.listeners.values {
-            if listener_.eventObjectId == listener.eventObjectId
-            && listener_.isBehavior == listener_.isBehavior {
-                targetListener = listener_
-                break
-            }
-        }
-
-        if let targetListener_ = targetListener {
-            return self.remove(targetListener_, sender: sender)
-        }
-
-        return false
-    }
-    
-    func removeAll() {
-        listeners.removeAll()
     }
 
     func getAllListeners() -> [EventListener] {
@@ -102,6 +85,7 @@ class EventDispatcher : NotifiableFromListener {
                     if let id_ = listener.id {
                         self.listeners.removeValue(forKey: id_)
                         listener.id = nil
+                        self.delegate?.removed(id_, sender: self)
                     } else {
                         // If the listener was removed before removing in this block, here is executed
                         print("Failed to listener at the time of end of trigger")
