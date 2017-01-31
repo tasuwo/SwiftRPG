@@ -27,4 +27,4 @@ Simple game written in swift with SpriteKit.
 
 ## BUG
 
-- Talk with npc during npc moving, the game would be crashed.
+- ~~Talk with npc during npc moving, the game would be crashed.~~
