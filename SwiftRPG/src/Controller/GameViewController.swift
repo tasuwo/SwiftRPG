@@ -183,6 +183,7 @@ extension GameViewController: GameSceneDelegate {
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
         let scene = newScene.init(size: self.view.bounds.size, playerCoordiante: coordinate, playerDirection: direction)
         scene.gameSceneDelegate = self
+        scene.container = self.eventManager
         self.currentGameScene = scene
 
         let skView = self.view as! SKView
