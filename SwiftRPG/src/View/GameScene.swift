@@ -115,29 +115,36 @@ class GameScene: SKScene, GameSceneProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func movePlayer(_ playerActions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate, screenAction: SKAction) -> Promise<Void> {
-        let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
+    func movePlayer(_ actions: [SKAction], departure: TileCoordinate, destination: TileCoordinate, screenAction: SKAction, invoker: EventListener) -> Promise<Void> {
+        if self.container!.unavailabledCyclicEventIds.contains(invoker.id) {
+            return Promise { fullfill, reject in fullfill() }
+        }
 
+        let d = TileCoordinate.getSheetCoordinateFromTileCoordinate(destination)
         // WARNING: Actions of player and sheet should be executed in parallel.
         //          Should specified it?
         return Promise { fulfill, reject in
             let player = self.map?.getObjectByName(objectNameTable.PLAYER_NAME)!
-            player?.runAction(playerActions, destination: destination, callback: {
-                self.map!.updateObjectPlacement(player!, departure: tileDeparture, destination: tileDestination)
+            player?.runAction(actions, destination: d, callback: {
+                self.map!.updateObjectPlacement(player!, departure: departure, destination: destination)
                 fulfill()
             })
             self.map?.sheet!.runAction([screenAction], callback: {})
         }
     }
 
-    func moveObject(_ name: String, actions: [SKAction], tileDeparture: TileCoordinate, tileDestination: TileCoordinate) -> Promise<Void> {
-        let destination = TileCoordinate.getSheetCoordinateFromTileCoordinate(tileDestination)
+    func moveObject(_ name: String, actions: [SKAction], departure: TileCoordinate, destination: TileCoordinate, invoker: EventListener) -> Promise<Void> {
+        if self.container!.unavailabledCyclicEventIds.contains(invoker.id) {
+            return Promise { fullfill, reject in fullfill() }
+        }
+
+        let d = TileCoordinate.getSheetCoordinateFromTileCoordinate(destination)
         let object = self.map?.getObjectByName(name)!
         return Promise { fulfill, reject in
-            object?.runAction(actions, destination: destination, callback: {
-                self.map?.updateObjectPlacement(object!, departure: tileDeparture, destination: tileDestination)
+            object?.runAction(actions, destination: d, callback: {
+                self.map?.updateObjectPlacement(object!, departure: departure, destination: destination)
                 // Enable Events
-                self.map?.setEventsOf(object!.id, coordinate: tileDestination)
+                self.map?.setEventsOf(object!.id, coordinate: destination)
                 fulfill()
             })
         }

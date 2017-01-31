@@ -68,9 +68,10 @@ class WalkOneStepEventListener: EventListenerImplement {
                 firstly {
                     sender!.movePlayer(
                         action,
-                        tileDeparture: player.coordinate,
-                        tileDestination: destination,
-                        screenAction: screenAction
+                        departure: player.coordinate,
+                        destination: destination,
+                        screenAction: screenAction,
+                        invoker: self
                     )
                 }.then { _ -> Void in
                     // If reached at destination, stop walking and set WalkEvetListener as touch event again

@@ -108,8 +108,9 @@ class MoveObjectEventListener: EventListenerImplement {
                     sender!.moveObject(
                         objectName!,
                         actions: objectActions,
-                        tileDeparture: departure,
-                        tileDestination: destination
+                        departure: departure,
+                        destination: destination,
+                        invoker: self
                     )
                 }.then { _ -> Void in
                     do {
