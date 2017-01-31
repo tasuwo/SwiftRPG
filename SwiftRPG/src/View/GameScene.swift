@@ -19,9 +19,9 @@ protocol GameSceneDelegate: class {
     func viewUpdated()
     func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>)
     func stopBehaviors()
-    func enableWalking()
-    func disableWalking()
-    func blockAllEventListeners()
+    func startWalking()
+    func stopWalking()
+    func unavailableAllListeners()
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION)
 }
 
@@ -194,10 +194,6 @@ class GameScene: SKScene, GameSceneProtocol {
         }
     }
 
-    func stopBehaviors() {
-        self.gameSceneDelegate?.stopBehaviors()
-    }
-
     func startBehaviors() {
         var behaviors: Dictionary<MapObjectId, EventListener> = [:]
         let objects = self.map?.getAllObjects()
@@ -224,16 +220,22 @@ class GameScene: SKScene, GameSceneProtocol {
         self.gameSceneDelegate?.startBehaviors(behaviors)
     }
 
+    // TODO: Remove following methods and pass event manager to event listener
+
+    func stopBehaviors() {
+        self.gameSceneDelegate?.stopBehaviors()
+    }
+
     func enableWalking() {
-        self.gameSceneDelegate?.enableWalking()
+        self.gameSceneDelegate?.startWalking()
     }
 
     func disableWalking() {
-        self.gameSceneDelegate?.disableWalking()
+        self.gameSceneDelegate?.stopWalking()
     }
 
     func removeAllEvetListenrs() {
-        self.gameSceneDelegate?.blockAllEventListeners()
+        self.gameSceneDelegate?.unavailableAllListeners()
     }
 
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {

@@ -163,16 +163,19 @@ extension GameViewController: GameSceneDelegate {
         self.eventManager.blockBehavior()
     }
 
-    func enableWalking() {
-        self.eventManager.enableWalking()
+    func startWalking() {
+        if self.eventManager.isBlockingWalking == false { return }
+
+        self.eventManager.unblockWalking()
+        self.eventManager.add(WalkEventListener.init(params: nil, chainListeners: nil))
     }
 
-    func disableWalking() {
-        self.eventManager.disableWalking()
+    func stopWalking() {
+        self.eventManager.blockWalking()
     }
 
-    func blockAllEventListeners() {
-        self.eventManager.blockCurrentListeners()
+    func unavailableAllListeners() {
+        self.eventManager.unavailableAllListeners()
     }
 
     func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {

@@ -45,7 +45,7 @@ class FirstGameScene: GameScene {
         // Config sheet's position
         self.map?.sheet?.centerOn(point: player.position, frameWidth: self.frame.width, frameHeight: self.frame.height)
 
-        self.gameSceneDelegate?.enableWalking()
+        self.gameSceneDelegate?.startWalking()
 
         actionButton.isHidden = true
 

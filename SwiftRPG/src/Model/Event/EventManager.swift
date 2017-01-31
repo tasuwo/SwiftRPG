@@ -86,7 +86,7 @@ class EventManager: NotifiableFromDispacher {
 
     // Permanently block  event listeners which existed at the time of called this function
     // TODO: Block touch event during executing this function
-    func blockCurrentListeners() {
+    func unavailableAllListeners() {
         self.isBlockingTrigger = true
 
         let listeners = self.getAllListeners()
@@ -148,6 +148,8 @@ class EventManager: NotifiableFromDispacher {
         } catch EventDispacherError.FiledToInvokeListener(let string) {
             throw EventManagerError.FailedToTrigger(string)
         }
+    func unblockWalking() {
+        self.isBlockingWalking = false
     }
 
     func existsListeners(_ type: TriggerType) -> Bool {
