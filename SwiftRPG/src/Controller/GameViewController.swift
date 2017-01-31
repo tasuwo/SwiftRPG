@@ -32,6 +32,7 @@ class GameViewController: UIViewController {
         if (!viewInitiated) {
             let scene = FirstGameScene(size: self.view.frame.size, playerCoordiante: TileCoordinate(x:7,y:7), playerDirection: .down)
             scene.gameSceneDelegate = self
+            scene.container = self.eventManager
             self.currentGameScene = scene
 
             let skView = self.view as! SKView
@@ -152,6 +153,7 @@ extension GameViewController: GameSceneDelegate {
 
     func startBehaviors(_ behaviors: Dictionary<MapObjectId, EventListener>) {
         if self.eventManager.isBlockingBehavior == false { return }
+
         self.eventManager.unblockBehavior()
         for behavior in behaviors.values {
             behavior.isExecuting = false

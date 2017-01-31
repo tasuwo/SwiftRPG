@@ -14,11 +14,15 @@ protocol NotifiableFromDispacher {
     func removed(_ listenerId: UInt64, sender: EventDispatcher)
 }
 
+protocol UnavailabledCyclicEventIdsContainable {
+    var unavailabledCyclicEventIds: [UInt64] { get }
+}
+
 enum EventManagerError: Error {
     case FailedToTrigger(String)
 }
 
-class EventManager: NotifiableFromDispacher {
+class EventManager: NotifiableFromDispacher, UnavailabledCyclicEventIdsContainable {
     fileprivate var touchEventDispacher: EventDispatcher
     fileprivate var actionButtonEventDispacher: EventDispatcher
     fileprivate var cyclicEventDispacher: EventDispatcher

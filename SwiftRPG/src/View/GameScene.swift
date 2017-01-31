@@ -28,6 +28,7 @@ protocol GameSceneDelegate: class {
 /// ゲーム画面
 class GameScene: SKScene, GameSceneProtocol {
     var gameSceneDelegate: GameSceneDelegate?
+    var container: UnavailabledCyclicEventIdsContainable?
 
     // MARK: GameSceneProtocol Properties
 
