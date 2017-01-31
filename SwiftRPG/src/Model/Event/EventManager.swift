@@ -25,12 +25,7 @@ class EventManager: NotifiableFromDispacher {
     fileprivate(set) var isBlockingBehavior: Bool = true
     fileprivate(set) var isBlockingWalking: Bool = true
     fileprivate(set) var isBlockingTrigger: Bool = false
-    // WARNING: Event listener id is unique at each dispatcher, **not** at this manager.
-    //          This value contains only cyclic event ids.
-    // Touch and action event listeners are able to remove,
-    // but cyclic events might be executed already at the time of removing.
-    // So this value contains cyclic event listener's id and block them.
-    fileprivate var blockedListenerIds: [UInt64] = []
+    internal var unavailabledCyclicEventIds: [UInt64] = []
 
     init() {
         self.touchEventDispacher = EventDispatcher()
@@ -84,11 +79,25 @@ class EventManager: NotifiableFromDispacher {
         return false
     }
 
+    func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
+        if isBlockingTrigger { return }
+
+        let dispacher = self.getDispacherOf(type)
+        do {
+            try dispacher.trigger(sender, args: args)
+        } catch EventDispacherError.FiledToInvokeListener(let string) {
+            throw EventManagerError.FailedToTrigger(string)
+        }
+    }
+
+    // MARK: - Unavailable, Block/Unblock methods
+
     // Permanently block  event listeners which existed at the time of called this function
     // TODO: Block touch event during executing this function
     func unavailableAllListeners() {
         self.isBlockingTrigger = true
 
+        // Make target listeners already added to unavailable
         let listeners = self.getAllListeners()
         for listener in listeners {
             if listener.triggerType == .touch {
@@ -103,55 +112,65 @@ class EventManager: NotifiableFromDispacher {
                 }
                 continue
             }
-            self.blockedListenerIds.append(listener.id)
+            if listener.triggerType == .immediate {
+                self.unavailabledCyclicEventIds.append(listener.id)
+                continue
+            }
         }
-
-        self.isBlockingWalking = true
-        self.isBlockingBehavior = true
 
         self.isBlockingTrigger = false
     }
 
     func blockBehavior() {
+        self.isBlockingTrigger = true
+
+        // Make target listeners already added to unavailable
+        let listeners = self.cyclicEventDispacher.getAllListeners()
+        for l in listeners {
+            if l.isBehavior {
+                self.unavailabledCyclicEventIds.append(l.id)
+            }
+        }
+
+        // Prevent to invoke other listener for target listener
         self.isBlockingBehavior = true
+
+        self.isBlockingTrigger = false
     }
 
     func unblockBehavior() {
         self.isBlockingBehavior = false
     }
 
-    func enableWalking() {
-        var existsWalkEvent = false
-        let listeners = self.getAllListeners()
-        for listener in listeners {
-            if listener as? WalkEventListener != nil {
-                existsWalkEvent = true
+    func blockWalking() {
+        self.isBlockingTrigger = true
+
+        // Make target listeners already added to unavailable
+        let tListeners = self.touchEventDispacher.getAllListeners()
+        for l in tListeners {
+            if (l as? WalkEventListener) != nil {
+                self.touchEventDispacher.remove(l)
             }
         }
-        if existsWalkEvent == false {
-            self.add(WalkEventListener.init(params: nil, chainListeners: nil))
+        let cListeners = self.cyclicEventDispacher.getAllListeners()
+        for l in cListeners {
+            if (l as? WalkOneStepEventListener) != nil {
+                self.unavailabledCyclicEventIds.append(l.id)
+            }
         }
 
-        self.isBlockingWalking = false
-    }
-
-    func disableWalking() {
+        // Prevent to invoke other listener for target listener
         self.isBlockingWalking = true
+
+        self.isBlockingTrigger = false
     }
 
-    func trigger(_ type: TriggerType, sender: GameSceneProtocol!, args: JSON!) throws {
-        if isBlockingTrigger { return }
-
-        let dispacher = self.getDispacherOf(type)
-        do {
-            try dispacher.trigger(sender, args: args)
-        } catch EventDispacherError.FiledToInvokeListener(let string) {
-            throw EventManagerError.FailedToTrigger(string)
-        }
     func unblockWalking() {
         self.isBlockingWalking = false
     }
 
+    // MARK: -
+    
     func existsListeners(_ type: TriggerType) -> Bool {
         let dispathcer = self.getDispacherOf(type)
         let listeners = dispathcer.getAllListeners()
@@ -182,7 +201,7 @@ class EventManager: NotifiableFromDispacher {
         }
 
         for (id, _) in listenersDic {
-            if self.blockedListenerIds.contains(id) {
+            if self.unavailabledCyclicEventIds.contains(id) {
                 listenersDic.removeValue(forKey: id)
             }
         }
@@ -208,14 +227,11 @@ class EventManager: NotifiableFromDispacher {
 
     // MARK: - NotifiableFromDispacher
 
-    // TODO: remove, add が失敗した場合の処理の追加
     func invoke(_ listener: EventListener, invoker: EventListener) {
         let nextListenersDispacher = self.getDispacherOf(listener.triggerType)
 
-        for (index, id) in self.blockedListenerIds.enumerated() {
-            // blockListenrIds contains only cyclic event
+        for id in self.unavailabledCyclicEventIds {
             if id == invoker.id && invoker.triggerType == .immediate {
-                self.blockedListenerIds.remove(at: index)
                 return
             }
         }
