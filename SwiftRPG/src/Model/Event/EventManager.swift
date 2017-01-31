@@ -123,6 +123,11 @@ class EventManager: NotifiableFromDispacher, UnavailabledCyclicEventIdsContainab
             }
         }
 
+        // The controller decide by these flags that whether must add listeners or not.
+        // So if remove listeners of walking or behavior, these flags should be true.
+        self.isBlockingWalking = true
+        self.isBlockingBehavior = true
+
         self.isBlockingTrigger = false
     }
 
