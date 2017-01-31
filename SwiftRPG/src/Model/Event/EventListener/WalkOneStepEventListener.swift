@@ -75,7 +75,8 @@ class WalkOneStepEventListener: EventListenerImplement {
                     )
                 }.then { _ -> Void in
                     // If reached at destination, stop walking and set WalkEvetListener as touch event again
-                    if self.listeners == nil || self.listeners?.count == 0 {
+                    if self.listeners == nil || self.listeners?.count == 0
+                    || map.getEventsOn(destination).isEmpty == false {
                         let nextEventListener = WalkEventListener.init(params: nil, chainListeners: nil)
                         nextEventListener.eventObjectId = self.eventObjectId
                         nextEventListener.isBehavior = self.isBehavior
