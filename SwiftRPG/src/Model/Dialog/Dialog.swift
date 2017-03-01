@@ -313,6 +313,9 @@ class Dialog {
     func clearText() {
         var allNode: [SKNode] = []
         textBox.enumerateChildNodes(withName: CHAR_LABEL_NAME, using: { node, sotp in allNode.append(node) })
+        for child in textBox.children {
+            child.removeAllActions()
+        }
         textBox.removeChildren(in: allNode)
     }
 
