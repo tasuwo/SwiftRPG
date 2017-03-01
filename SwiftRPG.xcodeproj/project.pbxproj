@@ -62,6 +62,7 @@
 		A02F0CB51C284D0F00997B86 /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = A02F0CAA1C284D0F00997B86 /* black.png */; };
 		A06593D21C721A1000148D2B /* MapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06593D11C721A1000148D2B /* MapObject.swift */; };
 		A06D85A91C7EA58A003F19BB /* TitleScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A06D85A81C7EA58A003F19BB /* TitleScene.xib */; };
+		A078EFFD1E66EAEC00E334AA /* talk.wav in Resources */ = {isa = PBXBuildFile; fileRef = A078EFFC1E66EAEC00E334AA /* talk.wav */; };
 		A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07DEBA11C9B7B6100B787BA /* MenuScene.xib */; };
 		A07DEBA41C9B7DF200B787BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07DEBA31C9B7DF200B787BA /* MenuScene.swift */; };
 		A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */; };
@@ -155,6 +156,7 @@
 		A02F0CAA1C284D0F00997B86 /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
 		A06593D11C721A1000148D2B /* MapObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapObject.swift; sourceTree = "<group>"; };
 		A06D85A81C7EA58A003F19BB /* TitleScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleScene.xib; sourceTree = "<group>"; };
+		A078EFFC1E66EAEC00E334AA /* talk.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = talk.wav; sourceTree = "<group>"; };
 		A07DEBA11C9B7B6100B787BA /* MenuScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuScene.xib; sourceTree = "<group>"; };
 		A07DEBA31C9B7DF200B787BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		A07DEBAD1C9B9E9700B787BA /* ItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
@@ -376,6 +378,14 @@
 			path = MapObject;
 			sourceTree = "<group>";
 		};
+		A078EFFB1E66EA7300E334AA /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A078EFFC1E66EAEC00E334AA /* talk.wav */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
 		A07DEBB11C9BAA2600B787BA /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,6 +483,7 @@
 		D7BFE5411B5219E400AB0D3A /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				A078EFFB1E66EA7300E334AA /* sounds */,
 				D7BFE5461B521A8C00AB0D3A /* image */,
 				A0D839901C8016B9005CC12D /* talking */,
 			);
@@ -660,6 +671,7 @@
 			files = (
 				A02F0CB51C284D0F00997B86 /* black.png in Resources */,
 				D7C157AB1B3E9CD400C13909 /* Images.xcassets in Resources */,
+				A078EFFD1E66EAEC00E334AA /* talk.wav in Resources */,
 				A07DEBAE1C9B9E9700B787BA /* ItemCell.xib in Resources */,
 				D7C157A21B3E9CD400C13909 /* GameScene.sks in Resources */,
 				A07DEBA21C9B7B6100B787BA /* MenuScene.xib in Resources */,
