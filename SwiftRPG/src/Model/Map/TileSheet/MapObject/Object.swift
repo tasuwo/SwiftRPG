@@ -12,6 +12,7 @@ import SpriteKit
 
 /// ゲーム画面上に配置されるオブジェクトに対応する，SKSpriteNode のラッパークラス(タイル上ではない)
 open class Object: MapObject {
+    fileprivate(set) var isAnimated: Bool = false
     fileprivate let      images: IMAGE_SET?
     fileprivate(set) var speed: CGFloat
     fileprivate(set) var direction: DIRECTION
@@ -175,9 +176,11 @@ open class Object: MapObject {
     ///  - parameter callback:    実行終了時に呼ばれるコールバック関数ß
     func runAction(_ actions: Array<SKAction>, destination: CGPoint, callback: @escaping () -> Void) {
         let sequence: SKAction = SKAction.sequence(actions)
+        self.isAnimated = true
         self.node.run(
             sequence,
             completion: {
+                self.isAnimated = false
                 callback()
             }
         )

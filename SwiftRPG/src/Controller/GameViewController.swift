@@ -104,8 +104,9 @@ extension GameViewController: GameSceneDelegate {
         //   and provide methods for manipulating them.
         //
         // I cannot judge this, so this role add to this controller for now.
-        if let events_ = map?.getEventsOnPlayerPosition() {
-            let events: [EventListener] = events_
+        let events_ = map?.getEventsOnPlayerPosition()
+        if events_ != nil && map?.getObjectByName(objectNameTable.PLAYER_NAME)?.isAnimated == false {
+            let events: [EventListener] = events_!
 
             // Update eventObjectIds value
             if self.eventObjectIds == nil {
