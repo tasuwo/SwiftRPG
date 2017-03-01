@@ -25,6 +25,8 @@ class FinishTalkEventListener: EventListenerImplement {
         self.invoke        = { (sender: GameSceneProtocol?, args: JSON?) -> Promise<Void> in
             self.isExecuting = true
             
+            sender!.textBox.clean()
+            
             return Promise<Void> { fullfill, reject in
                 firstly {
                     sender!.textBox.hide(duration: 0)
