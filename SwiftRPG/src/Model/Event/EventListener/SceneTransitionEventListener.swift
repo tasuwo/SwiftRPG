@@ -41,12 +41,22 @@ class SceneTransitionEventListener: EventListenerImplement {
 
             // Clean event manager: remove all event listener from event manager
             sender?.removeAllEvetListenrs()
+            sender?.disableTouchEvents()
 
             // Scene transition
             let gameSceneType = MapTable.fromJsonFileName[mapFileName]
-            sender?.transitionTo(gameSceneType!, playerCoordinate: playerCoordinate!, playerDirection: playerDirection!)
 
-            return Promise<Void> { fullfill, reject in fullfill() }
+            return Promise<Void> { fullfill, reject in
+                firstly {
+                    sender!.transitionTo(gameSceneType!, playerCoordinate: playerCoordinate!, playerDirection: playerDirection!)
+                }.then { _ -> Void in
+                    sender!.enableTouchEvents()
+                }.then {
+                    fullfill()
+                }.catch { error in
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
 

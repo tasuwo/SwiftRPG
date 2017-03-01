@@ -22,7 +22,7 @@ protocol GameSceneDelegate: class {
     func startWalking()
     func stopWalking()
     func unavailableAllListeners()
-    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION)
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) -> Promise<Void>
 }
 
 /// ゲーム画面
@@ -42,6 +42,7 @@ class GameScene: SKScene, GameSceneProtocol {
     var textBox: Dialog!
     var playerInitialCoordinate: TileCoordinate? = nil
     var playerInitialDirection: DIRECTION? = nil
+    var isDisabledTouchEvents = false
 
     // MARK: ---
 
@@ -78,6 +79,7 @@ class GameScene: SKScene, GameSceneProtocol {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.isDisabledTouchEvents { return }
         if map == nil { return }
 
         let location = touches.first!.location(in: self)
@@ -227,6 +229,14 @@ class GameScene: SKScene, GameSceneProtocol {
 
         self.gameSceneDelegate?.startBehaviors(behaviors)
     }
+    
+    func enableTouchEvents() {
+        self.isDisabledTouchEvents = false
+    }
+    
+    func disableTouchEvents() {
+        self.isDisabledTouchEvents = true
+    }
 
     // TODO: Remove following methods and pass event manager to event listener
 
@@ -246,8 +256,8 @@ class GameScene: SKScene, GameSceneProtocol {
         self.gameSceneDelegate?.unavailableAllListeners()
     }
 
-    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
-        self.gameSceneDelegate?.transitionTo(newScene, playerCoordinate: coordinate, playerDirection: direction)
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) -> Promise<Void> {
+        return self.gameSceneDelegate!.transitionTo(newScene, playerCoordinate: coordinate, playerDirection: direction)
     }
 
     // MARK: ---

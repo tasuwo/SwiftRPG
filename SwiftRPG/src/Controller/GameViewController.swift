@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import SwiftyJSON
+import PromiseKit
 
 class GameViewController: UIViewController {
     var viewInitiated: Bool = false
@@ -180,14 +181,22 @@ extension GameViewController: GameSceneDelegate {
         self.eventManager.unavailableAllListeners()
     }
 
-    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) {
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate coordinate: TileCoordinate, playerDirection direction: DIRECTION) -> Promise<Void> {
         let scene = newScene.init(size: self.view.bounds.size, playerCoordiante: coordinate, playerDirection: direction)
         scene.gameSceneDelegate = self
         scene.container = self.eventManager
         self.currentGameScene = scene
 
+        let delay: TimeInterval = 2
         let skView = self.view as! SKView
         let skScene = skView.scene!
-        skScene.view?.presentScene(scene)
+        skScene.view?.presentScene(scene, transition: SKTransition.fade(withDuration: delay))
+        
+        return Promise { fulfill, reject in
+            UIView.animate(
+                withDuration: delay,
+                animations: { () -> Void in  }
+            ) { (animationCompleted: Bool) -> Void in fulfill()}
+        }
     }
 }

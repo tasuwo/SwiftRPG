@@ -50,8 +50,11 @@ protocol GameSceneProtocol {
     func enableWalking()
     func disableWalking()
     func removeAllEvetListenrs()
+    
+    func enableTouchEvents()
+    func disableTouchEvents()
 
-    func transitionTo(_ newScene: GameScene.Type, playerCoordinate: TileCoordinate, playerDirection: DIRECTION)
+    func transitionTo(_ newScene: GameScene.Type, playerCoordinate: TileCoordinate, playerDirection: DIRECTION) -> Promise<Void>
 }
 
 typealias EventMethod = (_ sender: GameSceneProtocol?, _ args: JSON?) throws -> Promise<Void>
