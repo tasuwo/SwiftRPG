@@ -293,10 +293,11 @@ class Dialog {
                                         y: anchor.y - nLine * charRegionHeight)
             char.alpha = 0.0
             textBox.addChild(char)
-
+            
             let delay = SKAction.wait(forDuration: TimeInterval(VIEW_TEXT_TIME * nDrawingFont))
             let fadein = SKAction.fadeAlpha(by: 1.0, duration: 0.0)
-            let seq = SKAction.sequence([delay, fadein])
+            let sound = SKAction.playSoundFileNamed("talk.wav", waitForCompletion: false)
+            let seq = SKAction.sequence([delay, fadein, sound])
             char.run(seq)
 
             iDrawingFont += 1
